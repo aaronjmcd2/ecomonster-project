@@ -9,3 +9,5 @@ format = 2
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TileMap"]
 tile_set = ExtResource("1_elqb8")
+
+[node name="Node2D" type="Node2D" parent="."]
