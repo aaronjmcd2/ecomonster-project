@@ -1,25 +1,29 @@
 [gd_resource type="TileSet" load_steps=7 format=3 uid="uid://bsx88c66ucj8x"]
 
-[ext_resource type="Texture2D" uid="uid://qrsgbfnh6m6f" path="res://tiles/coal_tile.png" id="1_iyo0e"]
-[ext_resource type="Texture2D" uid="uid://wski83polj58" path="res://tiles/lava.png" id="2_d4wpd"]
-[ext_resource type="Texture2D" uid="uid://bc82r2pgkto1s" path="res://tiles/soil_tile.png" id="3_oge78"]
+[ext_resource type="Texture2D" uid="uid://dm67py7e0rdkq" path="res://tiles/coal_tile.png" id="1_iyo0e"]
+[ext_resource type="Texture2D" uid="uid://wski83polj58" path="res://tiles/lava_tile.png" id="2_iyo0e"]
+[ext_resource type="Texture2D" uid="uid://ccqduguwqmkpo" path="res://tiles/soil_tile.png" id="3_oge78"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2jmtu"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d4wpd"]
 resource_name = "CoalSource"
 texture = ExtResource("1_iyo0e")
 texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1punk"]
 resource_name = "LavaSource"
-texture = ExtResource("2_d4wpd")
+texture = ExtResource("2_iyo0e")
 texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k440l"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oge78"]
 resource_name = "SoilSource"
 texture = ExtResource("3_oge78")
 texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
 
 [resource]
-sources/0 = SubResource("TileSetAtlasSource_2jmtu")
-sources/3 = SubResource("TileSetAtlasSource_k440l")
+tile_size = Vector2i(64, 64)
 sources/2 = SubResource("TileSetAtlasSource_1punk")
+sources/3 = SubResource("TileSetAtlasSource_oge78")
+sources/0 = SubResource("TileSetAtlasSource_d4wpd")

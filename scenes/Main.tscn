@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=3 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://tiles/TileSet.tres" id="1_elqb8"]
+[ext_resource type="PackedScene" uid="uid://bweokypfxckvu" path="res://scenes/Player.tscn" id="2_rvslj"]
 
 [node name="Main" type="Node2D"]
 
@@ -8,6 +9,8 @@
 format = 2
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TileMap"]
+tile_map_data = PackedByteArray("AAAAAP//AwAAAAAAAAAAAAAAAwAAAAAAAAAAAAEAAwAAAAAAAAD//wEAAwAAAAAAAAD+/wEAAwAAAAAAAAD+/wAAAwAAAAAAAAD+////AwAAAAAAAAD/////AwAAAAAAAAD//wAAAwAAAAAAAAD9/wIAAwAAAAAAAAD+/wIAAwAAAAAAAAD//wIAAwAAAAAAAAAAAAIAAwAAAAAAAAABAAIAAwAAAAAAAAABAAEAAwAAAAAAAAABAAAAAwAAAAAAAAABAP//AwAAAAAAAAABAP7/AgAAAAAAAAAAAP7/AgAAAAAAAAD///7/AgAAAAAAAAD+//7/AgAAAAAAAAD9//7/AgAAAAAAAAD9////AwAAAAAAAAD9/wAAAwAAAAAAAAD9/wEAAwAAAAAAAAD8/wIAAwAAAAAAAAD8/wEAAwAAAAAAAAD8//7/AgAAAAAAAAD8////AwAAAAAAAAD8/wAAAwAAAAAAAAD7//7/AgAAAAAAAAACAP7/AgAAAAAAAAADAP7/AgAAAAAAAAACAP//AAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAADAAIAAAAAAAAAAAADAAEAAAAAAAAAAAADAAAAAAAAAAAAAAADAP//AAAAAAAAAAA=")
 tile_set = ExtResource("1_elqb8")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Player" parent="TileMap" instance=ExtResource("2_rvslj")]
+position = Vector2(-43, 25)
