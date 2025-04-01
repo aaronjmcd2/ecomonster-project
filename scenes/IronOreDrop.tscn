@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://d34k3bh2ptavc"]
+
+[ext_resource type="Script" uid="uid://bhi7s3g00vpu6" path="res://scripts/IronOreDrop.gd" id="1_ahxx1"]
+[ext_resource type="Texture2D" uid="uid://c42bua1pm2mw4" path="res://sprites/IronOre.png" id="2_xpm41"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xm11h"]
+radius = 17.0
+
+[node name="IronOreDrop" type="Node2D" groups=["ore_drops"]]
+script = ExtResource("1_ahxx1")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_xpm41")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, -1)
+shape = SubResource("CircleShape2D_xm11h")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmu5gj4pq8apf"]
+
+[ext_resource type="Script" uid="uid://cgx45kq67jmex" path="res://scripts/CoalWorm.gd" id="1_84vng"]
+[ext_resource type="Texture2D" uid="uid://ctu7fhsgyhp5j" path="res://sprites/Monsters/CoalWorm.png" id="2_1x2w1"]
+
+[node name="FireElemental" type="CharacterBody2D"]
+script = ExtResource("1_84vng")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_1x2w1")

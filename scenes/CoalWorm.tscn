@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://diaywsr5x8gc8"]
+
+[ext_resource type="Script" uid="uid://cgx45kq67jmex" path="res://scripts/CoalWorm.gd" id="1_ehp7w"]
+[ext_resource type="Texture2D" uid="uid://ctu7fhsgyhp5j" path="res://sprites/Monsters/CoalWorm.png" id="2_fgvab"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ehp7w"]
+size = Vector2(56, 72)
+
+[node name="CoalWorm" type="CharacterBody2D"]
+script = ExtResource("1_ehp7w")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_fgvab")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-16, -4)
+shape = SubResource("RectangleShape2D_ehp7w")
