@@ -2,17 +2,17 @@ extends CharacterBody2D
 
 @onready var tile_map_layer := get_node("/root/Main/TileMap/TileMapLayer")
 
-# Adjustable properties
 @export var search_radius: int = 100
 @export var cooldown_time: float = 2.0
 @export var speed: float = 100.0
 
-# Internal states
 var target_drop: Node2D = null
 var cooldown_timer: float = 0.0
 var is_idle := true
 
-func _process(delta):
+var move_vector := Vector2.ZERO
+
+func _physics_process(delta):
 	if cooldown_timer > 0:
 		cooldown_timer -= delta
 		return
@@ -27,9 +27,10 @@ func _process(delta):
 func move_to_target(delta):
 	var target_pos = target_drop.global_position
 	var direction = (target_pos - global_position).normalized()
-	position += direction * speed * delta
+	move_vector = direction * speed
+	velocity = move_vector
+	move_and_slide()
 
-	# Check if CoalWorm reached the target
 	if global_position.distance_to(target_pos) < 5.0:
 		consume_ore_drop()
 
