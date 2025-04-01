@@ -23,3 +23,12 @@ position = Vector2(-178, -50)
 
 [node name="IronOreDrop" parent="." instance=ExtResource("3_rarhs")]
 position = Vector2(-127, 78)
+
+[node name="IronOreDrop2" parent="." instance=ExtResource("3_rarhs")]
+position = Vector2(-384, 71)
+
+[node name="IronOreDrop3" parent="." instance=ExtResource("3_rarhs")]
+position = Vector2(-172, 195)
+
+[node name="IronOreDrop4" parent="." instance=ExtResource("3_rarhs")]
+position = Vector2(-426, 263)
