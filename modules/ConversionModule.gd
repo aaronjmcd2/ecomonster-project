@@ -28,3 +28,10 @@ func get_neighbor_tiles(tile_pos: Vector2i) -> Array:
 func is_soil(tile_pos: Vector2i) -> bool:
 	var source_id = tile_map_layer.get_cell_source_id(tile_pos)
 	return source_id == 3  # Soil
+	
+func replace_tile(world_position: Vector2, from_source_id: int, to_source_id: int):
+	var tile_pos = tile_map_layer.local_to_map(world_position)
+	var current_source = tile_map_layer.get_cell_source_id(tile_pos)
+
+	if current_source == from_source_id:
+		tile_map_layer.set_cell(tile_pos, to_source_id, Vector2i(0, 0))

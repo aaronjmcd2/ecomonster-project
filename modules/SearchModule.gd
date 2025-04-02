@@ -12,3 +12,31 @@ func find_closest_ore_drop(origin: Vector2, max_distance: float) -> Node2D:
 			closest_drop = drop
 
 	return closest_drop
+
+# Finds the nearest tile with the given source_id within the search radius
+func find_nearest_tile(origin: Vector2, radius: int, source_id: int) -> Variant:
+	var tilemap = get_tree().current_scene.get_node("TileMap/TileMapLayer") # This is the actual tilemap with the TileSet
+	var layer_index = 0
+	var closest_tile: Vector2 = Vector2.ZERO
+	var closest_distance := INF
+	var found := false
+	var origin_cell = tilemap.local_to_map(origin)
+
+	for x in range(-radius, radius + 1):
+		for y in range(-radius, radius + 1):
+			var offset = Vector2i(x, y)
+			var cell = origin_cell + offset
+
+			if offset.length() > radius:
+				continue
+
+			var cell_source = tilemap.get_cell_source_id(cell)
+			if cell_source == source_id:
+				var world_pos = tilemap.map_to_local(cell)
+				var dist = origin.distance_to(world_pos)
+				if dist < closest_distance:
+					closest_distance = dist
+					closest_tile = world_pos
+					found = true
+
+	return closest_tile if found else null
