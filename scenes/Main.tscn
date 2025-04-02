@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=7 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://tiles/TileSet.tres" id="1_elqb8"]
 [ext_resource type="PackedScene" uid="uid://bweokypfxckvu" path="res://scenes/Player.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="3_rarhs"]
 [ext_resource type="PackedScene" uid="uid://diaywsr5x8gc8" path="res://scenes/CoalWorm.tscn" id="4_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://scenes/FireElemental.tscn" id="5_vcsgt"]
+[ext_resource type="PackedScene" uid="uid://b7he5tq8l7t7i" path="res://scenes/Dragon.tscn" id="6_c01mt"]
 
 [node name="Main" type="Node2D"]
 
@@ -35,3 +36,6 @@ position = Vector2(-426, 263)
 
 [node name="FireElemental" parent="." instance=ExtResource("5_vcsgt")]
 position = Vector2(-177, -16)
+
+[node name="Dragon" parent="." instance=ExtResource("6_c01mt")]
+position = Vector2(-230, -123)
