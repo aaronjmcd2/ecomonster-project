@@ -22,6 +22,7 @@ ConversionModule="*res://modules/ConversionModule.gd"
 [global_group]
 
 ore_drops=""
+monsters=""
 
 [input]
 

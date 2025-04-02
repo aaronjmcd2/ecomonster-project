@@ -8,6 +8,10 @@ var target_position = null
 var is_busy := false
 var cooldown_timer := 0.0
 
+func _ready():
+	collision_layer = 2
+	collision_mask = 1  # Collides only with player/environment
+
 func _process(delta):
 	if is_busy:
 		cooldown_timer -= delta

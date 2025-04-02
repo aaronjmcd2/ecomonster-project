@@ -12,6 +12,10 @@ var is_idle := true
 
 var move_vector := Vector2.ZERO
 
+func _ready():
+	collision_layer = 2
+	collision_mask = 1  # Doesn't collide with player
+
 func _physics_process(delta):
 	if cooldown_timer > 0:
 		cooldown_timer -= delta

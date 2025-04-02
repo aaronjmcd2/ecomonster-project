@@ -6,7 +6,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ehp7w"]
 size = Vector2(56, 72)
 
-[node name="CoalWorm" type="CharacterBody2D"]
+[node name="CoalWorm" type="CharacterBody2D" groups=["monsters"]]
+collision_layer = 2
 script = ExtResource("1_ehp7w")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
