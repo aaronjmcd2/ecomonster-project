@@ -70,3 +70,15 @@ func _move_toward(target: Vector2):
 	var direction = (target - global_position).normalized()
 	velocity = direction * move_speed
 	move_and_slide()
+	
+func _input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		print("Dragon clicked!")
+
+		var info = {
+			"name": "Dragon",
+			"efficiency": int(float(lava_storage) / float(max_lava_storage) * 100.0),
+			"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec" % [lava_storage, max_lava_storage, ore_drop_count, cooldown_time]
+		}
+
+		MonsterInfo.show_info(info, event.position)

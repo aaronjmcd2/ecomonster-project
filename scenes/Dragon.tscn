@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b7he5tq8l7t7i"]
 
-[ext_resource type="Script" uid="uid://d2fbxnvdgoy1v" path="res://Dragon.gd" id="1_yknt0"]
+[ext_resource type="Script" uid="uid://d2fbxnvdgoy1v" path="res://scripts/Dragon.gd" id="1_yknt0"]
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="2_2awct"]
 [ext_resource type="Texture2D" uid="uid://c7s8yh63ldkjh" path="res://sprites/Monsters/Dragon.png" id="2_q2k8u"]
 
@@ -8,6 +8,7 @@
 size = Vector2(102, 35)
 
 [node name="Dragon" type="CharacterBody2D" groups=["monsters"]]
+input_pickable = true
 script = ExtResource("1_yknt0")
 ore_drop_scene = ExtResource("2_2awct")
 

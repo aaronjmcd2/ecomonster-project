@@ -54,3 +54,15 @@ func move_toward_target(delta):
 func convert_coal_to_lava():
 	ConversionModule.replace_tile(target_position, 0, 2) # coal to lava
 	target_position = null
+	
+func _input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		print("Fire Elemental clicked!")
+
+		var info = {
+			"name": "Fire Elemental",
+			"efficiency": 100 if is_busy else 0,  # just a placeholder metric for now
+			"stats": "Currently Targeting: %s\nCooldown: %.1f seconds" % [str(target_position), conversion_cooldown]
+		}
+
+		MonsterInfo.show_info(info, event.position)

@@ -1,9 +1,9 @@
 extends CanvasLayer
 
 @onready var panel = $Panel
-@onready var label_name = $Panel/Label_Name
-@onready var label_efficiency = $Panel/Label_Efficiency
-@onready var label_stats = $Panel/Label_Stats
+@onready var label_name = $Panel/VBoxContainer/Label_Name
+@onready var label_efficiency = $Panel/VBoxContainer/Label_Efficiency
+@onready var label_stats = $Panel/VBoxContainer/Label_Stats
 
 var is_showing := false
 
@@ -12,7 +12,7 @@ func show_info(monster_data: Dictionary, screen_position: Vector2):
 	label_efficiency.text = "Efficiency: %d%%" % monster_data.get("efficiency", 0)
 	label_stats.text = monster_data.get("stats", "No data available.")
 
-	panel.global_position = screen_position + Vector2(10, -10) # slight offset so it doesn't cover the monster
+	panel.global_position = screen_position + Vector2(200, -100) # slight offset so it doesn't cover the monster
 	is_showing = true
 	visible = true
 
