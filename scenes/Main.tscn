@@ -1,14 +1,17 @@
-[gd_scene load_steps=8 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=10 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://tiles/TileSet.tres" id="1_elqb8"]
+[ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://scenes/main.gd" id="1_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://bweokypfxckvu" path="res://scenes/Player.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="3_rarhs"]
 [ext_resource type="PackedScene" uid="uid://diaywsr5x8gc8" path="res://scenes/CoalWorm.tscn" id="4_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://scenes/FireElemental.tscn" id="5_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://b7he5tq8l7t7i" path="res://scenes/Dragon.tscn" id="6_c01mt"]
 [ext_resource type="PackedScene" uid="uid://ccfcrl5wxjvor" path="res://scenes/MonsterInfoPopup.tscn" id="7_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://bnn0vxiod4mwd" path="res://scenes/InventorySlot.tscn" id="8_jlsqs"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_q8u5g")
 
 [node name="TileMap" type="TileMap" parent="."]
 format = 2
@@ -42,3 +45,9 @@ position = Vector2(-177, -16)
 position = Vector2(-230, -123)
 
 [node name="MonsterInfoPopup" parent="." instance=ExtResource("7_nxtc6")]
+
+[node name="InventorySlot" parent="." instance=ExtResource("8_jlsqs")]
+offset_left = 29.0
+offset_top = -164.0
+offset_right = 93.0
+offset_bottom = -100.0
