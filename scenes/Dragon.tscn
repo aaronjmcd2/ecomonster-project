@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://b7he5tq8l7t7i"]
+[gd_scene load_steps=6 format=3 uid="uid://b7he5tq8l7t7i"]
 
 [ext_resource type="Script" uid="uid://d2fbxnvdgoy1v" path="res://scripts/Dragon.gd" id="1_yknt0"]
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="2_2awct"]
 [ext_resource type="Texture2D" uid="uid://c7s8yh63ldkjh" path="res://sprites/Monsters/Dragon.png" id="2_q2k8u"]
+[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="4_2awct"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2awct"]
 size = Vector2(102, 35)
@@ -18,3 +19,6 @@ texture = ExtResource("2_q2k8u")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2, -7.5)
 shape = SubResource("RectangleShape2D_2awct")
+
+[node name="SearchRadiusDisplay" type="Node2D" parent="."]
+script = ExtResource("4_2awct")

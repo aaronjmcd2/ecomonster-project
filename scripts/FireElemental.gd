@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@onready var search_display := $SearchRadiusDisplay  # ← Add this line
+
 @export var search_radius := 10
 @export var move_speed := 60.0
 @export var conversion_cooldown := 2.0
@@ -10,7 +12,11 @@ var cooldown_timer := 0.0
 
 func _ready():
 	collision_layer = 2
-	collision_mask = 1  # Collides only with player/environment
+	collision_mask = 1
+
+	# ← Set visual search radius in pixels (tiles × 32)
+	if search_display:
+		search_display.set_radius(search_radius * 32)
 
 func _process(delta):
 	if is_busy:
@@ -54,15 +60,16 @@ func move_toward_target(delta):
 func convert_coal_to_lava():
 	ConversionModule.replace_tile(target_position, 0, 2) # coal to lava
 	target_position = null
-	
+
 func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		print("Fire Elemental clicked!")
 
 		var info = {
 			"name": "Fire Elemental",
-			"efficiency": 100 if is_busy else 0,  # just a placeholder metric for now
-			"stats": "Currently Targeting: %s\nCooldown: %.1f seconds" % [str(target_position), conversion_cooldown]
+			"efficiency": 100 if is_busy else 0,
+			"stats": "Currently Targeting: %s\nCooldown: %.1f seconds" % [str(target_position), conversion_cooldown],
+			"node": self  # ← Add this line to allow radius control
 		}
 
 		MonsterInfo.show_info(info, event.position)

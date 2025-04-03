@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var tile_map_layer = get_node("/root/Main/TileMap/TileMapLayer")
+@onready var search_display := $SearchRadiusDisplay  # ← Added
 
 @export var search_radius: int = 10
 @export var max_lava_storage: int = 2
@@ -16,6 +17,10 @@ var is_cooling_down: bool = false
 
 var wander_timer: float = 0.0
 var wander_target: Vector2 = Vector2.ZERO
+
+func _ready():
+	if search_display:
+		search_display.set_radius(search_radius * 32)  # ← Converts tile-based radius to pixels
 
 func _process(delta):
 	if is_cooling_down:
@@ -70,7 +75,7 @@ func _move_toward(target: Vector2):
 	var direction = (target - global_position).normalized()
 	velocity = direction * move_speed
 	move_and_slide()
-	
+
 func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		print("Dragon clicked!")
@@ -78,7 +83,8 @@ func _input_event(viewport, event, shape_idx):
 		var info = {
 			"name": "Dragon",
 			"efficiency": int(float(lava_storage) / float(max_lava_storage) * 100.0),
-			"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec" % [lava_storage, max_lava_storage, ore_drop_count, cooldown_time]
+			"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec" % [lava_storage, max_lava_storage, ore_drop_count, cooldown_time],
+			"node": self  # ← So the popup can access the radius node
 		}
 
 		MonsterInfo.show_info(info, event.position)

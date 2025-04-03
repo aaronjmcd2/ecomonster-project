@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dmu5gj4pq8apf"]
+[gd_scene load_steps=5 format=3 uid="uid://dmu5gj4pq8apf"]
 
 [ext_resource type="Script" uid="uid://c8pam7rqh754n" path="res://scripts/FireElemental.gd" id="1_84vng"]
 [ext_resource type="Texture2D" uid="uid://c2efpqjg6600s" path="res://sprites/Monsters/FireElemental.png" id="2_1x2w1"]
+[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="3_1x2w1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4efj1"]
 radius = 18.0278
@@ -17,3 +18,6 @@ texture = ExtResource("2_1x2w1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_4efj1")
+
+[node name="SearchRadiusDisplay" type="Node2D" parent="."]
+script = ExtResource("3_1x2w1")

@@ -1,8 +1,9 @@
 extends CharacterBody2D
 
 @onready var tile_map_layer := get_node("/root/Main/TileMap/TileMapLayer")
+@onready var search_display := $SearchRadiusDisplay
 
-@export var search_radius: int = 100
+@export var search_radius: int = 10
 @export var cooldown_time: float = 2.0
 @export var speed: float = 100.0
 
@@ -19,14 +20,19 @@ func _input_event(viewport, event, shape_idx):
 		var info = {
 			"name": "Coal Worm",
 			"efficiency": 75,
-			"stats": "Converted 12 ores\nCooldown: %.1f seconds" % cooldown_time
+			"stats": "Converted 12 ores\nCooldown: %.1f seconds" % cooldown_time,
+			"node": self  # This is important! It allows the popup to control our radius display
 		}
 
 		MonsterInfo.show_info(info, event.position)
 
 func _ready():
 	collision_layer = 2
-	collision_mask = 1  # Doesn't collide with player
+	collision_mask = 1
+
+	# Set the visual radius size in pixels
+	if search_display:
+		search_display.set_radius(search_radius * 64)  # tile size conversion
 
 func _physics_process(delta):
 	if cooldown_timer > 0:
@@ -52,7 +58,7 @@ func move_to_target(delta):
 
 func find_closest_ore_drop() -> Node2D:
 	var closest_drop = null
-	var closest_dist = search_radius * 64  # Max distance in pixels
+	var closest_dist = search_radius * 64
 
 	for drop in get_tree().get_nodes_in_group("ore_drops"):
 		var dist = global_position.distance_to(drop.global_position)
