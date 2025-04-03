@@ -1,0 +1,61 @@
+EcoMonster Guide: Adding Search Radius Display to a New Monster
+=======================================================
+
+This is your step-by-step ritual for granting a new creature the SearchRadiusDisplay—
+so its awareness glows when you call.
+
+1. Add the `SearchRadiusDisplay` Node to the Monster Scene
+-----------------------------------------------------------
+- Open your monster scene (e.g. MyMonster.tscn)
+- Add a child node of type `Node2D`
+- Rename it to: `SearchRadiusDisplay`
+- Attach the script: `res://SearchRadiusDisplay.gd`
+- Position it at: `(0, 0)`
+
+
+2. Add This to Your Monster Script
+----------------------------------
+At the top of the script:
+	@onready var search_display := $SearchRadiusDisplay
+
+In `_ready()`:
+	func _ready():
+		if search_display:
+			search_display.set_radius(search_radius * 32)  # If search_radius is in tiles
+
+
+3. Add Monster Click Logic
+---------------------------
+In `_input_event()`:
+	func _input_event(viewport, event, shape_idx):
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			var info = {
+				"name": "Your Monster Name",
+				"efficiency": 0,  # Or your own logic
+				"stats": "Add stats here",
+				"node": self  # ← Required for popup to control radius
+			}
+			MonsterInfo.show_info(info, event.position)
+
+
+4. How the System Works
+------------------------
+Component               | Role
+------------------------|--------------------------------------------
+SearchRadiusDisplay     | Draws the circle (attached to the monster)
+MonsterInfoPopup        | Calls .show_radius() / .hide_radius()
+Monster’s script        | Sets radius and passes itself to popup
+
+
+5. Optional Template
+---------------------
+When you're ready, you can make a reusable Monster Base Scene with:
+- `SearchRadiusDisplay` pre-added
+- Click logic pre-written
+
+Just duplicate it to create new creatures easily.
+
+
+That’s It.
+----------
+You now hold the ritual. When you're ready to give a new monster the gift of awareness, this is the way.
