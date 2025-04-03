@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 
 SearchModule="*res://modules/SearchModule.gd"
 ConversionModule="*res://modules/ConversionModule.gd"
+MonsterInfo="*res://scenes/MonsterInfoPopup.tscn"
 
 [global_group]
 

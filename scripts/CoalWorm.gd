@@ -12,6 +12,18 @@ var is_idle := true
 
 var move_vector := Vector2.ZERO
 
+func _input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		print("Coal Worm clicked!")
+
+		var info = {
+			"name": "Coal Worm",
+			"efficiency": 75,
+			"stats": "Converted 12 ores\nCooldown: %.1f seconds" % cooldown_time
+		}
+
+		MonsterInfo.show_info(info, event.position)
+
 func _ready():
 	collision_layer = 2
 	collision_mask = 1  # Doesn't collide with player

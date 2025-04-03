@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccfcrl5wxjvor"]
+
+[ext_resource type="Script" uid="uid://cx85rxy22h213" path="res://scripts/MonsterInfoPopup.gd" id="1_3kvvm"]
+
+[node name="MonsterInfoPopup" type="CanvasLayer"]
+script = ExtResource("1_3kvvm")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label_Name" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Label_Efficiency" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Label_Stats" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
