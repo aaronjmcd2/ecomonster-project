@@ -27,3 +27,6 @@ func _unhandled_input(event):
 	if event.is_action_pressed("inventory_toggle"):
 		var container = $UILayer/InventoryUI/Background/MainContainer
 		container.visible = not container.visible
+	
+	if event is InputEventMouseButton:
+		print("📍 Mouse button:", event.button_index, " at ", event.position)

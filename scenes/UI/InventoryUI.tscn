@@ -89,5 +89,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="InventoryGrid" type="GridContainer" parent="Background/MainContainer"]
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
 columns = 8

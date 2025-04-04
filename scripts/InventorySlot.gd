@@ -1,11 +1,14 @@
 class_name InventorySlot
-extends Panel
+extends Control
 
 var item_data: Dictionary = {}
-var dragging := false
 
 @onready var icon = $ItemIcon
 @onready var count_label = $ItemCount
+
+func _ready():
+	# Nothing needed here unless you want to add test items manually
+	pass
 
 func set_item(item: Dictionary):
 	item_data = item
@@ -28,31 +31,43 @@ func set_item(item: Dictionary):
 func get_item() -> Dictionary:
 	return item_data
 
-func get_drag_data(position):
+func _get_drag_data(at_position: Vector2) -> Variant:
 	if item_data.is_empty():
-		print("🛑 Item data empty!")
+		print("🔸 _get_drag_data: No item.")
 		return null
 
-	print("🟢 get_drag_data() called on:", item_data)
+	print("🟢 _get_drag_data called on:", item_data)
 
-	var drag_preview = TextureRect.new()
-	drag_preview.texture = icon.texture
-	drag_preview.custom_minimum_size = Vector2(32, 32)
-	set_drag_preview(drag_preview)
+	# Create a wrapper Control node
+	var preview_wrapper := Control.new()
+	preview_wrapper.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	preview_wrapper.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+
+	# Create the actual icon preview
+	var preview := TextureRect.new()
+	preview.texture = icon.texture
+	preview.custom_minimum_size = Vector2(32, 32)
+	preview.position = -preview.custom_minimum_size / 2 + Vector2(-8, -8)
+
+	preview_wrapper.add_child(preview)
+
+	set_drag_preview(preview_wrapper)
 
 	return {
 		"item": item_data,
 		"source": self
 	}
 
-func can_drop_data(position, data):
+
+
+func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	return data.has("item") and data.has("source")
 
-func drop_data(position, data):
-	var incoming_item = data["item"]
-	var source_slot = data["source"]
+func _drop_data(at_position: Vector2, data: Variant) -> void:
+	print("🟣 Dropping data:", data)
+	var incoming = data["item"]
+	var source = data["source"]
 
-	# Simple swap for now
 	var temp = item_data
-	set_item(incoming_item)
-	source_slot.set_item(temp)
+	set_item(incoming)
+	source.set_item(temp)
