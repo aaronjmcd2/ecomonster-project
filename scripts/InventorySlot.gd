@@ -1,4 +1,5 @@
-extends Control
+class_name InventorySlot
+extends Panel
 
 var item_data: Dictionary = {}
 
@@ -9,13 +10,13 @@ func set_item(item: Dictionary):
 	item_data = item
 	if item:
 		var path := "res://sprites/%s.png" % item.name
-		print("Trying to load texture from path: ", path)
 		if ResourceLoader.exists(path):
-			print("✓ Texture exists!")
 			icon.texture = load(path)
 		else:
-			print("✗ Texture path not found!")
 			icon.texture = null
+		count_label.text = str(item.count)
+		icon.visible = true
+		count_label.visible = item.count > 1
 	else:
 		item_data = {}
 		icon.texture = null

@@ -1,0 +1,90 @@
+[gd_scene load_steps=3 format=3 uid="uid://dskqqlloghbas"]
+
+[ext_resource type="PackedScene" uid="uid://bnn0vxiod4mwd" path="res://scenes/InventorySlot.tscn" id="1_5entl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mxytl"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.310617, 0.310617, 0.310617, 1)
+
+[node name="InventoryUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HotbarWrapper" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -64.0
+offset_right = 256.0
+
+[node name="Hotbar" type="HBoxContainer" parent="HotbarWrapper"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="InventorySlot" parent="HotbarWrapper/Hotbar" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="HotbarWrapper/Hotbar" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="HotbarWrapper/Hotbar" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="HotbarWrapper/Hotbar" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="HotbarWrapper/Hotbar" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="HotbarWrapper/Hotbar" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot7" parent="HotbarWrapper/Hotbar" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot8" parent="HotbarWrapper/Hotbar" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mxytl")
+
+[node name="MainContainer" type="VBoxContainer" parent="Background"]
+visible = false
+layout_mode = 0
+offset_right = 268.0
+offset_bottom = 64.0
+
+[node name="InventoryGrid" type="GridContainer" parent="Background/MainContainer"]
+layout_mode = 2
+columns = 8
+
+[node name="InventorySlot" parent="Background/MainContainer/InventoryGrid" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="Background/MainContainer/InventoryGrid" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="Background/MainContainer/InventoryGrid" instance=ExtResource("1_5entl")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="Background/MainContainer/InventoryGrid" instance=ExtResource("1_5entl")]
+layout_mode = 2
