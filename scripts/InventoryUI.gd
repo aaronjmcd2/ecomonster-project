@@ -1,6 +1,6 @@
 extends Control
 
-@onready var inventory_grid := $Background/MainContainer/InventoryGrid
+@onready var inventory_grid := $MainContainer/InventoryGrid
 @export var inventory_slot_scene: PackedScene
 
 const NUM_COLUMNS := 8
