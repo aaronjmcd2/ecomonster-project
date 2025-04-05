@@ -47,6 +47,9 @@ func _physics_process(delta):
 		move_to_target(delta)
 
 func move_to_target(delta):
+	if target_drop == null or not is_instance_valid(target_drop):
+		reset_worm()
+		return
 	var target_pos = target_drop.global_position
 	var direction = (target_pos - global_position).normalized()
 	move_vector = direction * speed
@@ -73,6 +76,11 @@ func consume_ore_drop():
 		convert_tile_beneath()
 		target_drop.consume()
 		reset_worm()
+	
+	if target_drop and is_instance_valid(target_drop):
+		convert_tile_beneath()
+		target_drop.consume()
+	reset_worm()
 
 func convert_tile_beneath():
 	var tile_pos = tile_map_layer.local_to_map(global_position)
