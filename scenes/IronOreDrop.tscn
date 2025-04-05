@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_xm11h"]
 radius = 17.0
 
-[node name="IronOreDrop" type="Node2D" groups=["ore_drops"]]
+[node name="IronOreDrop" type="Area2D" groups=["ore_drops"]]
 script = ExtResource("1_ahxx1")
 
 [node name="Sprite" type="Sprite2D" parent="."]

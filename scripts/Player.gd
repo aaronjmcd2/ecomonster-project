@@ -1,6 +1,8 @@
 extends CharacterBody2D
 
 @export var speed: float = 200.0
+@export var pickup_radius := 800.0
+
 
 var velocity_vector := Vector2.ZERO
 @onready var sprite := $Sprite
@@ -65,8 +67,34 @@ func zoom_camera(amount: float):
 	camera.zoom = new_zoom
 
 func _unhandled_input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			zoom_camera(zoom_step)
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			zoom_camera(-zoom_step)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		# Convert screen coords to world coords
+		var world_pos = get_canvas_transform().affine_inverse() * event.position
+		try_pickup_item(world_pos)
+		
+func try_pickup_item(world_pos: Vector2):
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = world_pos
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
+
+	var results = get_world_2d().direct_space_state.intersect_point(query)
+
+	for result in results:
+		var node = result.get("collider")
+		if node and node.is_in_group("ore_drops"):
+			if global_position.distance_to(node.global_position) <= pickup_radius:
+				print("✨ Picked up:", node.name)
+
+				var item_data = {
+					"name": "IronOre",
+					"count": 1
+				}
+
+				var ui = get_node("/root/Main/UILayer/InventoryUI")
+				print("🎯 Attempting to add:", item_data)
+
+				ui.add_item_to_inventory(item_data)
+
+				node.queue_free()
+				break

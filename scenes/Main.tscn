@@ -24,18 +24,6 @@ tile_set = ExtResource("1_elqb8")
 z_index = 10
 position = Vector2(-406, -94)
 
-[node name="IronOreDrop" parent="." instance=ExtResource("3_rarhs")]
-position = Vector2(-127, 78)
-
-[node name="IronOreDrop2" parent="." instance=ExtResource("3_rarhs")]
-position = Vector2(-384, 71)
-
-[node name="IronOreDrop3" parent="." instance=ExtResource("3_rarhs")]
-position = Vector2(-172, 195)
-
-[node name="IronOreDrop4" parent="." instance=ExtResource("3_rarhs")]
-position = Vector2(-426, 263)
-
 [node name="CoalWorm" parent="." instance=ExtResource("4_vcsgt")]
 
 [node name="FireElemental" parent="." instance=ExtResource("5_vcsgt")]
@@ -49,3 +37,18 @@ position = Vector2(-230, -123)
 [node name="UILayer" type="CanvasLayer" parent="."]
 
 [node name="InventoryUI" parent="UILayer" instance=ExtResource("9_q8u5g")]
+
+[node name="IronOreDrop" parent="." instance=ExtResource("3_rarhs")]
+position = Vector2(-497, 5)
+
+[node name="IronOreDrop2" parent="." instance=ExtResource("3_rarhs")]
+position = Vector2(-185, 102)
+
+[node name="IronOreDrop3" parent="." instance=ExtResource("3_rarhs")]
+position = Vector2(-406, 86)
+
+[node name="IronOreDrop4" parent="." instance=ExtResource("3_rarhs")]
+position = Vector2(-272, 164)
+
+[node name="IronOreDrop5" parent="." instance=ExtResource("3_rarhs")]
+position = Vector2(-528, -173)
