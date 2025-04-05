@@ -1,0 +1,79 @@
+
+EcoMonster Inventory System Summary (as of last working state)
+
+INVENTORY STRUCTURE:
+--------------------
+- The inventory system consists of:
+  • A hotbar with 8 visible slots
+  • A full inventory grid with 8 columns x 7 rows (56 slots)
+  • Both are child containers of the InventoryUI.tscn scene
+
+NODE TREE:
+----------
+Main (Node)
+├── UILayer (CanvasLayer)
+│   └── InventoryUI (Control)
+│       ├── Background (Panel) – visual backdrop, mouse filter: Ignore
+│       ├── MainContainer (VBoxContainer)
+│       │   └── InventoryGrid (GridContainer) – contains 56 InventorySlot nodes (created via code)
+│       └── HotbarWrapper (MarginContainer)
+│           └── Hotbar (HBoxContainer) – contains 8 InventorySlot nodes (instanced via code)
+
+INVENTORYSLOT:
+--------------
+- Scene: InventorySlot.tscn
+- Root Node: Control
+- Children:
+  • TextureRect (named ItemIcon)
+  • Label (named ItemCount)
+- Script: InventorySlot.gd
+  • Handles displaying items (icon + count)
+  • Handles drag-and-drop using _get_drag_data(), _can_drop_data(), _drop_data()
+  • (Previously supported right-click dropping; feature temporarily removed)
+
+PLAYER:
+-------
+- Player.gd contains:
+  • Movement + camera zooming
+  • _unhandled_input captures left clicks for item pickup
+  • try_pickup_item(world_pos): finds nearby ore_drops and adds them to the inventory
+- Pickup logic checks distance, removes the ore node, and adds the item to InventoryUI
+
+INVENTORYUI:
+------------
+- Scene: InventoryUI.tscn
+- Script: InventoryUI.gd
+  • Creates inventory slots at runtime
+  • Manages add_item_to_inventory(item_dict) logic:
+     1. Try to stack in hotbar
+     2. Place in empty hotbar slot
+     3. Stack in inventory
+     4. Place in empty inventory slot
+     5. If no room, print error
+  • Handles visibility toggle when pressing Q
+
+ITEMS:
+------
+- Ore items (like IronOreDrop) are scene-based Area2D nodes with collision and added to group "ore_drops"
+- Items can be clicked by player for manual pickup
+
+CURRENT STATUS:
+---------------
+✔ Inventory grid shows and functions correctly
+✔ Items can be clicked from the world and added to inventory
+✔ Drag-and-drop between slots works well
+✘ Right-click to drop item into world is not functioning (latest attempts disabled drag-and-drop)
+✔ Monster UI works again after resetting background mouse filters
+
+
+
+INVENTORYDATA.GD:
+-----------------
+- Script: InventoryData.gd
+- Purpose: Acts as a global singleton (Autoload) to allow access to inventory from anywhere
+- Contains function:
+    func add_item(item: Dictionary):
+        Calls InventoryUI.add_item_to_inventory(item)
+- Usage:
+    Called from the player or world when items are picked up.
+    Allows item pickup and inventory logic to stay decoupled from UI structure.
