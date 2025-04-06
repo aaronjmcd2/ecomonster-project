@@ -54,6 +54,13 @@ theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
 columns = 8
 
+[node name="ControlHintLabel" type="Label" parent="MainContainer"]
+layout_mode = 2
+text = "Left Click: Move item             |             Right Click: Drop item
+Ctrl + Left Click: Split 1          |      Ctrl + Right Click: Drop all
+"
+horizontal_alignment = 1
+
 [node name="HotbarWrapper" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 7
