@@ -39,3 +39,25 @@ func move_item(from_row: int, from_col: int, to_row: int, to_col: int):
 	elif from_item.name == to_item.name:
 		to_item.count += from_item.count
 		inventory[from_row][from_col] = null
+
+func drop_item_from_inventory(item: Dictionary, slot_ref: Node) -> void:
+	var player = get_tree().get_root().get_node("Main/Player")
+	if not player:
+		print("❌ Player not found")
+		return
+
+	var drop_pos = player.global_position + Vector2(16, 0)  # Drop slightly to the right
+
+	# Only handle IronOre for now
+	if item.get("name") == "IronOre":
+		var drop_scene = preload("res://scenes/IronOreDrop.tscn")
+		var drop_instance = drop_scene.instantiate()
+		drop_instance.position = drop_pos
+		get_tree().get_root().add_child(drop_instance)
+
+		# Update item count in slot
+		item["count"] -= 1
+		if item["count"] <= 0:
+			slot_ref.clear_slot()
+		else:
+			slot_ref.set_item(item)

@@ -58,8 +58,6 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 		"source": self
 	}
 
-
-
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	return data.has("item") and data.has("source")
 
@@ -71,3 +69,21 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 	var temp = item_data
 	set_item(incoming)
 	source.set_item(temp)
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			var item = get_item()
+			if item and not item.is_empty():
+				InventoryDataScript.drop_item_from_inventory(item, self)
+
+func update_count(new_count: int) -> void:
+	item_data["count"] = new_count
+	$ItemCount.text = str(new_count)
+
+func clear_slot() -> void:
+	item_data = {}
+	icon.texture = null
+	count_label.text = ""
+	icon.visible = false
+	count_label.visible = false
