@@ -1,0 +1,85 @@
+EcoMonster Inventory System Summary (as of April 6, 2025)
+
+INVENTORY STRUCTURE:
+--------------------
+- The inventory system consists of:
+  • A hotbar with 8 visible slots
+  • A full inventory grid with 8 columns x 7 rows (56 slots)
+  • A hotbar selector frame that moves with keyboard input (X/C)
+  • Both hotbar and grid are child containers of the InventoryUI.tscn scene
+
+NODE TREE:
+----------
+Main (Node)
+├── UILayer (CanvasLayer)
+│   └── InventoryUI (Control)
+│       ├── Background (Panel) – visual backdrop, mouse filter: Ignore
+│       ├── MainContainer (VBoxContainer)
+│       │   └── InventoryGrid (GridContainer) – contains 56 InventorySlot nodes (created via code)
+│       ├── HotbarWrapper (MarginContainer)
+│       │   └── Hotbar (HBoxContainer) – contains 8 InventorySlot nodes (instanced via code)
+│       └── HotbarSelector (Panel) – styled border that highlights the selected hotbar slot
+
+INVENTORYSLOT:
+--------------
+- Scene: InventorySlot.tscn
+- Root Node: Control
+- Children:
+  • TextureRect (named ItemIcon)
+  • Label (named ItemCount)
+- Script: InventorySlot.gd
+  • Displays item icon and count
+  • Drag-and-drop support:
+      - Left click drag: moves entire stack
+      - Ctrl + left click drag: splits stack (drags one item)
+      - Stack merging between slots
+      - Swapping if item types are different
+  • Right click:
+      - Ctrl + right click: drops entire stack into the world at player’s feet
+      - Right click: drops one item from stack (if Ctrl is held)
+  • Uses InventoryDataScript.drop_item_from_inventory()
+
+PLAYER:
+-------
+- Player.gd contains:
+  • Movement + camera zooming
+  • _unhandled_input handles item pickup (left click) and hotbar scrolling (X/C)
+  • try_pickup_item(world_pos): picks up nearby ore drops and adds them to the inventory
+  • Prints currently selected hotbar item whenever the selector moves
+
+INVENTORYUI:
+------------
+- Scene: InventoryUI.tscn
+- Script: InventoryUI.gd
+  • Populates inventory grid and hotbar with InventorySlot instances
+  • add_item_to_inventory(item_dict):
+     1. Try to stack in hotbar
+     2. Place in empty hotbar slot
+     3. Stack in inventory
+     4. Place in empty inventory slot
+     5. If no room, print error
+  • update_hotbar_selector(): moves HotbarSelector to align with selected slot
+  • get_selected_hotbar_item(): returns the item Dictionary in the selected hotbar slot
+
+ITEMS:
+------
+- Items (like IronOreDrop) are Area2D nodes with collision and grouped as "ore_drops"
+- Clicking them (within range) allows player to manually pick them up
+- Items dropped from inventory use a count and scene reference
+
+HOTBAR SELECTOR:
+----------------
+- Keyboard-controlled (X = left, C = right), wraps around from 0–7
+- Highlights current slot with a white border frame (Panel styled with StyleBoxFlat)
+- Selector moves using global position of the target InventorySlot
+- Selected slot contents can be read by player via get_selected_hotbar_item()
+
+INVENTORYDATA.GD (Autoload):
+----------------------------
+- Acts as a global inventory manager
+- Contains:
+    • var hotbar_selected_index – tracks selected hotbar slot
+    • const HOTBAR_SIZE = 8
+    • func add_item(item: Dictionary)
+    • func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stack: bool)
+- Keeps UI and world interactions loosely coupled
