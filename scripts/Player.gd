@@ -72,7 +72,7 @@ func _unhandled_input(event):
 		var world_pos = get_canvas_transform().affine_inverse() * event.position
 		try_pickup_item(world_pos)
 		
-func try_pickup_item(world_pos: Vector2):
+func try_pickup_item(world_pos: Vector2) -> void:
 	var query = PhysicsPointQueryParameters2D.new()
 	query.position = world_pos
 	query.collide_with_areas = true
@@ -86,10 +86,13 @@ func try_pickup_item(world_pos: Vector2):
 			if global_position.distance_to(node.global_position) <= pickup_radius:
 				print("✨ Picked up:", node.name)
 
+				var drop_count = node.count  # Trust that it's there
+
 				var item_data = {
 					"name": "IronOre",
-					"count": 1
+					"count": drop_count
 				}
+
 
 				var ui = get_node("/root/Main/UILayer/InventoryUI")
 				print("🎯 Attempting to add:", item_data)

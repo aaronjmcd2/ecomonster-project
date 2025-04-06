@@ -75,7 +75,8 @@ func _gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			var item = get_item()
 			if item and not item.is_empty():
-				InventoryDataScript.drop_item_from_inventory(item, self)
+				var drop_entire_stack := Input.is_key_pressed(KEY_CTRL)
+				InventoryDataScript.drop_item_from_inventory(item, self, drop_entire_stack)
 
 func update_count(new_count: int) -> void:
 	item_data["count"] = new_count
