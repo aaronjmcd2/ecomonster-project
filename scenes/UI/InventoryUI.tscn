@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dskqqlloghbas"]
+[gd_scene load_steps=5 format=3 uid="uid://dskqqlloghbas"]
 
 [ext_resource type="PackedScene" uid="uid://bnn0vxiod4mwd" path="res://scenes/InventorySlot.tscn" id="1_5entl"]
 [ext_resource type="Script" uid="uid://cskpkyl2n71sq" path="res://scripts/InventoryUI.gd" id="1_31fix"]
@@ -10,6 +10,14 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.310617, 0.310617, 0.310617, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_31fix"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
 
 [node name="InventoryUI" type="Control"]
 layout_mode = 3
@@ -79,3 +87,12 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="HotbarSelector" type="Panel" parent="."]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+offset_left = 320.0
+offset_top = 584.0
+offset_right = 384.0
+offset_bottom = 648.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_31fix")

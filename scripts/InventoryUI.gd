@@ -62,3 +62,23 @@ func add_item_to_inventory(item: Dictionary):
 			return
 
 	print("❌ No room for item:", item)
+	
+func update_hotbar_selector():
+	var hotbar = $HotbarWrapper/Hotbar
+	var selector = $"HotbarSelector"  # Adjust path if needed
+
+	var index = InventoryDataScript.hotbar_selected_index
+	if index >= 0 and index < hotbar.get_child_count():
+		var target_slot = hotbar.get_child(index)
+		selector.global_position = target_slot.global_position
+
+func get_selected_hotbar_item() -> Dictionary:
+	var hotbar = $HotbarWrapper/Hotbar
+	var index = InventoryDataScript.hotbar_selected_index
+
+	if index >= 0 and index < hotbar.get_child_count():
+		var slot = hotbar.get_child(index)
+		if slot is InventorySlot:
+			return slot.get_item()
+
+	return {}  # Return empty dictionary if invalid

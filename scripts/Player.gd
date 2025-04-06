@@ -68,9 +68,36 @@ func zoom_camera(amount: float):
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		# Convert screen coords to world coords
 		var world_pos = get_canvas_transform().affine_inverse() * event.position
 		try_pickup_item(world_pos)
+
+	if event.is_action_pressed("hotbar_scroll_left"):
+		InventoryDataScript.hotbar_selected_index -= 1
+		if InventoryDataScript.hotbar_selected_index < 0:
+			InventoryDataScript.hotbar_selected_index = InventoryDataScript.HOTBAR_SIZE - 1
+
+		get_node("/root/Main/UILayer/InventoryUI").update_hotbar_selector()
+
+		var selected_item = get_node("/root/Main/UILayer/InventoryUI").get_selected_hotbar_item()
+		if not selected_item.is_empty():
+			print("🔘 Selected Hotbar Item:", selected_item)
+		else:
+			print("⚪ Hotbar slot is empty.")
+
+	elif event.is_action_pressed("hotbar_scroll_right"):
+		InventoryDataScript.hotbar_selected_index += 1
+		if InventoryDataScript.hotbar_selected_index >= InventoryDataScript.HOTBAR_SIZE:
+			InventoryDataScript.hotbar_selected_index = 0
+
+		get_node("/root/Main/UILayer/InventoryUI").update_hotbar_selector()
+
+		var selected_item = get_node("/root/Main/UILayer/InventoryUI").get_selected_hotbar_item()
+		if not selected_item.is_empty():
+			print("🔘 Selected Hotbar Item:", selected_item)
+		else:
+			print("⚪ Hotbar slot is empty.")
+
+
 		
 func try_pickup_item(world_pos: Vector2) -> void:
 	var query = PhysicsPointQueryParameters2D.new()
