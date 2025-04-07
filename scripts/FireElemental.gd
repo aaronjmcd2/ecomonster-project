@@ -4,7 +4,7 @@ extends CharacterBody2D
 
 @export var search_radius := 10
 @export var move_speed := 60.0
-@export var conversion_cooldown := 2.0
+@export var conversion_cooldown := 5
 
 var target_position = null
 var is_busy := false

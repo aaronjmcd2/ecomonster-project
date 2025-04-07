@@ -4,10 +4,10 @@ extends CharacterBody2D
 @onready var search_display := $SearchRadiusDisplay  # ← Added
 
 @export var search_radius: int = 10
-@export var max_lava_storage: int = 2
-@export var ore_drop_count: int = 3
+@export var max_lava_storage: int = 8
+@export var ore_drop_count: int = 2
 @export var move_speed: float = 50.0
-@export var cooldown_time: float = 3.0
+@export var cooldown_time: float = 10
 @export var ore_drop_scene: PackedScene
 
 var target_tile: Vector2 = Vector2.ZERO
@@ -88,3 +88,11 @@ func _input_event(viewport, event, shape_idx):
 		}
 
 		MonsterInfo.show_info(info, event.position)
+
+func get_live_stats() -> Dictionary:
+	return {
+		"efficiency": int(float(lava_storage) / float(max_lava_storage) * 100.0),
+		"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec" % [
+			lava_storage, max_lava_storage, ore_drop_count, cooldown_time
+		]
+	}

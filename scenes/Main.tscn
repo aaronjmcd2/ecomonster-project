@@ -52,3 +52,9 @@ position = Vector2(-272, 164)
 
 [node name="IronOreDrop5" parent="." instance=ExtResource("3_rarhs")]
 position = Vector2(-528, -173)
+
+[node name="FireElemental2" parent="." instance=ExtResource("5_vcsgt")]
+position = Vector2(-631, 136)
+
+[node name="CoalWorm2" parent="." instance=ExtResource("4_vcsgt")]
+position = Vector2(-706, -60)

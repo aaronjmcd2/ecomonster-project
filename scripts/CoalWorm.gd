@@ -4,7 +4,7 @@ extends CharacterBody2D
 @onready var search_display := $SearchRadiusDisplay
 
 @export var search_radius: int = 10
-@export var cooldown_time: float = 2.0
+@export var cooldown_time: float = 5
 @export var speed: float = 100.0
 
 var target_drop: Node2D = null
@@ -72,15 +72,10 @@ func find_closest_ore_drop() -> Node2D:
 	return closest_drop
 
 func consume_ore_drop():
-	if target_drop:
-		convert_tile_beneath()
-		target_drop.consume()
-		reset_worm()
-	
 	if target_drop and is_instance_valid(target_drop):
 		convert_tile_beneath()
 		target_drop.consume()
-	reset_worm()
+		reset_worm()
 
 func convert_tile_beneath():
 	var tile_pos = tile_map_layer.local_to_map(global_position)
