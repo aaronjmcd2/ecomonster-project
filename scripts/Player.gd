@@ -67,6 +67,12 @@ func zoom_camera(amount: float):
 	camera.zoom = new_zoom
 
 func _unhandled_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			zoom_camera(zoom_step)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			zoom_camera(-zoom_step)
+			
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		var world_pos = get_canvas_transform().affine_inverse() * event.position
 		try_pickup_item(world_pos)
@@ -124,7 +130,7 @@ func try_pickup_item(world_pos: Vector2) -> void:
 				var ui = get_node("/root/Main/UILayer/InventoryUI")
 				print("🎯 Attempting to add:", item_data)
 
-				ui.add_item_to_inventory(item_data)
+				ui.add_item_to_inventory(item_data.duplicate(true))  # Deep copy
 
 				node.queue_free()
 				break

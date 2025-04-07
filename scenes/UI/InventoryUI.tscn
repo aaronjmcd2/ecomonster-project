@@ -95,4 +95,5 @@ offset_left = 320.0
 offset_top = 584.0
 offset_right = 384.0
 offset_bottom = 648.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_31fix")
