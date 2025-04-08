@@ -40,9 +40,9 @@ func _physics_process(delta):
 		return
 
 	if is_idle:
-		target_drop = find_closest_ore_drop()
+		target_drop = SearchModule.find_closest_ore_drop(global_position, search_radius * 64.0, self)
 		if target_drop:
-			is_idle = false
+				is_idle = false
 	else:
 		move_to_target(delta)
 
@@ -57,25 +57,19 @@ func move_to_target(delta):
 	move_and_slide()
 
 	if global_position.distance_to(target_pos) < 5.0:
-		consume_ore_drop()
-
-func find_closest_ore_drop() -> Node2D:
-	var closest_drop = null
-	var closest_dist = search_radius * 64
-
-	for drop in get_tree().get_nodes_in_group("ore_drops"):
-		var dist = global_position.distance_to(drop.global_position)
-		if dist < closest_dist:
-			closest_dist = dist
-			closest_drop = drop
-
-	return closest_drop
+		if target_drop and is_instance_valid(target_drop):
+			consume_ore_drop()
+		else:
+			reset_worm()  # Drop was already taken
 
 func consume_ore_drop():
 	if target_drop and is_instance_valid(target_drop):
 		convert_tile_beneath()
 		target_drop.consume()
-		reset_worm()
+		if target_drop.claimed_by == self:
+			target_drop.claimed_by = null
+	reset_worm()
+
 
 func convert_tile_beneath():
 	var tile_pos = tile_map_layer.local_to_map(global_position)
@@ -90,3 +84,5 @@ func convert_tile_beneath():
 func reset_worm():
 	is_idle = true
 	cooldown_timer = cooldown_time
+	if target_drop and is_instance_valid(target_drop) and target_drop.claimed_by == self:
+		target_drop.claimed_by = null

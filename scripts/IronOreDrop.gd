@@ -1,5 +1,7 @@
 extends Area2D
 
+var claimed_by: Node = null
+
 @export var ore_type: String = "iron"
 @export var ore_value: int = 1
 @export var count: int = 1  # New: how many are in this drop

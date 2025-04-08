@@ -11,6 +11,9 @@ size = Vector2(56, 72)
 collision_layer = 2
 input_pickable = true
 script = ExtResource("1_ehp7w")
+search_radius = null
+cooldown_time = null
+speed = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_fgvab")

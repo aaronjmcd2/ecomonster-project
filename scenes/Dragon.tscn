@@ -9,6 +9,7 @@
 size = Vector2(102, 35)
 
 [node name="Dragon" type="CharacterBody2D" groups=["monsters"]]
+collision_layer = 2
 input_pickable = true
 script = ExtResource("1_yknt0")
 ore_drop_scene = ExtResource("2_2awct")
