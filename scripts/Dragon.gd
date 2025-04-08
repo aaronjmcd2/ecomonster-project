@@ -9,11 +9,15 @@ extends CharacterBody2D
 @export var move_speed: float = 50.0
 @export var cooldown_time: float = 10
 @export var ore_drop_scene: PackedScene
+@export var required_lava_to_excrete: int = 2
 
+var efficiency_score: float = 0.0
+const EFFICIENCY_RATE := 100.0 / (5 * 60)  # ≈ 0.3333 per second
 var target_tile: Vector2 = Vector2.ZERO
 var lava_storage: int = 0
 var cooldown_timer: float = 0.0
 var is_cooling_down: bool = false
+var is_efficient: bool = false
 
 var wander_timer: float = 0.0
 var wander_target: Vector2 = Vector2.ZERO
@@ -23,12 +27,27 @@ func _ready():
 		search_display.set_radius(search_radius * 32)  # ← Converts tile-based radius to pixels
 
 func _process(delta):
+	var was_efficient = is_efficient
+	is_efficient = false  # Will be updated below
+
+	# Always process behavior (movement, lava search)
+	_process_behavior()
+
+	# Handle cooldown if active
 	if is_cooling_down:
+		is_efficient = true  # Excretion counts as efficient
 		cooldown_timer -= delta
 		if cooldown_timer <= 0:
 			_excrete_ore()
+			is_cooling_down = false
+
+	# Update efficiency score over time
+	if is_efficient:
+		efficiency_score += EFFICIENCY_RATE * delta
 	else:
-		_process_behavior()
+		efficiency_score -= EFFICIENCY_RATE * delta
+
+	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
 
 func _process_behavior():
 	var found_tile = SearchModule.find_nearest_tile(global_position, search_radius, 2) # 2 = Lava
@@ -39,8 +58,14 @@ func _process_behavior():
 			_consume_lava(found_tile)
 	else:
 		_wander()
+	
+	if found_tile != null:
+		is_efficient = true
 
 func _consume_lava(tile_position: Vector2):
+	if lava_storage >= max_lava_storage:
+		return  # Already full—don't consume more
+
 	var tile_pos = tile_map_layer.local_to_map(tile_position)
 	var current_source = tile_map_layer.get_cell_source_id(tile_pos)
 
@@ -48,7 +73,7 @@ func _consume_lava(tile_position: Vector2):
 		tile_map_layer.set_cell(tile_pos, 3, Vector2i(0, 0)) # Replace lava with soil
 		lava_storage += 1
 
-		if lava_storage >= max_lava_storage:
+		if lava_storage >= required_lava_to_excrete:
 			is_cooling_down = true
 			cooldown_timer = cooldown_time
 
@@ -91,7 +116,7 @@ func _input_event(viewport, event, shape_idx):
 
 func get_live_stats() -> Dictionary:
 	return {
-		"efficiency": int(float(lava_storage) / float(max_lava_storage) * 100.0),
+		"efficiency": int(efficiency_score),
 		"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec" % [
 			lava_storage, max_lava_storage, ore_drop_count, cooldown_time
 		]
