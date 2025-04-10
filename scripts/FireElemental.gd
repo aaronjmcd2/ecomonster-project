@@ -83,3 +83,9 @@ func _input_event(viewport, event, shape_idx):
 			"node": self
 		}
 		MonsterInfo.show_info(info, event.position)
+		
+func get_live_stats() -> Dictionary:
+	return {
+		#"efficiency": int(efficiency_score),
+		"stats": "Cooldown: %.1f seconds" % conversion_cooldown
+	}
