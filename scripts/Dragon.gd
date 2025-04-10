@@ -38,10 +38,10 @@ func _process(delta: float) -> void:
 
 	# Handle ore excretion cooldown
 	if is_cooling_down:
-		cooldown_timer -= delta
-		if cooldown_timer <= 0.0:
+		if cooldown_timer > 0.0:
+			cooldown_timer -= delta
+		else:
 			_excrete_ore()
-			is_cooling_down = false
 		is_efficient = true
 
 	# === Behavior: Always try to consume lava if not full ===
@@ -110,6 +110,7 @@ func _consume_lava() -> void:
 			cooldown_timer = cooldown_time
 
 
+
 	target_tile = null
 
 func _excrete_ore() -> void:
@@ -121,6 +122,12 @@ func _excrete_ore() -> void:
 
 	lava_storage -= required_lava_to_excrete
 
+	if lava_storage >= required_lava_to_excrete:
+		# Instead of waiting until next _process() loop, restart here
+		cooldown_timer = cooldown_time
+	else:
+		is_cooling_down = false
+		cooldown_timer = 0.0  # Reset it to prevent leftover decay
 
 func _input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
