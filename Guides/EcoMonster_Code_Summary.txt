@@ -1,0 +1,74 @@
+EcoMonster Project — Code Overview Summary (as of Refactor Phase 2)
+====================================================================
+
+🧩 Core Principles
+------------------
+- Single Responsibility per script
+- All scripts kept under ~150 lines
+- Modules used for shared logic (Autoloaded)
+- Creature behaviors are cleanly separated
+
+📂 Project Structure
+--------------------
+- Monsters/         → FireElemental.gd, CoalWorm.gd, Dragon.gd
+- Modules/          → SearchModule.gd, ConversionModule.gd, InventoryData.gd
+- UI/               → InventoryUI, InventorySlot.gd, MonsterInfoPopup.gd, SearchRadiusDisplay.gd
+- Systems/          → Main.gd (entry point, sets up inventory and hotbar)
+
+🔁 Creature Scripts
+-------------------
+1. FireElemental.gd
+   - Searches for coal tiles
+   - Converts coal to lava via ConversionModule
+   - Wanders when idle
+
+2. CoalWorm.gd
+   - Searches for unclaimed ore drops
+   - Converts tile under or nearby into coal
+   - Uses SearchModule to find drops
+
+3. Dragon.gd
+   - Searches for lava, consumes it
+   - Replaces lava with soil
+   - Excretes ore after cooldown
+   - Tracks efficiency score
+
+🧠 Shared Modules (Autoloaded)
+------------------------------
+- SearchModule.gd
+  → `find_closest_ore_drop()` for CoalWorms
+  → `find_nearest_tile()` for FireElemental and Dragon
+
+- ConversionModule.gd
+  → `convert_tile()` handles ore-to-coal (via soil)
+  → `replace_tile()` replaces one tile type with another
+
+- InventoryData.gd (class_name InventoryData)
+  → Manages inventory grid, hotbar index
+  → Handles stack movement and item drops
+
+🎨 UI Scripts
+-------------
+- InventorySlot.gd
+  → Drag/drop, stack merging, right-click drop
+  → Uses icon and count_label for visuals
+
+- MonsterInfoPopup.gd
+  → Displays creature info on click
+  → Calls get_live_stats() if available
+  → Shows/hides SearchRadiusDisplay
+
+- SearchRadiusDisplay.gd
+  → Draws a toggleable circle around creatures
+
+🗺️ Main.gd
+-----------
+- Waits for nodes to load
+- Sets up inventory grid and hotbar with test items
+- Toggles inventory visibility on keybind
+
+✅ Everything is:
+- Modular
+- Documented
+- Functionally verified
+- Easy to navigate for continued development

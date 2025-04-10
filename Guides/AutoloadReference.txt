@@ -1,0 +1,44 @@
+EcoMonster Autoload Reference Guide
+===================================
+
+This document lists all globally available Autoload singletons used throughout the EcoMonster project.
+Each singleton is loaded via Project Settings → AutoLoad and is globally accessible by name.
+
+🌐 Autoloaded Modules
+---------------------
+
+🔎 SearchModule.gd
+- Purpose: Shared tile and ore-drop search logic
+- Key Functions:
+  • find_closest_ore_drop(origin, max_distance, claimer)
+  • find_nearest_tile(origin, radius, source_id)
+
+♻️ ConversionModule.gd
+- Purpose: Handles tile replacement and eco-conversions (e.g., soil to coal, lava to soil)
+- Key Functions:
+  • convert_tile(tile_pos)
+  • replace_tile(world_position, from_source_id, to_source_id)
+
+📦 InventoryData.gd (autoload name: InventoryDataScript)
+- Purpose: Manages the player's inventory grid and hotbar
+- Key Functions:
+  • get_item(row, col)
+  • set_item(row, col, item)
+  • move_item(from_row, from_col, to_row, to_col)
+  • drop_item_from_inventory(item, slot_ref, drop_entire_stack=false)
+
+🧠 MonsterInfoPopup.gd (autoload name: MonsterInfo
+- Purpose: Displays creature information popup on click
+- Key Functions:
+  • show_info(monster_data, screen_position)
+  • hide_info()
+
+🗂️ Notes
+--------
+- These modules are accessible globally (e.g., SearchModule.find_nearest_tile(...))
+- Do not manually instance these modules—they are preloaded at runtime
+- Keep function signatures consistent to avoid cross-contamination
+
+📁 Location
+----------
+Place this file in: res://Guide/AutoloadReference.txt
