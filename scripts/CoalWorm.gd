@@ -4,6 +4,8 @@
 
 extends CharacterBody2D
 
+@onready var EfficiencyTracker := preload("res://scripts/MonsterHelperScripts/EfficiencyTracker.gd").new()
+@onready var coal_stat := preload("res://scripts/MonsterHelperScripts/RollingStatTracker.gd").new()
 @onready var tile_map_layer := get_node("/root/Main/TileMap/TileMapLayer")
 @onready var search_display := $SearchRadiusDisplay
 
@@ -11,12 +13,9 @@ extends CharacterBody2D
 @export var cooldown_time: float = 5.0
 @export var speed: float = 100.0
 
-var efficiency_score: float = 0.0
-var coal_log := []
-const COAL_LOG_SIZE := 60  # 60 seconds
-var coal_this_second: int = 0
-var coal_timer: float = 0.0
 const EFFICIENCY_RATE := 100.0 / (5 * 60.0)
+var efficiency_score: float = 0.0
+var coal_tick_timer: float = 0.0
 var target_drop = null
 var cooldown_timer: float = 0.0
 var is_idle := true
@@ -26,6 +25,8 @@ func _ready():
 	# Set up collision and visual radius
 	collision_layer = 2
 	collision_mask = 1
+	
+	add_child(coal_stat)
 	
 	if search_display:
 		search_display.set_radius(search_radius * 64)  # tile size conversion
@@ -47,22 +48,14 @@ func _physics_process(delta: float) -> void:
 			was_efficient = true  # Moving toward a target counts as efficient
 
 	# Efficiency logic
-	if was_efficient:
-		efficiency_score += EFFICIENCY_RATE * delta
-	else:
-		efficiency_score -= EFFICIENCY_RATE * delta
+	efficiency_score = EfficiencyTracker.update(delta, was_efficient, efficiency_score, EFFICIENCY_RATE)
 
-	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
-	
-	# Coal/min tracking (rolling 60s average)
-	coal_timer += delta
-	if coal_timer >= 1.0:
-		coal_log.append(coal_this_second)
-		if coal_log.size() > COAL_LOG_SIZE:
-			coal_log.pop_front()
+	# Coal/min rolling average logic
+	coal_tick_timer += delta
+	if coal_tick_timer >= 1.0:
+		coal_stat.tick()
+		coal_tick_timer = 0.0
 
-		coal_this_second = 0
-		coal_timer = 0.0
 
 func _move_toward_target(delta: float) -> void:
 	# Navigate toward the current ore drop
@@ -86,7 +79,7 @@ func _consume_ore_drop() -> void:
 	# Consume the ore drop and convert the tile
 	if target_drop and is_instance_valid(target_drop):
 		_convert_tile_beneath()
-		coal_this_second += 1
+		coal_stat.add(1)
 		target_drop.consume()
 		
 		if target_drop.claimed_by == self:
@@ -124,12 +117,8 @@ func _input_event(viewport, event, shape_idx):
 		MonsterInfo.show_info(info, event.position)
 		
 func get_live_stats() -> Dictionary:
-	var total = 0
-	for amount in coal_log:
-		total += amount
-	var average_coal_per_min = float(total)
+	var average_coal_per_min = coal_stat.get_average()
 	var max_coal_per_min = 60.0 / cooldown_time
-
 	return {
 		"efficiency": int(efficiency_score),
 		"stats": "Cooldown: %.1f seconds\nCoal/min: %.1f / %.1f" % [

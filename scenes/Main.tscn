@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=9 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://tiles/TileSet.tres" id="1_elqb8"]
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://scripts/Main.gd" id="1_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://bweokypfxckvu" path="res://scenes/Player.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="3_rarhs"]
+[ext_resource type="PackedScene" uid="uid://diaywsr5x8gc8" path="res://scenes/CoalWorm.tscn" id="4_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://ccfcrl5wxjvor" path="res://scenes/MonsterInfoPopup.tscn" id="7_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://scenes/FireElemental.tscn" id="9_lhr70"]
 [ext_resource type="PackedScene" uid="uid://dskqqlloghbas" path="res://scenes/UI/InventoryUI.tscn" id="9_q8u5g"]
@@ -23,6 +24,12 @@ position = Vector2(-595, 257)
 
 [node name="FireElemental2" parent="TileMap" instance=ExtResource("9_lhr70")]
 position = Vector2(-134, 171)
+
+[node name="CoalWorm" parent="TileMap" instance=ExtResource("4_vcsgt")]
+position = Vector2(17, -59)
+
+[node name="CoalWorm2" parent="TileMap" instance=ExtResource("4_vcsgt")]
+position = Vector2(-355, 143)
 
 [node name="Player" parent="." instance=ExtResource("2_rvslj")]
 z_index = 10
