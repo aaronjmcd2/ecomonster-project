@@ -1,35 +1,44 @@
-extends Node
+# InventoryData.gd
+# Stores and manages all inventory data: 8x7 grid, 8-slot hotbar, item movement, and dropping logic.
+# Used by UI and player systems. Designed for modular extension later.
+# Attached as Autoload singleton.
 
+extends Node
 class_name InventoryData
 
-# Constants
+# === Constants ===
 const INVENTORY_ROWS := 7
 const INVENTORY_COLUMNS := 8
 const HOTBAR_SIZE := 8
 
-# Inventory item structure
-# Example: { "name": "coal", "count": 32 }
+# === State ===
+# inventory: Array of arrays representing rows of item slots (null = empty)
 var inventory: Array = []
 var hotbar_selected_index := 0
 
 func _ready():
 	_initialize_inventory()
 
-func _initialize_inventory():
-	# Fill inventory with empty slots (null means empty)
+# === Initialize inventory with empty slots ===
+func _initialize_inventory() -> void:
+	inventory.clear()
 	for row in INVENTORY_ROWS:
 		var row_array := []
 		for col in INVENTORY_COLUMNS:
 			row_array.append(null)
 		inventory.append(row_array)
 
+# === Retrieve item at specified position ===
 func get_item(row: int, col: int) -> Dictionary:
 	return inventory[row][col]
 
-func set_item(row: int, col: int, item: Dictionary):
+# === Set an item in the grid ===
+func set_item(row: int, col: int, item: Dictionary) -> void:
 	inventory[row][col] = item
 
-func move_item(from_row: int, from_col: int, to_row: int, to_col: int):
+# === Move an item from one slot to another ===
+# Stacks items if names match, replaces otherwise
+func move_item(from_row: int, from_col: int, to_row: int, to_col: int) -> void:
 	var from_item = inventory[from_row][from_col]
 	var to_item = inventory[to_row][to_col]
 
@@ -40,6 +49,8 @@ func move_item(from_row: int, from_col: int, to_row: int, to_col: int):
 		to_item.count += from_item.count
 		inventory[from_row][from_col] = null
 
+# === Drops an item from inventory into the world near the player ===
+# slot_ref: the inventory slot node this came from (used to clear/update)
 func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stack: bool = false) -> void:
 	var player = get_tree().get_root().get_node("Main/Player")
 	if not player:
@@ -48,13 +59,13 @@ func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stac
 
 	var drop_pos = player.global_position + Vector2(16, 0)
 
-	var drop_scene = preload("res://scenes/IronOreDrop.tscn")  # You'll generalize this later
+	# TEMP: Hardcoded to IronOreDrop — will generalize later
+	var drop_scene = preload("res://scenes/IronOreDrop.tscn")
 	var drop_instance = drop_scene.instantiate()
 	drop_instance.position = drop_pos
 	get_tree().get_root().add_child(drop_instance)
 
 	if drop_entire_stack:
-		# Drop full stack, assign the stack count to the drop
 		drop_instance.count = item.get("count", 1)
 		slot_ref.clear_slot()
 	else:
