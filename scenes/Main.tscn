@@ -22,9 +22,15 @@ tile_set = ExtResource("1_elqb8")
 
 [node name="CoalWorm" parent="TileMap" instance=ExtResource("4_vcsgt")]
 position = Vector2(-400, -353)
+search_radius = 10
+cooldown_time = 5.0
+speed = 100.0
 
 [node name="CoalWorm2" parent="TileMap" instance=ExtResource("4_vcsgt")]
 position = Vector2(-596, -359)
+search_radius = 10
+cooldown_time = 5.0
+speed = 100.0
 
 [node name="Player" parent="." instance=ExtResource("2_rvslj")]
 z_index = 10
