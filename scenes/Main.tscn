@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=10 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://tiles/TileSet.tres" id="1_elqb8"]
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://scripts/Main.gd" id="1_q8u5g"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://diaywsr5x8gc8" path="res://scenes/CoalWorm.tscn" id="4_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://b7he5tq8l7t7i" path="res://scenes/Dragon.tscn" id="6_c01mt"]
 [ext_resource type="PackedScene" uid="uid://ccfcrl5wxjvor" path="res://scenes/MonsterInfoPopup.tscn" id="7_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://scenes/FireElemental.tscn" id="9_lhr70"]
 [ext_resource type="PackedScene" uid="uid://dskqqlloghbas" path="res://scenes/UI/InventoryUI.tscn" id="9_q8u5g"]
 
 [node name="Main" type="Node2D"]
@@ -21,15 +22,9 @@ tile_set = ExtResource("1_elqb8")
 
 [node name="CoalWorm" parent="TileMap" instance=ExtResource("4_vcsgt")]
 position = Vector2(-400, -353)
-search_radius = null
-cooldown_time = null
-speed = null
 
 [node name="CoalWorm2" parent="TileMap" instance=ExtResource("4_vcsgt")]
 position = Vector2(-596, -359)
-search_radius = null
-cooldown_time = null
-speed = null
 
 [node name="Player" parent="." instance=ExtResource("2_rvslj")]
 z_index = 10
@@ -61,3 +56,9 @@ position = Vector2(-226, -39)
 
 [node name="Dragon2" parent="." instance=ExtResource("6_c01mt")]
 position = Vector2(-97, 42)
+
+[node name="FireElemental" parent="." instance=ExtResource("9_lhr70")]
+position = Vector2(-293, -216)
+
+[node name="FireElemental2" parent="." instance=ExtResource("9_lhr70")]
+position = Vector2(-140, -257)
