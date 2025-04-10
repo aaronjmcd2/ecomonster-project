@@ -36,25 +36,36 @@ func _ready():
 func _process(delta: float) -> void:
 	is_efficient = false
 
+	# Handle ore excretion cooldown
 	if is_cooling_down:
 		cooldown_timer -= delta
 		if cooldown_timer <= 0.0:
 			_excrete_ore()
 			is_cooling_down = false
+
 		is_efficient = true
-	else:
+
+	# === Primary logic ===
+	if lava_storage < max_lava_storage:
+		# Keep searching and consuming while not full
 		if target_tile:
 			_move_toward_target(delta)
 		else:
 			_search_for_lava()
+	else:
+		# Only wander if full (even during cooldown)
+		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
+			_pick_wander_target()
+		_move_toward_target(delta)
 
-	# Efficiency scoring
+	# Efficiency tracking
 	if is_efficient:
 		efficiency_score += EFFICIENCY_RATE * delta
 	else:
 		efficiency_score -= EFFICIENCY_RATE * delta
 
 	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
+
 
 func _search_for_lava() -> void:
 	target_tile = SearchModule.find_nearest_tile(global_position, search_radius, 2)  # 2 = lava
