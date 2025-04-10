@@ -20,8 +20,11 @@ var lava_storage: int = 0
 var cooldown_timer: float = 0.0
 var is_cooling_down: bool = false
 var is_efficient: bool = false
-
 var efficiency_score: float = 0.0
+var ore_log := []
+const ORE_LOG_SIZE := 60  # 60 seconds
+var ore_this_second: int = 0
+var ore_timer: float = 0.0
 const EFFICIENCY_RATE := 100.0 / (5 * 60.0)
 
 var wander_timer: float = 0.0
@@ -68,6 +71,18 @@ func _process(delta: float) -> void:
 		efficiency_score -= EFFICIENCY_RATE * delta
 
 	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
+	
+	# Ore/min tracking (rolling 60s average)
+	ore_timer += delta
+	if ore_timer >= 1.0:
+		ore_log.append(ore_this_second)
+		if ore_log.size() > ORE_LOG_SIZE:
+			ore_log.pop_front()
+
+		ore_this_second = 0
+		ore_timer = 0.0
+
+
 
 
 func _search_for_lava() -> void:
@@ -109,8 +124,6 @@ func _consume_lava() -> void:
 			is_cooling_down = true
 			cooldown_timer = cooldown_time
 
-
-
 	target_tile = null
 
 func _excrete_ore() -> void:
@@ -120,6 +133,9 @@ func _excrete_ore() -> void:
 		ore_instance.global_position = global_position + offset
 		get_parent().add_child(ore_instance)
 
+	# Track that one ore output event occurred (not per drop, just once per excretion)
+	ore_this_second += 1
+
 	lava_storage -= required_lava_to_excrete
 
 	if lava_storage >= required_lava_to_excrete:
@@ -127,7 +143,8 @@ func _excrete_ore() -> void:
 		cooldown_timer = cooldown_time
 	else:
 		is_cooling_down = false
-		cooldown_timer = 0.0  # Reset it to prevent leftover decay
+		cooldown_timer = 0.0  # Reset to prevent leftover decay
+
 
 func _input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -142,9 +159,20 @@ func _input_event(viewport, event, shape_idx) -> void:
 		MonsterInfo.show_info(info, event.position)
 
 func get_live_stats() -> Dictionary:
+	var total = 0
+	for amount in ore_log:
+		total += amount
+	var average_ore_per_min = float(total)
+	var max_ore_per_min = 60.0 / cooldown_time  # Max 1 excrete per cooldown
+
 	return {
 		"efficiency": int(efficiency_score),
-		"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec" % [
-			lava_storage, max_lava_storage, ore_drop_count, cooldown_time
+		"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec\nOre/min: %.1f / %.1f" % [
+			lava_storage,
+			max_lava_storage,
+			ore_drop_count,
+			cooldown_time,
+			average_ore_per_min,
+			max_ore_per_min
 		]
 	}
