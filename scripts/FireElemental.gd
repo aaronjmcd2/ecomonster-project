@@ -14,6 +14,8 @@ var target_position = null  # ← Type will be inferred dynamically
 var is_busy := false
 var cooldown_timer := 0.0
 var wander_target: Vector2 = Vector2.ZERO
+var efficiency_score: float = 0.0
+const EFFICIENCY_RATE := 100.0 / (5 * 60.0)
 
 func _ready():
 	# Configure collision layers and search display
@@ -24,12 +26,24 @@ func _ready():
 		search_display.set_radius(search_radius * 32)
 
 func _process(delta):
+	var was_efficient = false
+
 	if is_busy:
 		_handle_cooldown(delta)
+		was_efficient = true
 	elif target_position:
 		_move_toward_target(delta)
+		was_efficient = true
 	else:
 		_search_for_target()
+
+	# Efficiency logic
+	if was_efficient:
+		efficiency_score += EFFICIENCY_RATE * delta
+	else:
+		efficiency_score -= EFFICIENCY_RATE * delta
+
+	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
 
 func _handle_cooldown(delta: float) -> void:
 	# Decrease cooldown and reset when ready
@@ -80,7 +94,7 @@ func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var info = {
 			"name": "Fire Elemental",
-			"efficiency": 100 if is_busy else 0,
+			"efficiency": int(efficiency_score),
 			"stats": "Currently Targeting: %s\nCooldown: %.1f seconds" % [str(target_position), conversion_cooldown],
 			"node": self
 		}
@@ -88,7 +102,7 @@ func _input_event(viewport, event, shape_idx):
 		
 func get_live_stats() -> Dictionary:
 	return {
-		#"efficiency": int(efficiency_score),
+		"efficiency": int(efficiency_score),
 		"stats": "Cooldown: %.1f seconds" % conversion_cooldown
 	}
 
