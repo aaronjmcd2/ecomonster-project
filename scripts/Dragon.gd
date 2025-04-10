@@ -42,23 +42,26 @@ func _process(delta: float) -> void:
 		if cooldown_timer <= 0.0:
 			_excrete_ore()
 			is_cooling_down = false
-
 		is_efficient = true
 
-	# === Primary logic ===
+	# === Behavior: Always try to consume lava if not full ===
 	if lava_storage < max_lava_storage:
-		# Keep searching and consuming while not full
 		if target_tile:
 			_move_toward_target(delta)
 		else:
-			_search_for_lava()
+			target_tile = SearchModule.find_nearest_tile(global_position, search_radius, 2)
+			if not target_tile:
+				# No lava found, wander instead
+				if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
+					_pick_wander_target()
+				_move_toward_target(delta)
 	else:
-		# Only wander if full (even during cooldown)
+		# Full → wander until cooldown finishes
 		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
 			_pick_wander_target()
 		_move_toward_target(delta)
 
-	# Efficiency tracking
+	# Efficiency scoring
 	if is_efficient:
 		efficiency_score += EFFICIENCY_RATE * delta
 	else:
@@ -102,9 +105,10 @@ func _consume_lava() -> void:
 		lava_storage += 1
 		SearchModule.claimed_tile_positions.erase(target_tile)
 
-		if lava_storage >= required_lava_to_excrete:
+		if lava_storage >= required_lava_to_excrete and not is_cooling_down:
 			is_cooling_down = true
 			cooldown_timer = cooldown_time
+
 
 	target_tile = null
 
@@ -115,7 +119,8 @@ func _excrete_ore() -> void:
 		ore_instance.global_position = global_position + offset
 		get_parent().add_child(ore_instance)
 
-	lava_storage = 0
+	lava_storage -= required_lava_to_excrete
+
 
 func _input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
