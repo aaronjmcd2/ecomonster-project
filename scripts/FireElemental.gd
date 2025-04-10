@@ -13,6 +13,7 @@ extends CharacterBody2D
 var target_position = null  # ← Type will be inferred dynamically
 var is_busy := false
 var cooldown_timer := 0.0
+var wander_target: Vector2 = Vector2.ZERO
 
 func _ready():
 	# Configure collision layers and search display
@@ -42,27 +43,28 @@ func _search_for_target() -> void:
 	if result:
 		target_position = result
 	else:
-		_pick_wander_target()
+		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
+			_pick_wander_target()
+		_move_toward_wander_target()
+
 
 func _pick_wander_target() -> void:
-	# Choose a random nearby point to wander to
-	var distance = randf_range(32.0, 96.0)
+	var wander_distance = randf_range(32.0, 96.0)
 	var angle = randf_range(0, TAU)
-	var offset = Vector2(cos(angle), sin(angle)) * distance
-	target_position = global_position + offset
+	var offset = Vector2(cos(angle), sin(angle)) * wander_distance
+	wander_target = global_position + offset
 
-func _move_toward_target(delta: float) -> void:
-	# Move toward current target position
+func _move_toward_target(delta) -> void:
 	if target_position == null:
 		return
-	
+
 	var direction = (target_position - global_position).normalized()
 	velocity = direction * move_speed
 	move_and_slide()
-	
+
 	if global_position.distance_to(target_position) < 4.0:
 		_convert_coal_to_lava()
-		target_position = null  # ← now valid because it's nullable
+		target_position = null
 		is_busy = true
 		cooldown_timer = conversion_cooldown
 
@@ -89,3 +91,8 @@ func get_live_stats() -> Dictionary:
 		#"efficiency": int(efficiency_score),
 		"stats": "Cooldown: %.1f seconds" % conversion_cooldown
 	}
+
+func _move_toward_wander_target() -> void:
+	var direction = (wander_target - global_position).normalized()
+	velocity = direction * move_speed
+	move_and_slide()
