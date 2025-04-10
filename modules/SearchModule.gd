@@ -5,6 +5,8 @@
 
 extends Node
 
+var claimed_tile_positions := []
+
 # === Finds the closest unclaimed ore drop within range and claims it ===
 # origin: world position of the searching creature
 # max_distance: maximum allowed search radius (in pixels)
@@ -47,18 +49,21 @@ func find_nearest_tile(origin: Vector2, radius: int, source_id: int) -> Variant:
 			var offset = Vector2i(x, y)
 			var cell = origin_cell + offset
 
-			# Skip tiles outside the circular search range
 			if offset.length() > radius:
 				continue
 
 			var cell_source = tilemap.get_cell_source_id(cell)
-			if cell_source == source_id:
-				var world_pos = tilemap.map_to_local(cell)
-				var dist = origin.distance_to(world_pos)
+			var world_pos = tilemap.map_to_local(cell)
 
+			# Skip if already claimed
+			if cell_source == source_id and not world_pos in claimed_tile_positions:
+				var dist = origin.distance_to(world_pos)
 				if dist < closest_distance:
 					closest_distance = dist
 					closest_tile = world_pos
 					found = true
+
+	if found:
+		claimed_tile_positions.append(closest_tile)
 
 	return closest_tile if found else null

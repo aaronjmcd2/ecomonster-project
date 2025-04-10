@@ -1,6 +1,6 @@
 # Dragon.gd
-# Handles Dragon behavior: consumes lava, converts it to soil, stores lava to excrete ore drops, tracks efficiency.
-# Uses: SearchModule, ConversionModule (optional), MonsterInfo, SearchRadiusDisplay
+# Handles Dragon behavior: searches for lava, converts to soil, stores lava, and excretes ore after cooldown.
+# Uses: SearchModule, MonsterInfo, SearchRadiusDisplay
 
 extends CharacterBody2D
 
@@ -15,38 +15,40 @@ extends CharacterBody2D
 @export var ore_drop_scene: PackedScene
 @export var required_lava_to_excrete: int = 2
 
-var efficiency_score: float = 0.0
-const EFFICIENCY_RATE := 100.0 / (5 * 60.0)
-
-var target_tile = Vector2.ZERO
+var target_tile = null
 var lava_storage: int = 0
 var cooldown_timer: float = 0.0
 var is_cooling_down: bool = false
 var is_efficient: bool = false
 
+var efficiency_score: float = 0.0
+const EFFICIENCY_RATE := 100.0 / (5 * 60.0)
+
 var wander_timer: float = 0.0
-var wander_target = Vector2.ZERO
+var wander_target: Vector2 = Vector2.ZERO
 
 func _ready():
-	# Set the visual radius size in pixels
+	collision_layer = 2
+	collision_mask = 1
 	if search_display:
 		search_display.set_radius(search_radius * 32)
 
 func _process(delta: float) -> void:
-	var was_efficient = is_efficient
 	is_efficient = false
 
-	_process_behavior()
-
-	# Cooldown phase = excretion prep
 	if is_cooling_down:
-		is_efficient = true
 		cooldown_timer -= delta
 		if cooldown_timer <= 0.0:
 			_excrete_ore()
 			is_cooling_down = false
+		is_efficient = true
+	else:
+		if target_tile:
+			_move_toward_target(delta)
+		else:
+			_search_for_lava()
 
-	# Update efficiency tracker
+	# Efficiency scoring
 	if is_efficient:
 		efficiency_score += EFFICIENCY_RATE * delta
 	else:
@@ -54,39 +56,48 @@ func _process(delta: float) -> void:
 
 	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
 
-func _process_behavior() -> void:
-	# Look for lava tiles to consume
-	var found_tile = SearchModule.find_nearest_tile(global_position, search_radius, 2)  # 2 = Lava
+func _search_for_lava() -> void:
+	target_tile = SearchModule.find_nearest_tile(global_position, search_radius, 2)  # 2 = lava
+	if not target_tile:
+		_pick_wander_target()
 
-	if found_tile != null:
-		_move_toward_target(found_tile)
+func _pick_wander_target() -> void:
+	var angle = randf() * TAU
+	var offset = Vector2(cos(angle), sin(angle)) * 32
+	wander_target = global_position + offset
+	target_tile = null
 
-		if global_position.distance_to(found_tile) < 8.0:
-			_consume_lava(found_tile)
+func _move_toward_target(delta: float) -> void:
+	var target = target_tile if target_tile else wander_target
+	var direction = (target - global_position).normalized()
+	velocity = direction * move_speed
+	move_and_slide()
 
-		is_efficient = true
-	else:
-		_wander()
+	if global_position.distance_to(target) < 5.0:
+		if target_tile:
+			_consume_lava()
+		else:
+			_pick_wander_target()
 
-func _consume_lava(tile_position: Vector2) -> void:
-	# Converts lava tile to soil and stores lava
-	if lava_storage >= max_lava_storage:
+func _consume_lava() -> void:
+	if not target_tile or lava_storage >= max_lava_storage:
 		return
 
-	var tile_pos = tile_map_layer.local_to_map(tile_position)
-	var current_source = tile_map_layer.get_cell_source_id(tile_pos)
+	var tile_pos = tile_map_layer.local_to_map(target_tile)
+	var source_id = tile_map_layer.get_cell_source_id(tile_pos)
 
-	if current_source == 2:  # Lava
-		tile_map_layer.set_cell(tile_pos, 3, Vector2i(0, 0))  # 3 = Soil
-		# Optional: Use ConversionModule.replace_tile(tile_position, 2, 3)
+	if source_id == 2:  # lava
+		tile_map_layer.set_cell(tile_pos, 3, Vector2i(0, 0))  # 3 = soil
 		lava_storage += 1
+		SearchModule.claimed_tile_positions.erase(target_tile)
 
 		if lava_storage >= required_lava_to_excrete:
 			is_cooling_down = true
 			cooldown_timer = cooldown_time
 
+	target_tile = null
+
 func _excrete_ore() -> void:
-	# Spawns ore drop(s) around the dragon
 	for i in range(ore_drop_count):
 		var ore_instance = ore_drop_scene.instantiate()
 		var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
@@ -94,26 +105,8 @@ func _excrete_ore() -> void:
 		get_parent().add_child(ore_instance)
 
 	lava_storage = 0
-	is_cooling_down = false
 
-func _wander() -> void:
-	# Picks a random target every few seconds and moves toward it
-	wander_timer -= get_process_delta_time()
-	if wander_timer <= 0.0:
-		var angle = randf() * PI * 2.0
-		wander_target = global_position + Vector2(cos(angle), sin(angle)) * 32
-		wander_timer = 2.0
-	
-	_move_toward_target(wander_target)
-
-func _move_toward_target(target: Vector2) -> void:
-	# Movement function toward a given position
-	var direction = (target - global_position).normalized()
-	velocity = direction * move_speed
-	move_and_slide()
-
-func _input_event(viewport, event, shape_idx):
-	# Show popup info when clicked
+func _input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var info = {
 			"name": "Dragon",
@@ -126,7 +119,6 @@ func _input_event(viewport, event, shape_idx):
 		MonsterInfo.show_info(info, event.position)
 
 func get_live_stats() -> Dictionary:
-	# Called externally for live data
 	return {
 		"efficiency": int(efficiency_score),
 		"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec" % [

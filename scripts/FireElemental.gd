@@ -68,7 +68,10 @@ func _move_toward_target(delta: float) -> void:
 
 func _convert_coal_to_lava() -> void:
 	# Calls ConversionModule to replace coal with lava
-	ConversionModule.replace_tile(target_position, 0, 2)  # 0 = coal, 2 = lava
+	ConversionModule.replace_tile(target_position, 0, 2)  # 0 = Coal, 2 = Lava
+
+	# Remove the tile from claimed list so others can target it later
+	SearchModule.claimed_tile_positions.erase(target_position)
 
 func _input_event(viewport, event, shape_idx):
 	# Handle left-click to show monster info popup
