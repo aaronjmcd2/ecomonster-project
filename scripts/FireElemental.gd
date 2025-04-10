@@ -4,6 +4,8 @@
 
 extends CharacterBody2D
 
+@onready var EfficiencyTracker := preload("res://scripts/MonsterHelperScripts/EfficiencyTracker.gd").new()
+@onready var lava_stat := preload("res://scripts/MonsterHelperScripts/RollingStatTracker.gd").new()
 @onready var search_display := $SearchRadiusDisplay
 
 @export var search_radius := 10
@@ -14,17 +16,16 @@ var target_position = null  # ← Type will be inferred dynamically
 var is_busy := false
 var cooldown_timer := 0.0
 var wander_target: Vector2 = Vector2.ZERO
-var efficiency_score: float = 0.0
-var lava_log := []
-const LAVA_LOG_SIZE := 60  # 60 seconds
-var lava_this_second: int = 0
-var lava_timer: float = 0.0
 const EFFICIENCY_RATE := 100.0 / (5 * 60.0)
+var efficiency_score: float = 0.0
+var lava_tick_timer: float = 0.0
 
 func _ready():
 	# Configure collision layers and search display
 	collision_layer = 2
 	collision_mask = 1
+	
+	add_child(lava_stat)
 	
 	if search_display:
 		search_display.set_radius(search_radius * 32)
@@ -48,16 +49,16 @@ func _process(delta):
 		efficiency_score -= EFFICIENCY_RATE * delta
 
 	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
-	
-	# Lava/min tracking (rolling 60s average)
-	lava_timer += delta
-	if lava_timer >= 1.0:
-		lava_log.append(lava_this_second)
-		if lava_log.size() > LAVA_LOG_SIZE:
-			lava_log.pop_front()
+		
+	# Efficiency tracking
+	efficiency_score = EfficiencyTracker.update(delta, was_efficient, efficiency_score, EFFICIENCY_RATE)
 
-		lava_this_second = 0
-		lava_timer = 0.0
+	# Lava/min rolling stat tracker
+	lava_tick_timer += delta
+	if lava_tick_timer >= 1.0:
+		lava_stat.tick()
+		lava_tick_timer = 0.0
+
 
 
 func _handle_cooldown(delta: float) -> void:
@@ -98,7 +99,7 @@ func _move_toward_target(delta) -> void:
 		cooldown_timer = conversion_cooldown
 
 func _convert_coal_to_lava() -> void:
-	lava_this_second += 1
+	lava_stat.add(1)
 	# Calls ConversionModule to replace coal with lava
 	ConversionModule.replace_tile(target_position, 0, 2)  # 0 = Coal, 2 = Lava
 
@@ -117,10 +118,7 @@ func _input_event(viewport, event, shape_idx):
 		MonsterInfo.show_info(info, event.position)
 		
 func get_live_stats() -> Dictionary:
-	var total = 0
-	for amount in lava_log:
-		total += amount
-	var average_lava_per_min = float(total)
+	var average_lava_per_min = lava_stat.get_average()
 	var max_lava_per_min = 60.0 / conversion_cooldown
 
 	return {
