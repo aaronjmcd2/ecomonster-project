@@ -1,13 +1,22 @@
+# SearchModule.gd
+# Provides reusable functions to help monsters find ore drops and tiles by type.
+# Used globally by Fire Elemental, Coal Worm, and others.
+# Attached as Autoload singleton.
+
 extends Node
 
-# Finds the closest iron ore drop within a search radius
+# === Finds the closest unclaimed ore drop within range and claims it ===
+# origin: world position of the searching creature
+# max_distance: maximum allowed search radius (in pixels)
+# claimer: node who will "claim" the drop to prevent others from targeting it
+# Returns: Node2D or null
 func find_closest_ore_drop(origin: Vector2, max_distance: float, claimer: Node) -> Node2D:
 	var closest_drop: Node2D = null
 	var closest_dist := max_distance
 
 	for drop in get_tree().get_nodes_in_group("ore_drops"):
 		if drop.claimed_by != null:
-			continue  # Skip already claimed
+			continue  # Already claimed by another
 
 		var dist = origin.distance_to(drop.global_position)
 		if dist < closest_dist:
@@ -20,14 +29,17 @@ func find_closest_ore_drop(origin: Vector2, max_distance: float, claimer: Node) 
 
 	return closest_drop
 
-
-# Finds the nearest tile with the given source_id within the search radius
+# === Finds the nearest tile of a given source_id within a circular radius ===
+# origin: world position of searcher
+# radius: tile-based search radius (not in pixels)
+# source_id: the tile type to look for (0 = coal, 2 = lava, etc.)
+# Returns: Vector2 (world position of found tile) or null
 func find_nearest_tile(origin: Vector2, radius: int, source_id: int) -> Variant:
-	var tilemap = get_tree().current_scene.get_node("TileMap/TileMapLayer") # This is the actual tilemap with the TileSet
-	var layer_index = 0
+	var tilemap = get_tree().current_scene.get_node("TileMap/TileMapLayer")
 	var closest_tile: Vector2 = Vector2.ZERO
 	var closest_distance := INF
 	var found := false
+
 	var origin_cell = tilemap.local_to_map(origin)
 
 	for x in range(-radius, radius + 1):
@@ -35,6 +47,7 @@ func find_nearest_tile(origin: Vector2, radius: int, source_id: int) -> Variant:
 			var offset = Vector2i(x, y)
 			var cell = origin_cell + offset
 
+			# Skip tiles outside the circular search range
 			if offset.length() > radius:
 				continue
 
@@ -42,6 +55,7 @@ func find_nearest_tile(origin: Vector2, radius: int, source_id: int) -> Variant:
 			if cell_source == source_id:
 				var world_pos = tilemap.map_to_local(cell)
 				var dist = origin.distance_to(world_pos)
+
 				if dist < closest_distance:
 					closest_distance = dist
 					closest_tile = world_pos
