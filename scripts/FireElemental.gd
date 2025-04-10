@@ -36,6 +36,11 @@ func _process(delta):
 	if is_busy:
 		_handle_cooldown(delta)
 		was_efficient = true
+
+		# Continue wandering while busy
+		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
+			_pick_wander_target()
+		_move_toward_wander_target()
 	elif target_position:
 		_move_toward_target(delta)
 		was_efficient = true

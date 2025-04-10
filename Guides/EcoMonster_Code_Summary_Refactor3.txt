@@ -1,17 +1,18 @@
-EcoMonster Project — Code Overview Summary (as of Refactor Phase 2)
+EcoMonster Project — Code Overview Summary (as of Refactor Phase 3)
 ====================================================================
 
 🧩 Core Principles
 ------------------
 - Single Responsibility per script
-- All scripts kept under ~150 lines
-- Modules used for shared logic (Autoloaded)
+- Shared concerns now refactored into helper modules
+- Scripts remain focused while logic is modularized
 - Creature behaviors are cleanly separated
+- Rolling averages and efficiency now use shared modules
 
 📂 Project Structure
 --------------------
 - Monsters/         → FireElemental.gd, CoalWorm.gd, Dragon.gd
-- Modules/          → SearchModule.gd, ConversionModule.gd, InventoryData.gd
+- Modules/          → SearchModule.gd, ConversionModule.gd, InventoryData.gd, EfficiencyTracker.gd, RollingStatTracker.gd
 - UI/               → InventoryUI, InventorySlot.gd, MonsterInfoPopup.gd, SearchRadiusDisplay.gd
 - Systems/          → Main.gd (entry point, sets up inventory and hotbar)
 
@@ -20,21 +21,23 @@ EcoMonster Project — Code Overview Summary (as of Refactor Phase 2)
 1. FireElemental.gd
    - Searches for coal tiles
    - Converts coal to lava via ConversionModule
-   - Wanders when idle
+   - Wanders when idle or on cooldown
+   - Tracks efficiency and Lava/min using shared modules
 
 2. CoalWorm.gd
    - Searches for unclaimed ore drops
    - Converts tile under or nearby into coal
-   - Uses SearchModule to find drops
+   - Tracks efficiency and Coal/min using shared modules
 
 3. Dragon.gd
    - Searches for lava, consumes it
    - Replaces lava with soil
    - Excretes ore after cooldown
-   - Tracks efficiency score
+   - Tracks efficiency and Ore/min using shared modules
+   - Wanders while digesting
 
-🧠 Shared Modules (Autoloaded)
-------------------------------
+🧠 Shared Modules (Autoloaded or Preloaded)
+-------------------------------------------
 - SearchModule.gd
   → `find_closest_ore_drop()` for CoalWorms
   → `find_nearest_tile()` for FireElemental and Dragon
@@ -47,6 +50,12 @@ EcoMonster Project — Code Overview Summary (as of Refactor Phase 2)
   → Manages inventory grid, hotbar index
   → Handles stack movement and item drops
 
+- EfficiencyTracker.gd
+  → Handles score-based efficiency tracking (0–100%)
+
+- RollingStatTracker.gd
+  → Tracks rolling averages over time (e.g., Coal/min, Lava/min, Ore/min)
+
 🎨 UI Scripts
 -------------
 - InventorySlot.gd
@@ -55,7 +64,7 @@ EcoMonster Project — Code Overview Summary (as of Refactor Phase 2)
 
 - MonsterInfoPopup.gd
   → Displays creature info on click
-  → Calls get_live_stats() if available
+  → Updates in real time via `get_live_stats()`
   → Shows/hides SearchRadiusDisplay
 
 - SearchRadiusDisplay.gd
@@ -68,7 +77,7 @@ EcoMonster Project — Code Overview Summary (as of Refactor Phase 2)
 - Toggles inventory visibility on keybind
 
 ✅ Everything is:
-- Modular
-- Documented
-- Functionally verified
-- Easy to navigate for continued development
+- Modular and scalable
+- Documented and consistent
+- Live-updating and performance-aware
+- Ready for ongoing development and future polish
