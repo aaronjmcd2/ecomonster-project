@@ -21,11 +21,15 @@ func set_item(item: Dictionary) -> void:
 	item_data = item
 
 	if item:
-		var path := "res://sprites/%s.png" % item.name
-		if ResourceLoader.exists(path):
-			icon.texture = load(path)
+		if item.has("icon") and item["icon"] is Texture2D:
+			icon.texture = item["icon"]
 		else:
-			icon.texture = null
+			# Fallback to loading from name if no icon provided
+			var path := "res://sprites/%s.png" % item.name
+			if ResourceLoader.exists(path):
+				icon.texture = load(path)
+			else:
+				icon.texture = null
 
 		count_label.text = str(item.count)
 		icon.visible = true
@@ -50,18 +54,16 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	var drag_texture = icon.texture
 	var ctrl_pressed = Input.is_key_pressed(KEY_CTRL)
 
+	var item_to_drag: Dictionary
+
 	# Handle stack splitting if Ctrl is held
-	if ctrl_pressed:
-		if drag_count <= 1:
-			print("⚠️ Cannot split stack of 1")
-			return null
-		else:
-			drag_count = 1
-			item_data.count -= 1
-			set_item(item_data)
+	if ctrl_pressed and drag_count > 1:
+		item_to_drag = item_data.duplicate(true)
+		item_to_drag["count"] = 1
+		item_data["count"] -= 1
+		set_item(item_data)
 	else:
-		# Move full stack
-		item_data = {}
+		item_to_drag = item_data.duplicate(true)
 		clear_slot()
 
 	# Prepare drag preview UI
@@ -78,12 +80,10 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	set_drag_preview(preview_wrapper)
 
 	return {
-		"item": {
-			"name": drag_name,
-			"count": drag_count
-		},
+		"item": item_to_drag,
 		"source": self
 	}
+
 
 # === Determine if we can accept the incoming dropped item ===
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:

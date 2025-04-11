@@ -6,6 +6,7 @@ extends CharacterBody2D
 
 @export var speed: float = 200.0
 @export var pickup_radius: float = 800.0
+@onready var inventory_ui := get_node("/root/Main/UILayer/InventoryUI")
 
 var velocity_vector := Vector2.ZERO
 
@@ -97,6 +98,13 @@ func _unhandled_input(event) -> void:
 
 		_update_hotbar_selector()
 
+	# Weapon use: Spacebar
+	if event.is_action_pressed("use_item"):
+		var selected_item = inventory_ui.get_selected_hotbar_item()
+		if selected_item and selected_item.has("type") and selected_item.type == "weapon":
+			use_weapon(selected_item)
+
+
 # === Try picking up an item at a clicked location ===
 func try_pickup_item(world_pos: Vector2) -> void:
 	var query = PhysicsPointQueryParameters2D.new()
@@ -108,7 +116,11 @@ func try_pickup_item(world_pos: Vector2) -> void:
 
 	for result in results:
 		var node = result.get("collider")
-		if node and node.is_in_group("ore_drops"):
+		if node == null:
+			continue
+
+		# Handle ore drops
+		if node.is_in_group("ore_drops"):
 			if global_position.distance_to(node.global_position) <= pickup_radius:
 				print("✨ Picked up:", node.name)
 
@@ -118,12 +130,20 @@ func try_pickup_item(world_pos: Vector2) -> void:
 					"count": drop_count
 				}
 
-				var ui = get_node("/root/Main/UILayer/InventoryUI")
-				print("🎯 Attempting to add:", item_data)
-
-				ui.add_item_to_inventory(item_data.duplicate(true))  # Deep copy
+				inventory_ui.add_item_to_inventory(item_data.duplicate(true))  # Deep copy
 				node.queue_free()
 				break
+
+		# Handle world items like SwordDrop
+		elif node.is_in_group("world_items"):
+			if global_position.distance_to(node.global_position) <= pickup_radius:
+				print("🗡️ Picked up world item:", node.name)
+
+				var item_data = node.get_item_data()
+				inventory_ui.add_item_to_inventory(item_data.duplicate(true))  # Deep copy
+				node.queue_free()
+				break
+
 
 # === Helper to update hotbar UI and print selected item ===
 func _update_hotbar_selector() -> void:
@@ -135,3 +155,11 @@ func _update_hotbar_selector() -> void:
 		print("🔘 Selected Hotbar Item:", selected_item)
 	else:
 		print("⚪ Hotbar slot is empty.")
+
+func use_weapon(item):
+	# You could play a sword slash animation, sound, or spawn a hitbox here
+	print("Swinging weapon: %s" % item.name)
+	# Optional: spawn hitbox
+	var hitbox = item.scene.instantiate()
+	hitbox.global_position = global_position + Vector2(16, 0)  # Place in front of player
+	get_parent().add_child(hitbox)

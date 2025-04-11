@@ -15,6 +15,14 @@ const HOTBAR_SIZE := 8
 # inventory: Array of arrays representing rows of item slots (null = empty)
 var inventory: Array = []
 var hotbar_selected_index := 0
+var sword_item := {
+	"type": "weapon",
+	"name": "Sword",
+	"icon": preload("res://sprites/Items/Weapons/Sword.png"), # Replace with actual path
+	"count": 1,
+	#"scene": preload("res://items/SwordHitbox.tscn") # Optional, for spawning hitbox
+}
+
 
 func _ready():
 	_initialize_inventory()
@@ -52,15 +60,20 @@ func move_item(from_row: int, from_col: int, to_row: int, to_col: int) -> void:
 # === Drops an item from inventory into the world near the player ===
 # slot_ref: the inventory slot node this came from (used to clear/update)
 func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stack: bool = false) -> void:
-	var player = get_tree().get_root().get_node("Main/Player")
-	if not player:
-		print("❌ Player not found")
+	var player = get_tree().get_root().get_node_or_null("Main/Player")
+	if player == null:
+		print("❌ Player not found. Cannot drop item.")
 		return
 
 	var drop_pos = player.global_position + Vector2(16, 0)
 
-	# TEMP: Hardcoded to IronOreDrop — will generalize later
-	var drop_scene = preload("res://scenes/IronOreDrop.tscn")
+	# TEMP: Determine drop scene from item type
+	var drop_scene: PackedScene
+	if item.has("scene"):
+		drop_scene = item["scene"]
+	else:
+		drop_scene = preload("res://scenes/IronOreDrop.tscn") # fallback for now
+
 	var drop_instance = drop_scene.instantiate()
 	drop_instance.position = drop_pos
 	get_tree().get_root().add_child(drop_instance)

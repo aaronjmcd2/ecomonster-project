@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://be6r3gurdpklx"]
+
+[ext_resource type="Script" uid="uid://bhdlx15587tmp" path="res://scripts/Item/Weapons/Sword.gd" id="1_np5rs"]
+[ext_resource type="Texture2D" uid="uid://bsfxiiuyl7v6b" path="res://sprites/Items/Weapons/Sword.png" id="2_jlq0o"]
+
+[node name="Sword" type="Node2D"]
+script = ExtResource("1_np5rs")
+
+[node name="SwordSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_jlq0o")

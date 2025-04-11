@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=11 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://tiles/TileSet.tres" id="1_elqb8"]
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://scripts/Main.gd" id="1_q8u5g"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ccfcrl5wxjvor" path="res://scenes/MonsterInfoPopup.tscn" id="7_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://scenes/FireElemental.tscn" id="9_lhr70"]
 [ext_resource type="PackedScene" uid="uid://dskqqlloghbas" path="res://scenes/UI/InventoryUI.tscn" id="9_q8u5g"]
+[ext_resource type="PackedScene" uid="uid://yw22vu84qjjn" path="res://scenes/Items/Weapons/SwordDrop.tscn" id="10_lhr70"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q8u5g")
@@ -59,3 +60,6 @@ position = Vector2(-272, 164)
 
 [node name="IronOreDrop5" parent="." instance=ExtResource("3_rarhs")]
 position = Vector2(-528, -173)
+
+[node name="SwordDrop" parent="." instance=ExtResource("10_lhr70")]
+position = Vector2(-164, -236)
