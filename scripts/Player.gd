@@ -9,8 +9,9 @@ extends CharacterBody2D
 @onready var inventory_ui := get_node("/root/Main/UILayer/InventoryUI")
 
 var velocity_vector := Vector2.ZERO
+var facing_direction := Vector2.DOWN  # default starting direction
 
-@onready var sprite := $Sprite
+@onready var anim_sprite := $PlayerSprite  # Use whatever name you gave to AnimatedSprite2D
 @onready var camera := $Camera2D
 
 @export var zoom_step: float = 0.1
@@ -46,12 +47,14 @@ func _physics_process(delta: float) -> void:
 			velocity = Vector2.ZERO
 			position += collision.get_normal() * 2.0
 
-	# Flip sprite to face direction
-	if velocity_vector.x < 0:
-		sprite.scale.x = -1
-	elif velocity_vector.x > 0:
-		sprite.scale.x = 1
+	# Determine facing direction
+	if velocity_vector != Vector2.ZERO:
+		facing_direction = velocity_vector
 
+	# Always update animation, even when not moving
+	update_animation()
+
+		
 # === Sets low-friction physics material to avoid sticky collisions ===
 func setup_physics_material() -> void:
 	var physics_material = PhysicsMaterial.new()
@@ -167,3 +170,19 @@ func use_weapon(item):
 
 		if sword.has_method("swing"):
 			sword.swing()
+
+func update_animation():
+	if velocity_vector == Vector2.ZERO:
+		if facing_direction.x > 0 or facing_direction.y < 0:
+			anim_sprite.play("idle_right")
+		else:
+			anim_sprite.play("idle_left")
+	else:
+		if velocity_vector.x > 0:
+			anim_sprite.play("walk_right")
+		elif velocity_vector.x < 0:
+			anim_sprite.play("walk_left")
+		elif velocity_vector.y < 0:
+			anim_sprite.play("walk_up")
+		elif velocity_vector.y > 0:
+			anim_sprite.play("walk_down")
