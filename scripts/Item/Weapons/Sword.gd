@@ -3,7 +3,6 @@ extends Node2D
 @onready var anim := $AnimationPlayer
 
 func _ready():
-	anim.play("idle")
 	$Hitbox.connect("body_entered", Callable(self, "_on_hitbox_body_entered"))
 	$Hitbox.monitoring = false  # Start disabled
 

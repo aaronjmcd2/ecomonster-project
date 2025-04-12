@@ -164,12 +164,40 @@ func use_weapon(item):
 
 	var use_scene = item.get("use_scene", null)
 	if use_scene:
+		# If a sword is already equipped, remove it first (optional)
+		if has_node("EquippedSword"):
+			get_node("EquippedSword").queue_free()
+
 		var sword = use_scene.instantiate()
-		sword.global_position = global_position + Vector2(16, 0)
-		get_parent().add_child(sword)
+		sword.name = "EquippedSword"
+
+		# Attach sword to player
+		add_child(sword)  # Not get_parent()—now it's a child of the player
+
+		# Set directional offset and rotation
+		var dir := facing_direction.normalized()
+		var offset := Vector2.ZERO
+
+		if dir.x > 0:  # Right
+			sword.rotation_degrees = 45
+			offset = Vector2(16, 8)
+		elif dir.x < 0:  # Left
+			sword.rotation_degrees = 225
+			offset = Vector2(-16, 8)
+		elif dir.y < 0:  # Up
+			sword.rotation_degrees = 315
+			offset = Vector2(0, -16)
+		elif dir.y > 0:  # Down
+			sword.rotation_degrees = 135
+			offset = Vector2(0, 16)
+
+		sword.position = offset  # Local position relative to player
+
+		print("Rotation applied:", sword.rotation_degrees)
 
 		if sword.has_method("swing"):
 			sword.swing()
+
 
 func update_animation():
 	if velocity_vector == Vector2.ZERO:

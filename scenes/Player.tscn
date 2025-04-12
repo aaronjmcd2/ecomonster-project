@@ -86,4 +86,4 @@ position = Vector2(-4, -1)
 scale = Vector2(0.639069, 0.660324)
 sprite_frames = SubResource("SpriteFrames_jfpux")
 animation = &"idle_left"
-frame_progress = 0.174074
+frame_progress = 0.000194907
