@@ -157,9 +157,13 @@ func _update_hotbar_selector() -> void:
 		print("⚪ Hotbar slot is empty.")
 
 func use_weapon(item):
-	# You could play a sword slash animation, sound, or spawn a hitbox here
 	print("Swinging weapon: %s" % item.name)
-	# Optional: spawn hitbox
-	var hitbox = item.scene.instantiate()
-	hitbox.global_position = global_position + Vector2(16, 0)  # Place in front of player
-	get_parent().add_child(hitbox)
+
+	var use_scene = item.get("use_scene", null)
+	if use_scene:
+		var sword = use_scene.instantiate()
+		sword.global_position = global_position + Vector2(16, 0)
+		get_parent().add_child(sword)
+
+		if sword.has_method("swing"):
+			sword.swing()
