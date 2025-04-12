@@ -46,6 +46,12 @@ PLAYER:
   • _unhandled_input handles item pickup (left click) and hotbar scrolling (X/C)
   • try_pickup_item(world_pos): picks up nearby ore drops and adds them to the inventory
   • Prints currently selected hotbar item whenever the selector moves
+- If a hotbar item of type "weapon" is selected, the player can press Spacebar to use it
+- Sword instancing logic:
+    • Instantiated as a child of the player
+    • Automatically positioned and rotated based on facing direction
+    • Automatically removed after swinging
+
 
 INVENTORYUI:
 ------------
@@ -66,6 +72,10 @@ ITEMS:
 - Items (like IronOreDrop) are Area2D nodes with collision and grouped as "ore_drops"
 - Clicking them (within range) allows player to manually pick them up
 - Items dropped from inventory use a count and scene reference
+- Some items include a `"type"` key (e.g. `"weapon"`) and a `"use_scene"` key
+    • When selected in the hotbar, pressing Spacebar will call `Player.gd.use_weapon(item)`
+    • The `"use_scene"` points to a functional version of the item (e.g. Sword.tscn)
+    • The `"scene"` key still determines what gets dropped from the inventory
 
 HOTBAR SELECTOR:
 ----------------
