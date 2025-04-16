@@ -13,7 +13,7 @@ extends CharacterBody2D
 
 # === Nodes & UI References ===
 @onready var inventory_ui := get_node("/root/Main/UILayer/InventoryUI")
-@onready var anim_sprite := $PlayerSprite
+@onready var anim_sprite := $AnimatedSprite2D
 @onready var camera := $Camera2D
 
 # === Movement State ===
@@ -49,6 +49,7 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity_vector * speed
 
 	var collision = move_and_collide(velocity * delta)
+	position = position.round()
 	if collision:
 		var collider = collision.get_collider()
 		if collider and collider.is_in_group("monsters"):
@@ -104,17 +105,4 @@ func setup_physics_material() -> void:
 
 # === Animation State ===
 func update_animation():
-	if velocity_vector == Vector2.ZERO:
-		if facing_direction.x > 0 or facing_direction.y < 0:
-			anim_sprite.play("idle_right")
-		else:
-			anim_sprite.play("idle_left")
-	else:
-		if velocity_vector.x > 0:
-			anim_sprite.play("walk_right")
-		elif velocity_vector.x < 0:
-			anim_sprite.play("walk_left")
-		elif velocity_vector.y < 0:
-			anim_sprite.play("walk_up")
-		elif velocity_vector.y > 0:
-			anim_sprite.play("walk_down")
+	anim_sprite.play("idle_down")
