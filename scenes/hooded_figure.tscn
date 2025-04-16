@@ -12,7 +12,6 @@ shader_parameter/fill_color = Vector4(1, 0, 0, 1)
 shader = ExtResource("3_y2iot")
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3anih"]
-load_path = "res://.godot/imported/ChatGPT Image Apr 13, 2025, 04_20_22 PM.png-a73bc2949c854251a69b010c2c9016a7.ctex"
 
 [node name="HoodedFigure" type="CharacterBody2D"]
 

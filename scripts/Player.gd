@@ -105,4 +105,10 @@ func setup_physics_material() -> void:
 
 # === Animation State ===
 func update_animation():
-	anim_sprite.play("idle_down")
+	if velocity_vector == Vector2.ZERO:
+		anim_sprite.play("idle_down")
+	else:
+		if velocity_vector.y > 0:
+			anim_sprite.play("walk_down")
+		else:
+			anim_sprite.play("idle_down")  # fallback for now
