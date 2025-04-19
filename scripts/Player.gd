@@ -27,6 +27,7 @@ var combat_module = preload("res://Modules/PlayerCombatModule.gd").new()
 
 # === Initialization ===
 func _ready():
+	set_fill_color(Color("#ac1a1a"))  # rich red
 	setup_physics_material()
 	zoom_module.setup(camera, zoom_step, min_zoom, max_zoom)
 	pickup_module.setup(self, inventory_ui, pickup_radius)
@@ -112,3 +113,8 @@ func update_animation():
 			anim_sprite.play("walk_down")
 		else:
 			anim_sprite.play("idle_down")  # fallback for now
+
+func set_fill_color(color: Color) -> void:
+	var mat: ShaderMaterial = anim_sprite.material as ShaderMaterial
+	if mat:
+		mat.set_shader_parameter("fill_color", color)
