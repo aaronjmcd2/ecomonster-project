@@ -6,6 +6,7 @@ extends CharacterBody2D
 
 @onready var tile_map_layer = get_node("/root/Main/TileMap/TileMapLayer")
 @onready var search_display := $SearchRadiusDisplay
+@onready var anim_sprite := $AnimatedSprite2D  # Add this to the top with the other @onready vars
 
 @export var search_radius: int = 10
 @export var max_lava_storage: int = 8
@@ -35,6 +36,8 @@ func _ready():
 	collision_mask = 1
 	if search_display:
 		search_display.set_radius(search_radius * 32)
+	
+	anim_sprite.play("idle_down")  # <--- play animation here
 
 func _process(delta: float) -> void:
 	is_efficient = false

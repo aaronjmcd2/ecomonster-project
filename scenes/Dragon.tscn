@@ -1,12 +1,67 @@
-[gd_scene load_steps=6 format=3 uid="uid://b7he5tq8l7t7i"]
+[gd_scene load_steps=18 format=3 uid="uid://b7he5tq8l7t7i"]
 
 [ext_resource type="Script" uid="uid://d2fbxnvdgoy1v" path="res://scripts/Dragon.gd" id="1_yknt0"]
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="2_2awct"]
-[ext_resource type="Texture2D" uid="uid://c7s8yh63ldkjh" path="res://sprites/Monsters/Dragon.png" id="2_q2k8u"]
+[ext_resource type="Texture2D" uid="uid://c8lry6q258q0" path="res://sprites/Monsters/Dragon/dragon-idle0000.png" id="3_jjn10"]
 [ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="4_2awct"]
+[ext_resource type="Texture2D" uid="uid://dm45scrbfdc6h" path="res://sprites/Monsters/Dragon/dragon-idle0001.png" id="4_t2axl"]
+[ext_resource type="Texture2D" uid="uid://dq2xqs1pwxsct" path="res://sprites/Monsters/Dragon/dragon-idle0002.png" id="5_2mrcb"]
+[ext_resource type="Texture2D" uid="uid://bwqqwqll8owup" path="res://sprites/Monsters/Dragon/dragon-idle0003.png" id="6_ngdy2"]
+[ext_resource type="Texture2D" uid="uid://c5y2dwfy4sg83" path="res://sprites/Monsters/Dragon/dragon-idle0004.png" id="7_ex7uv"]
+[ext_resource type="Texture2D" uid="uid://cnc1dq0kpbmwo" path="res://sprites/Monsters/Dragon/dragon-idle0005.png" id="8_gx5jg"]
+[ext_resource type="Texture2D" uid="uid://bto3fbmmmwysu" path="res://sprites/Monsters/Dragon/dragon-idle0006.png" id="9_onn22"]
+[ext_resource type="Texture2D" uid="uid://b36ialuxl0tgg" path="res://sprites/Monsters/Dragon/dragon-idle0007.png" id="10_qxjhd"]
+[ext_resource type="Texture2D" uid="uid://b2j1btm0esk5q" path="res://sprites/Monsters/Dragon/dragon-idle0008.png" id="11_xqcmr"]
+[ext_resource type="Texture2D" uid="uid://drwsrg8lj6yah" path="res://sprites/Monsters/Dragon/dragon-idle0009.png" id="12_vgls8"]
+[ext_resource type="Texture2D" uid="uid://bbqxp4fa8noqk" path="res://sprites/Monsters/Dragon/dragon-idle0010.png" id="13_8rk7y"]
+[ext_resource type="Texture2D" uid="uid://frg5ujcxldxa" path="res://sprites/Monsters/Dragon/dragon-idle0011.png" id="14_whvpt"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2awct"]
-size = Vector2(102, 35)
+[sub_resource type="SpriteFrames" id="SpriteFrames_2n00n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_jjn10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_t2axl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2mrcb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ngdy2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ex7uv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_gx5jg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_onn22")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_qxjhd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_xqcmr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_vgls8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8rk7y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_whvpt")
+}],
+"loop": true,
+"name": &"idle_down",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0xo5m"]
+radius = 77.9295
 
 [node name="Dragon" type="CharacterBody2D" groups=["monsters"]]
 collision_layer = 2
@@ -14,12 +69,17 @@ input_pickable = true
 script = ExtResource("1_yknt0")
 ore_drop_scene = ExtResource("2_2awct")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_q2k8u")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, 2)
+scale = Vector2(0.394531, 0.394531)
+sprite_frames = SubResource("SpriteFrames_2n00n")
+animation = &"idle_down"
+frame = 4
+frame_progress = 0.544413
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-2, -7.5)
-shape = SubResource("RectangleShape2D_2awct")
+position = Vector2(1, 5)
+shape = SubResource("CircleShape2D_0xo5m")
 
 [node name="SearchRadiusDisplay" type="Node2D" parent="."]
 script = ExtResource("4_2awct")

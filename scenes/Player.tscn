@@ -37,11 +37,11 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk_down",
-"speed": 8.0
+"speed": 6.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mdl7e"]
-size = Vector2(32, 121)
+size = Vector2(28, 141.5)
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 3
@@ -49,14 +49,14 @@ script = ExtResource("1_v6fml")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_xsi7p")
-position = Vector2(0, 1)
-scale = Vector2(0.210938, 0.210938)
+position = Vector2(4.49997, -9.5468)
+scale = Vector2(0.246094, 0.246094)
 sprite_frames = SubResource("SpriteFrames_priom")
 animation = &"walk_down"
 frame_progress = 0.0358414
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
+position = Vector2(0, -11)
 shape = SubResource("RectangleShape2D_mdl7e")
 
 [node name="Camera2D" type="Camera2D" parent="."]
