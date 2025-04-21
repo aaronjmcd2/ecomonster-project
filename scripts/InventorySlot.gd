@@ -73,9 +73,16 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 
 	var preview := TextureRect.new()
 	preview.texture = drag_texture
-	preview.custom_minimum_size = Vector2(32, 32)
-	preview.position = -preview.custom_minimum_size / 2 + Vector2(-8, -8)
+
+	# Scale it manually to 32x32, regardless of original image size
+	var original_size = drag_texture.get_size()
+	var scale_factor = 64.0 / max(original_size.x, original_size.y)
+	preview.scale = Vector2(scale_factor, scale_factor)
+
+	# Center the preview visually under the cursor
+	preview.position = -Vector2(16, 16)
 	preview_wrapper.add_child(preview)
+
 
 	set_drag_preview(preview_wrapper)
 

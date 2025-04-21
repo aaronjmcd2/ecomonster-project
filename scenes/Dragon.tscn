@@ -61,7 +61,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0xo5m"]
-radius = 77.9295
+radius = 260.768
 
 [node name="Dragon" type="CharacterBody2D" groups=["monsters"]]
 collision_layer = 2
@@ -70,15 +70,15 @@ script = ExtResource("1_yknt0")
 ore_drop_scene = ExtResource("2_2awct")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(1, 2)
-scale = Vector2(0.394531, 0.394531)
+position = Vector2(2.99998, 2.00002)
+scale = Vector2(1.26953, 1.26953)
 sprite_frames = SubResource("SpriteFrames_2n00n")
 animation = &"idle_down"
 frame = 4
 frame_progress = 0.544413
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 5)
+position = Vector2(4, 19)
 shape = SubResource("CircleShape2D_0xo5m")
 
 [node name="SearchRadiusDisplay" type="Node2D" parent="."]

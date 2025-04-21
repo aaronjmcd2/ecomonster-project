@@ -9,9 +9,9 @@ extends CharacterBody2D
 @onready var tile_map_layer := get_node("/root/Main/TileMap/TileMapLayer")
 @onready var search_display := $SearchRadiusDisplay
 
-@export var search_radius: int = 10
+@export var search_radius: int = 40
 @export var cooldown_time: float = 5.0
-@export var speed: float = 100.0
+@export var speed: float = 400.0
 
 const EFFICIENCY_RATE := 100.0 / (5 * 60.0)
 var efficiency_score: float = 0.0

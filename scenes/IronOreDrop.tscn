@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c42bua1pm2mw4" path="res://sprites/IronOre.png" id="2_xpm41"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xm11h"]
-radius = 17.0
+radius = 81.0555
 
 [node name="IronOreDrop" type="Area2D" groups=["ore_drops"]]
 script = ExtResource("1_ahxx1")

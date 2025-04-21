@@ -8,8 +8,8 @@ extends CharacterBody2D
 @onready var lava_stat := preload("res://scripts/MonsterHelperScripts/RollingStatTracker.gd").new()
 @onready var search_display := $SearchRadiusDisplay
 
-@export var search_radius := 10
-@export var move_speed := 60.0
+@export var search_radius := 60
+@export var move_speed := 240.0
 @export var conversion_cooldown := 5.0
 
 var target_position = null  # ← Type will be inferred dynamically

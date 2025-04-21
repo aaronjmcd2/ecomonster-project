@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bsfxiiuyl7v6b" path="res://sprites/Items/Weapons/Sword.png" id="2_8wwne"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sijk3"]
-size = Vector2(12.0172, 48.0827)
+size = Vector2(76.5117, 206.778)
 
 [sub_resource type="Animation" id="Animation_8wwne"]
 length = 0.001
@@ -47,10 +47,11 @@ _data = {
 script = ExtResource("1_30b2q")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, 1)
 texture = ExtResource("2_8wwne")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.74752, 0.245099)
+position = Vector2(0, -7.62939e-06)
 rotation = 0.790312
 shape = SubResource("RectangleShape2D_sijk3")
 

@@ -5,11 +5,11 @@
 extends CharacterBody2D
 
 # === Exported Configuration ===
-@export var speed: float = 200.0
+@export var speed: float = 800.0
 @export var pickup_radius: float = 800.0
-@export var zoom_step: float = 0.1
-@export var min_zoom: float = 0.5
-@export var max_zoom: float = 2.0
+@export var zoom_step: float = 0.02
+@export var min_zoom: float = 0.1   # zoomed in most
+@export var max_zoom: float = 0.5   # zoomed out farthest
 
 # === Nodes & UI References ===
 @onready var inventory_ui := get_node("/root/Main/UILayer/InventoryUI")
@@ -30,6 +30,7 @@ func _ready():
 	set_fill_color(Color("#ac1a1a"))  # rich red
 	setup_physics_material()
 	zoom_module.setup(camera, zoom_step, min_zoom, max_zoom)
+	camera.zoom = Vector2(0.3, 0.3)
 	pickup_module.setup(self, inventory_ui, pickup_radius)
 	combat_module.setup(self, inventory_ui)
 
@@ -66,9 +67,9 @@ func _physics_process(delta: float) -> void:
 func _unhandled_input(event) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			zoom_module.zoom_in()
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			zoom_module.zoom_out()
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			zoom_module.zoom_in()
 
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			var world_pos = get_canvas_transform().affine_inverse() * event.position

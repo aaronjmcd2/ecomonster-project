@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="3_fgvab"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ehp7w"]
-size = Vector2(56, 72)
+size = Vector2(186, 359.75)
 
 [node name="CoalWorm" type="CharacterBody2D" groups=["monsters"]]
 collision_layer = 2
@@ -13,10 +13,12 @@ input_pickable = true
 script = ExtResource("1_ehp7w")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(4.00001, 1.99999)
+scale = Vector2(4.57031, 4.57031)
 texture = ExtResource("2_fgvab")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-16, -4)
+position = Vector2(-70, -6.875)
 shape = SubResource("RectangleShape2D_ehp7w")
 
 [node name="SearchRadiusDisplay" type="Node2D" parent="."]

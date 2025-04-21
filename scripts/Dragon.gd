@@ -8,10 +8,10 @@ extends CharacterBody2D
 @onready var search_display := $SearchRadiusDisplay
 @onready var anim_sprite := $AnimatedSprite2D  # Add this to the top with the other @onready vars
 
-@export var search_radius: int = 10
+@export var search_radius: int = 60
 @export var max_lava_storage: int = 8
 @export var ore_drop_count: int = 2
-@export var move_speed: float = 50.0
+@export var move_speed: float = 200.0
 @export var cooldown_time: float = 10.0
 @export var ore_drop_scene: PackedScene
 @export var required_lava_to_excrete: int = 2
