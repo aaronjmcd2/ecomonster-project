@@ -4,7 +4,7 @@
 
 extends CharacterBody2D
 
-@onready var tile_map_layer = get_node("/root/Main/TileMap/TileMapLayer")
+@onready var tile_map_layer: TileMapLayer = get_node("/root/Main/TileMap/TileMapLayer")
 @onready var search_display := $SearchRadiusDisplay
 @onready var anim_sprite := $AnimatedSprite2D  # Add this to the top with the other @onready vars
 
@@ -32,12 +32,17 @@ var wander_timer: float = 0.0
 var wander_target: Vector2 = Vector2.ZERO
 
 func _ready():
+	tile_map_layer = get_node("/root/Main/TileMap/TileMapLayer")  # no .get_node_or_null()
+	
+	if not tile_map_layer:
+		push_error("Could not find TileMapLayer!")
+
 	collision_layer = 2
 	collision_mask = 1
 	if search_display:
 		search_display.set_radius(search_radius * 32)
-	
-	anim_sprite.play("idle_down")  # <--- play animation here
+
+	anim_sprite.play("idle_down")
 
 func _process(delta: float) -> void:
 	is_efficient = false
@@ -120,6 +125,8 @@ func _consume_lava() -> void:
 
 	if source_id == 2:  # lava
 		tile_map_layer.set_cell(tile_pos, 3, Vector2i(0, 0))  # 3 = soil
+		TileRefreshModule.refresh_neighbors(tile_map_layer, tile_pos, true)  # <-- refresh neighbors + center
+		tile_map_layer.fix_invalid_tiles()  # <-- this still helps a bit!
 		lava_storage += 1
 		SearchModule.claimed_tile_positions.erase(target_tile)
 

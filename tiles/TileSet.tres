@@ -1,46 +1,12 @@
-[gd_resource type="TileSet" load_steps=11 format=3 uid="uid://bsx88c66ucj8x"]
+[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://bsx88c66ucj8x"]
 
 [ext_resource type="Texture2D" uid="uid://dm67py7e0rdkq" path="res://tiles/coal_tile.png" id="1_iyo0e"]
-[ext_resource type="Texture2D" uid="uid://jom6ns3x3qve" path="res://tiles/blah.png" id="2_d4wpd"]
-[ext_resource type="Texture2D" uid="uid://wski83polj58" path="res://tiles/lava_tile.png" id="2_iyo0e"]
 [ext_resource type="Texture2D" uid="uid://ccqduguwqmkpo" path="res://tiles/soil_tile.png" id="3_oge78"]
 [ext_resource type="Texture2D" uid="uid://cj3imrmx1y8r8" path="res://tiles/autotile/lava_autotile.png" id="5_oge78"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d4wpd"]
 resource_name = "CoalSource"
 texture = ExtResource("1_iyo0e")
-texture_region_size = Vector2i(256, 256)
-0:0/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2jmtu"]
-texture = ExtResource("2_d4wpd")
-texture_region_size = Vector2i(64, 64)
-0:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-1:2/0 = 0
-1:0/0 = 0
-0:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-3:2/0 = 0
-3:1/0 = 0
-3:0/0 = 0
-2:0/0 = 0
-2:1/0 = 0
-2:2/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1punk"]
-resource_name = "LavaSource"
-texture = ExtResource("2_iyo0e")
-texture_region_size = Vector2i(256, 256)
-0:0/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oge78"]
-resource_name = "SoilSource"
-texture = ExtResource("3_oge78")
 texture_region_size = Vector2i(256, 256)
 0:0/0 = 0
 
@@ -379,13 +345,17 @@ texture_region_size = Vector2i(256, 256)
 11:3/0/terrains_peering_bit/top_left_corner = 0
 11:3/0/terrains_peering_bit/top_side = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oge78"]
+resource_name = "SoilSource"
+texture = ExtResource("3_oge78")
+texture_region_size = Vector2i(256, 256)
+0:0/0 = 0
+
 [resource]
 tile_size = Vector2i(256, 256)
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Lava"
 terrain_set_0/terrain_0/color = Color(0.705882, 0.788235, 0.294118, 1)
-sources/2 = SubResource("TileSetAtlasSource_1punk")
 sources/3 = SubResource("TileSetAtlasSource_oge78")
 sources/0 = SubResource("TileSetAtlasSource_d4wpd")
-sources/1 = SubResource("TileSetAtlasSource_2jmtu")
-sources/4 = SubResource("TileSetAtlasSource_k440l")
+sources/2 = SubResource("TileSetAtlasSource_k440l")

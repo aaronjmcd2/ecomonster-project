@@ -20,6 +20,7 @@ SearchModule="*res://modules/SearchModule.gd"
 ConversionModule="*res://modules/ConversionModule.gd"
 InventoryDataScript="*res://scripts/InventoryData.gd"
 MonsterInfo="*res://scenes/MonsterInfoPopup.tscn"
+TileRefreshModule="*res://modules/TileRefreshModule.gd"
 
 [global_group]
 
