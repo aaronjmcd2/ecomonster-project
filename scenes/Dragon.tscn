@@ -1,9 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://b7he5tq8l7t7i"]
+[gd_scene load_steps=20 format=3 uid="uid://b7he5tq8l7t7i"]
 
 [ext_resource type="Script" uid="uid://d2fbxnvdgoy1v" path="res://scripts/Dragon.gd" id="1_yknt0"]
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="2_2awct"]
 [ext_resource type="Texture2D" uid="uid://c8lry6q258q0" path="res://sprites/Monsters/Dragon/dragon-idle0000.png" id="3_jjn10"]
+[ext_resource type="PackedScene" uid="uid://qt38ufsl3w3s" path="res://scenes/SilverOreDrop.tscn" id="3_t2axl"]
 [ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="4_2awct"]
+[ext_resource type="PackedScene" uid="uid://uyxcqd1w6ubl" path="res://scenes/GoldOreDrop.tscn" id="4_2mrcb"]
 [ext_resource type="Texture2D" uid="uid://dm45scrbfdc6h" path="res://sprites/Monsters/Dragon/dragon-idle0001.png" id="4_t2axl"]
 [ext_resource type="Texture2D" uid="uid://dq2xqs1pwxsct" path="res://sprites/Monsters/Dragon/dragon-idle0002.png" id="5_2mrcb"]
 [ext_resource type="Texture2D" uid="uid://bwqqwqll8owup" path="res://sprites/Monsters/Dragon/dragon-idle0003.png" id="6_ngdy2"]
@@ -68,6 +70,8 @@ collision_layer = 2
 input_pickable = true
 script = ExtResource("1_yknt0")
 ore_drop_scene = ExtResource("2_2awct")
+silver_drop_scene = ExtResource("3_t2axl")
+gold_drop_scene = ExtResource("4_2mrcb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(2.99998, 2.00002)

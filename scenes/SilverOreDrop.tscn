@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://qt38ufsl3w3s"]
+
+[ext_resource type="Script" uid="uid://bmagygp7r0ubl" path="res://scripts/SilverOreDrop.gd" id="1_swejr"]
+[ext_resource type="Texture2D" uid="uid://ca5hco0fduvsl" path="res://sprites/silver_ore.png" id="2_iyamf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xm11h"]
+radius = 70.0071
+
+[node name="SilverOreDrop" type="Area2D" groups=["ore_drops"]]
+script = ExtResource("1_swejr")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_iyamf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+shape = SubResource("CircleShape2D_xm11h")

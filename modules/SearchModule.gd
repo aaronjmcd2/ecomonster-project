@@ -36,6 +36,39 @@ func find_closest_ore_drop(origin: Vector2, max_distance: float, claimer: Node) 
 # radius: tile-based search radius (not in pixels)
 # source_id: the tile type to look for (0 = coal, 2 = lava, etc.)
 # Returns: Vector2 (world position of found tile) or null
+
+# === Finds the closest unclaimed ore drop of a specific type ===
+# origin: world position of the searching creature
+# max_distance: maximum allowed search radius (in pixels)
+# resource_type: string name of the type (e.g., "egg", "iron", "gold")
+# claimer: the monster claiming it
+# Returns: Node2D or null
+func find_closest_drop_of_type(origin: Vector2, max_distance: float, resource_type: String, claimer: Node) -> Node2D:
+	var closest_drop: Node2D = null
+	var closest_dist := max_distance
+
+	for drop in get_tree().get_nodes_in_group("ore_drops"):
+		if drop.claimed_by != null and drop.claimed_by != claimer:
+			continue
+
+		if drop.resource_type != resource_type:
+			continue
+
+		var dist = origin.distance_to(drop.global_position)
+
+		if dist > max_distance:
+			continue
+
+		if dist < closest_dist:
+			closest_dist = dist
+			closest_drop = drop
+
+	if closest_drop:
+		closest_drop.claimed_by = claimer
+		print("🔖", resource_type.capitalize(), "drop claimed by:", claimer.name, "at", closest_drop.global_position)
+
+	return closest_drop
+
 func find_nearest_tile(origin: Vector2, radius: int, source_id: int) -> Variant:
 	var tilemap = get_tree().current_scene.get_node("TileMap/TileMapLayer")
 	var closest_tile: Vector2 = Vector2.ZERO

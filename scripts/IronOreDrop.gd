@@ -1,6 +1,7 @@
 extends Area2D
 
 var claimed_by: Node = null
+var resource_type: String = "iron"
 
 @export var ore_type: String = "iron"
 @export var ore_value: int = 1
