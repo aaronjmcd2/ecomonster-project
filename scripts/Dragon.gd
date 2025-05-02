@@ -187,32 +187,36 @@ func _consume_tile() -> void:
 	print("ICE STORAGE:", ice_storage, " | REQUIRED:", required_ice_to_excrete, " | COOLING:", is_cooling_down)
 
 func _excrete_ore() -> void:
-	var drop_instance: Node2D = null
+	var drop_scene: PackedScene = null
+	var drops_to_produce := 0
 
-	# Excrete based on current excretion_type
 	match excretion_type:
 		"lava":
 			if lava_storage >= required_lava_to_excrete:
-				drop_instance = ore_drop_scene.instantiate()
+				drops_to_produce = lava_yield
 				lava_storage -= required_lava_to_excrete
+				drop_scene = ore_drop_scene
 		"ice":
 			if ice_storage >= required_ice_to_excrete and silver_drop_scene:
-				drop_instance = silver_drop_scene.instantiate()
+				drops_to_produce = ice_yield
 				ice_storage -= required_ice_to_excrete
+				drop_scene = silver_drop_scene
 		"egg":
 			if egg_storage >= required_eggs_to_excrete and gold_drop_scene:
-				drop_instance = gold_drop_scene.instantiate()
+				drops_to_produce = egg_yield
 				egg_storage -= required_eggs_to_excrete
+				drop_scene = gold_drop_scene
 
-	# If we produced something, add it to the world
-	if drop_instance:
-		var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
-		drop_instance.global_position = global_position + offset
-		get_parent().add_child(drop_instance)
-		ore_this_second += 1
+	# 🧾 Spawn actual drops
+	if drop_scene:
+		for i in drops_to_produce:
+			var instance = drop_scene.instantiate()
+			var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
+			instance.global_position = global_position + offset
+			get_parent().add_child(instance)
+			ore_this_second += 1
 
-	# Decide what to do next
-	# Step 1: Can we keep excreting the same type?
+	# 🧠 Step 1: See if we can keep excreting the same type
 	match excretion_type:
 		"lava":
 			if lava_storage >= required_lava_to_excrete:
@@ -227,7 +231,7 @@ func _excrete_ore() -> void:
 				cooldown_timer = cooldown_time
 				return
 
-	# Step 2: Look for another type to switch to
+	# 🧠 Step 2: Switch to something else if available
 	if lava_storage >= required_lava_to_excrete:
 		excretion_type = "lava"
 		cooldown_timer = cooldown_time
@@ -241,9 +245,10 @@ func _excrete_ore() -> void:
 		cooldown_timer = cooldown_time
 		return
 
-	# Step 3: Nothing left to excrete
+	# 🧠 Step 3: Nothing left
 	is_cooling_down = false
 	cooldown_timer = 0.0
+
 
 
 func _input_event(viewport, event, shape_idx) -> void:
