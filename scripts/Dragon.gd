@@ -8,8 +8,12 @@ extends CharacterBody2D
 @onready var search_display := $SearchRadiusDisplay
 @onready var anim_sprite := $AnimatedSprite2D  # Add this to the top with the other @onready vars
 
+@export var lava_yield: int = 2
+@export var ice_yield: int = 2
+@export var egg_yield: int = 2
 @export var search_radius_tiles: int = 12     # Used for tile search
 @export var search_radius_px: float = 3072.0   # THIS IS search_radius_tiles * 256
+@export var max_total_storage: int = 8
 @export var max_lava_storage: int = 8
 @export var ore_drop_count: int = 2
 @export var move_speed: float = 200.0
@@ -144,6 +148,9 @@ func _move_toward_target(delta: float) -> void:
 
 
 func _consume_tile() -> void:
+	if get_total_storage() >= max_total_storage:
+		return
+		
 	if not target_tile or (lava_storage >= max_lava_storage and ice_storage >= max_lava_storage):
 		return
 
@@ -252,25 +259,39 @@ func _input_event(viewport, event, shape_idx) -> void:
 		MonsterInfo.show_info(info, event.position)
 
 func get_live_stats() -> Dictionary:
-	var total = 0
-	for amount in ore_log:
-		total += amount
-	var average_ore_per_min = float(total)
-	var max_ore_per_min = 60.0 / cooldown_time  # Max 1 excrete per cooldown
+	var total_stored = get_total_storage()
+	var efficiency_pct = int(efficiency_score)
+
+	var next_output = "None"
+	var next_output_count = 0
+
+	if excretion_type == "lava":
+		next_output = "Iron Ore"
+		next_output_count = int(lava_storage / required_lava_to_excrete) * lava_yield
+	elif excretion_type == "ice":
+		next_output = "Silver Ore"
+		next_output_count = int(ice_storage / required_ice_to_excrete) * ice_yield
+	elif excretion_type == "egg":
+		next_output = "Gold Ore"
+		next_output_count = int(egg_storage / required_eggs_to_excrete) * egg_yield
+
+	var stat_text = "Storage: %d / %d\n" % [total_stored, max_total_storage]
+	stat_text += "- Lava: %d (%d needed → %d Iron Ore)\n" % [lava_storage, required_lava_to_excrete, lava_yield]
+	stat_text += "- Ice: %d (%d needed → %d Silver Ore)\n" % [ice_storage, required_ice_to_excrete, ice_yield]
+	stat_text += "- Eggs: %d (%d needed → %d Gold Ore)\n" % [egg_storage, required_eggs_to_excrete, egg_yield]
+	stat_text += "Cooldown: %.1f sec\n" % cooldown_time
+	stat_text += "Next Output: %s x%d" % [next_output, next_output_count]
 
 	return {
-		"efficiency": int(efficiency_score),
-		"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec\nOre/min: %.1f / %.1f" % [
-			lava_storage,
-			max_lava_storage,
-			ore_drop_count,
-			cooldown_time,
-			average_ore_per_min,
-			max_ore_per_min
-		]
+		"efficiency": efficiency_pct,
+		"stats": stat_text
 	}
+
 	
 func _consume_egg() -> void:
+	if get_total_storage() >= max_total_storage:
+		return
+
 	if not target_egg or egg_storage >= max_lava_storage:
 		return
 
@@ -284,3 +305,6 @@ func _consume_egg() -> void:
 		is_cooling_down = true
 		cooldown_timer = cooldown_time
 		excretion_type = "egg"
+
+func get_total_storage() -> int:
+	return lava_storage + ice_storage + egg_storage
