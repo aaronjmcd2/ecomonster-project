@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ca5hco0fduvsl"
-path="res://.godot/imported/silver_ore.png-b96eb5cbe500c47e4b5d8246900286ab.ctex"
+path="res://.godot/imported/SilverOre.png-798cdca2c42fc56eed980c91eb84e511.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/silver_ore.png"
-dest_files=["res://.godot/imported/silver_ore.png-b96eb5cbe500c47e4b5d8246900286ab.ctex"]
+source_file="res://sprites/SilverOre.png"
+dest_files=["res://.godot/imported/SilverOre.png-798cdca2c42fc56eed980c91eb84e511.ctex"]
 
 [params]
 

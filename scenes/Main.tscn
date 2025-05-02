@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=12 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://tiles/TileSet.tres" id="1_elqb8"]
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://scripts/Main.gd" id="1_q8u5g"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://ccfcrl5wxjvor" path="res://scenes/MonsterInfoPopup.tscn" id="7_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://dskqqlloghbas" path="res://scenes/UI/InventoryUI.tscn" id="9_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://yw22vu84qjjn" path="res://scenes/Items/Weapons/SwordDrop.tscn" id="10_lhr70"]
+[ext_resource type="PackedScene" uid="uid://qt38ufsl3w3s" path="res://scenes/SilverOreDrop.tscn" id="10_wp0k4"]
+[ext_resource type="PackedScene" uid="uid://uyxcqd1w6ubl" path="res://scenes/GoldOreDrop.tscn" id="11_bjd11"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q8u5g")
@@ -58,3 +60,15 @@ position = Vector2(-1135, -303)
 
 [node name="Player" parent="." instance=ExtResource("2_rvslj")]
 position = Vector2(-2496, -543)
+
+[node name="SilverOreDrop" parent="." instance=ExtResource("10_wp0k4")]
+position = Vector2(-2746, 256)
+
+[node name="SilverOreDrop2" parent="." instance=ExtResource("10_wp0k4")]
+position = Vector2(-3263, 346)
+
+[node name="GoldOreDrop" parent="." instance=ExtResource("11_bjd11")]
+position = Vector2(-3332, -83)
+
+[node name="GoldOreDrop2" parent="." instance=ExtResource("11_bjd11")]
+position = Vector2(-3049, -63)

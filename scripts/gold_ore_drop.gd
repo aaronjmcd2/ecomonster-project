@@ -1,8 +1,7 @@
 extends Area2D
 
-var claimed_by: Node = null
-var resource_type: String = "gold"
+var count: int = 1
+var ore_type: String = "gold"
 
 func _ready():
-	# Optional: play spawn animation or particles here
-	pass
+	print("🪙 Gold ore spawned | count:", count)
