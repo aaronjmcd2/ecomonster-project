@@ -26,6 +26,7 @@ TileRefreshModule="*res://modules/TileRefreshModule.gd"
 
 ore_drops=""
 monsters=""
+egg_drops=""
 
 [input]
 

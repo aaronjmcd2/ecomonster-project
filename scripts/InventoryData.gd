@@ -72,7 +72,19 @@ func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stac
 	if item.has("scene"):
 		drop_scene = item["scene"]
 	else:
-		drop_scene = preload("res://scenes/IronOreDrop.tscn") # fallback for now
+		match item["name"]:
+			"IronOre":
+				drop_scene = preload("res://scenes/IronOreDrop.tscn")
+			"Egg":
+				drop_scene = preload("res://scenes/Egg.tscn")
+			"GoldOre":
+				drop_scene = preload("res://scenes/GoldOreDrop.tscn")
+			"SilverOre":
+				drop_scene = preload("res://scenes/SilverOreDrop.tscn")
+			_:
+				print("⚠️ No drop scene found for item:", item["name"])
+				return
+
 
 	var drop_instance = drop_scene.instantiate()
 	drop_instance.position = drop_pos

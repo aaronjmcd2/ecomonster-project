@@ -1,8 +1,6 @@
 extends Area2D
 
-var claimed_by: Node = null
-var resource_type: String = "egg"
+var count: int = 1  # Required to match the pickup logic
 
 func _ready():
-	# Optional: play spawn animation or particles here
-	pass
+	print("🥚 Egg spawned | count:", count)

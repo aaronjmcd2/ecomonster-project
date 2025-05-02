@@ -36,6 +36,20 @@ func try_pickup_item(world_pos: Vector2) -> void:
 				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
 				node.queue_free()
 				break
+				
+		elif node.is_in_group("egg_drops"):
+			if player.global_position.distance_to(node.global_position) <= pickup_radius:
+				print("🥚 Picked up egg:", node.name)
+				var drop_count = node.count
+				var item_data = {
+					"name": "Egg",  # ✅ Corrected from "IronOre"
+					"count": drop_count
+				}
+				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
+				node.queue_free()
+				break
+
+
 
 		elif node.is_in_group("world_items"):
 			if player.global_position.distance_to(node.global_position) <= pickup_radius:
