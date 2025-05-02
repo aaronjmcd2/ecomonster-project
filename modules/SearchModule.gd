@@ -16,7 +16,8 @@ func find_closest_ore_drop(origin: Vector2, max_distance: float, claimer: Node) 
 	var closest_drop: Node2D = null
 	var closest_dist := max_distance
 
-	for drop in get_tree().get_nodes_in_group("ore_drops"):
+	var all_drops := get_tree().get_nodes_in_group("ore_drops") + get_tree().get_nodes_in_group("egg_drops")
+	for drop in all_drops:
 		if drop.claimed_by != null:
 			continue  # Already claimed by another
 
@@ -47,7 +48,8 @@ func find_closest_drop_of_type(origin: Vector2, max_distance: float, resource_ty
 	var closest_drop: Node2D = null
 	var closest_dist := max_distance
 
-	for drop in get_tree().get_nodes_in_group("ore_drops"):
+	var all_drops := get_tree().get_nodes_in_group("ore_drops") + get_tree().get_nodes_in_group("egg_drops")
+	for drop in all_drops:
 		if drop.claimed_by != null and drop.claimed_by != claimer:
 			continue
 
