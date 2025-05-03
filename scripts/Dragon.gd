@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var tile_map_layer: TileMapLayer = get_node("/root/Main/TileMap/TileMapLayer")
 @onready var search_display := $SearchRadiusDisplay
 @onready var anim_sprite := $AnimatedSprite2D  # Add this to the top with the other @onready vars
+@onready var wander_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonWanderModule.gd").new()
 
 @export var lava_yield: int = 2
 @export var ice_yield: int = 2
@@ -83,12 +84,14 @@ func _process(delta: float) -> void:
 
 			if not target_tile:
 				if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
-					_pick_wander_target()
+					wander_target = wander_module.pick_wander_target(global_position)
+					target_tile = null
 				_move_toward_target(delta)
 	else:
 		# Storage full → wander
 		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
-			_pick_wander_target()
+			wander_target = wander_module.pick_wander_target(global_position)
+			target_tile = null
 		_move_toward_target(delta)
 
 	# === Egg Search ===
@@ -122,7 +125,9 @@ func _process(delta: float) -> void:
 func _search_for_lava() -> void:
 	target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 2)
 	if not target_tile:
-		_pick_wander_target()
+		wander_target = wander_module.pick_wander_target(global_position)
+		target_tile = null
+
 
 
 func _pick_wander_target() -> void:
@@ -144,7 +149,9 @@ func _move_toward_target(delta: float) -> void:
 			elif target_egg:
 				_consume_egg()
 			else:
-				_pick_wander_target()
+				wander_target = wander_module.pick_wander_target(global_position)
+				target_tile = null
+
 
 
 func _consume_tile() -> void:
