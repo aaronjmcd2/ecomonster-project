@@ -8,6 +8,8 @@ extends CharacterBody2D
 @onready var search_display := $SearchRadiusDisplay
 @onready var anim_sprite := $AnimatedSprite2D  # Add this to the top with the other @onready vars
 @onready var wander_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonWanderModule.gd").new()
+@onready var movement_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonMovementModule.gd").new()
+
 
 @export var lava_yield: int = 2
 @export var ice_yield: int = 2
@@ -76,7 +78,16 @@ func _process(delta: float) -> void:
 	# === Behavior: Try to consume lava or ice if not full ===
 	if lava_storage < max_lava_storage or ice_storage < max_lava_storage:
 		if target_tile:
-			_move_toward_target(delta)
+			var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
+
+			if move_result == "tile":
+				_consume_tile()
+			elif move_result == "egg":
+				_consume_egg()
+			elif move_result == "wander":
+				wander_target = wander_module.pick_wander_target(global_position)
+				target_tile = null
+
 		else:
 			target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 2)  # Lava
 			if not target_tile:
@@ -86,13 +97,31 @@ func _process(delta: float) -> void:
 				if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
 					wander_target = wander_module.pick_wander_target(global_position)
 					target_tile = null
-				_move_toward_target(delta)
+				var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
+
+				if move_result == "tile":
+					_consume_tile()
+				elif move_result == "egg":
+					_consume_egg()
+				elif move_result == "wander":
+					wander_target = wander_module.pick_wander_target(global_position)
+					target_tile = null
+
 	else:
 		# Storage full → wander
 		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
 			wander_target = wander_module.pick_wander_target(global_position)
 			target_tile = null
-		_move_toward_target(delta)
+		var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
+
+		if move_result == "tile":
+			_consume_tile()
+		elif move_result == "egg":
+			_consume_egg()
+		elif move_result == "wander":
+			wander_target = wander_module.pick_wander_target(global_position)
+			target_tile = null
+
 
 	# === Egg Search ===
 	if not target_tile:
@@ -135,24 +164,6 @@ func _pick_wander_target() -> void:
 	var offset = Vector2(cos(angle), sin(angle)) * 32
 	wander_target = global_position + offset
 	target_tile = null
-
-func _move_toward_target(delta: float) -> void:
-	var target = target_tile if target_tile else (target_egg.global_position if target_egg else wander_target)
-	var direction = (target - global_position).normalized()
-	velocity = direction * move_speed
-	move_and_slide()
-
-	if global_position.distance_to(target) < 5.0:
-		if global_position.distance_to(target) < 5.0:
-			if target_tile:
-				_consume_tile()
-			elif target_egg:
-				_consume_egg()
-			else:
-				wander_target = wander_module.pick_wander_target(global_position)
-				target_tile = null
-
-
 
 func _consume_tile() -> void:
 	if get_total_storage() >= max_total_storage:
