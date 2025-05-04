@@ -38,11 +38,18 @@ func get_live_stats(dragon: Node) -> Dictionary:
 		next_output = "Gold Ore"
 		next_output_count = int(dragon.egg_storage / dragon.required_eggs_to_excrete) * dragon.egg_yield
 
+	# Format the cooldown timer display
+	var cooldown_display = ""
+	if dragon.is_cooling_down:
+		cooldown_display = "Cooldown: %.1f / %.1f sec" % [dragon.cooldown_timer, dragon.cooldown_time]
+	else:
+		cooldown_display = "Cooldown: Ready"
+
 	var stat_text = "Storage: %d / %d\n" % [total_stored, dragon.max_total_storage]
 	stat_text += "- Lava: %d (%d needed → %d Iron Ore)\n" % [dragon.lava_storage, dragon.required_lava_to_excrete, dragon.lava_yield]
 	stat_text += "- Ice: %d (%d needed → %d Silver Ore)\n" % [dragon.ice_storage, dragon.required_ice_to_excrete, dragon.ice_yield]
 	stat_text += "- Eggs: %d (%d needed → %d Gold Ore)\n" % [dragon.egg_storage, dragon.required_eggs_to_excrete, dragon.egg_yield]
-	stat_text += "Cooldown: %.1f sec\n" % dragon.cooldown_time
+	stat_text += cooldown_display + "\n"
 	stat_text += "Next Output: %s x%d" % [next_output, next_output_count]
 
 	return {
