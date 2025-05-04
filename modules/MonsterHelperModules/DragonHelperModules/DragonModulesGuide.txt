@@ -1,0 +1,160 @@
+# Dragon Modules Guide
+
+This guide documents all the modules created for the Dragon monster, explaining their purpose, key functions, and how they work together.
+
+## Module Overview
+
+The Dragon's behavior has been fully modularized into these components:
+
+1. **DragonWanderModule** - Handles wandering target selection
+2. **DragonMovementModule** - Manages movement toward targets
+3. **DragonConsumptionModule** - Processes consumption of resources
+4. **DragonExcretionModule** - Controls ore excretion and cooldown
+5. **DragonStatsModule** - Tracks efficiency and statistics
+6. **DragonSearchModule** - Handles finding resources
+7. **DragonUIModule** - Manages UI interaction
+8. **DragonTileModule** - Handles tile-specific operations
+9. **DragonAnimationModule** - Manages animation states
+10. **DragonInitModule** - Handles initialization logic
+
+## Module Details
+
+### 1. DragonWanderModule
+**Purpose**: Determine where to wander when no resources are available.
+- `pick_wander_target(global_position)` - Creates a new random wander target
+
+### 2. DragonMovementModule
+**Purpose**: Handle movement toward various targets.
+- `move_toward_target(delta, self_node, target_tile, target_egg, wander_target, move_speed)` - Moves toward the highest priority target
+
+### 3. DragonConsumptionModule
+**Purpose**: Handle resource consumption.
+- `consume_tile(dragon, target_tile, tile_map_layer)` - Consumes a tile resource
+- `consume_egg(dragon, target_egg)` - Consumes an egg resource
+- `get_total_storage(dragon)` - Returns combined resource storage
+
+### 4. DragonExcretionModule
+**Purpose**: Manage ore production.
+- `excrete_ore(dragon)` - Produces ore based on stored resources
+
+### 5. DragonStatsModule
+**Purpose**: Track efficiency and statistics.
+- `update_efficiency(dragon, delta, is_efficient)` - Updates efficiency score
+- `update_ore_log(dragon, delta)` - Tracks ore production over time
+- `get_live_stats(dragon)` - Generates stats for display
+
+### 6. DragonSearchModule
+**Purpose**: Find resources to target.
+- `search_for_lava(dragon)` - Finds lava tiles
+- `search_for_ice(dragon)` - Finds ice tiles
+- `search_for_egg(dragon)` - Finds egg drops
+- `search_for_resources(dragon)` - Comprehensive search
+- `ensure_wander_target(dragon)` - Guarantees a valid wander target
+
+### 7. DragonUIModule
+**Purpose**: Handle UI interactions.
+- `handle_input_event(dragon, viewport, event, shape_idx)` - Processes clicks on the Dragon
+
+### 8. DragonTileModule
+**Purpose**: Manage tile-specific operations.
+- `convert_to_soil(dragon, tile_pos, tile_map_layer)` - Converts resources to soil
+- `process_resource(dragon, source_id)` - Handles resource logic after gathering
+- `release_tile(tile_pos)` - Removes tiles from claimed list
+
+### 9. DragonAnimationModule
+**Purpose**: Handle animation states.
+- `initialize(dragon)` - Sets up initial animation
+- `update_animation(dragon)` - Updates animation based on movement
+- `play_animation(dragon, anim_name)` - Plays specific animations
+- `play_excretion_animation(dragon)` - Special animation for excretion
+
+### 10. DragonInitModule
+**Purpose**: Handle initialization.
+- `initialize(dragon)` - Main setup function
+- `_setup_physics(dragon)` - Configures physics properties
+- `_setup_search_display(dragon)` - Sets up search radius display
+- `_find_initial_targets(dragon)` - Finds initial resource targets
+- `validate_dependencies(dragon)` - Checks for required resources/nodes
+
+## Interaction Flow
+
+1. **Initialization**:
+   - `DragonInitModule` sets up physics, search display, and initial targets
+
+2. **Main Behavior Loop**:
+   - **Finding Resources**: `DragonSearchModule` locates resources to target
+   - **Movement**: `DragonMovementModule` handles movement to targets
+   - **Resource Gathering**: `DragonConsumptionModule` + `DragonTileModule` process resource collection
+   - **Wandering**: When no resources are available, `DragonWanderModule` selects wander targets
+   - **Excretion**: `DragonExcretionModule` handles ore production after cooldown
+   - **Animation**: `DragonAnimationModule` manages visual state
+   - **Stats Tracking**: `DragonStatsModule` tracks efficiency and ore production
+
+3. **UI Interaction**:
+   - `DragonUIModule` handles displaying stats when clicked
+
+## Dragon.gd Role
+
+The Dragon.gd script is now primarily an orchestrator that:
+- Loads all necessary modules
+- Maintains state variables
+- Coordinates module interactions in the right sequence
+- Delegates specific behaviors to appropriate modules
+
+## Benefits of Complete Modularization
+
+1. **Clean separation of concerns** - Each aspect of behavior is isolated
+2. **Enhanced maintainability** - Changes to one behavior don't affect others
+3. **Simplified main script** - Dragon.gd is now much more readable
+4. **Future extensibility** - New behaviors can be added in new modules
+5. **Improved testing** - Modules can be tested independently
+
+## Module Interactions Diagram
+
+```
+Dragon.gd (Orchestrator)
+│
+├── Initialization ──── DragonInitModule
+│
+├── Movement ─────────┬─ DragonMovementModule
+│                     └─ DragonAnimationModule
+│
+├── Resource Finding ── DragonSearchModule ─── SearchModule
+│
+├── Resource Collection ┬─ DragonConsumptionModule
+│                       └─ DragonTileModule ────── TileRefreshModule
+│
+├── Ore Production ───── DragonExcretionModule
+│
+├── Wandering ────────── DragonWanderModule
+│
+├── Stats ─────────────┬─ DragonStatsModule
+│                      └─ DragonUIModule ────────── MonsterInfo
+```
+
+## Best Practices for Module Development
+
+1. **Single Responsibility**: Each module should have one clear purpose
+2. **Minimal Dependencies**: Modules should have few dependencies on other modules
+3. **Standard Interface**: Use consistent parameter patterns across modules
+4. **Incremental Development**: Add one module at a time and test thoroughly
+5. **Descriptive Names**: Use clear, descriptive names for modules and functions
+6. **Good Documentation**: Document each module with its purpose and key functions
+
+## Extending the Module System
+
+To add new behavior to the Dragon:
+
+1. Create a new module with appropriate functions
+2. Add it to Dragon.gd with `@onready var new_module = preload("path/to/NewModule.gd").new()`
+3. Call the module's functions from Dragon.gd where needed
+
+## Troubleshooting
+
+If a module is not working correctly:
+
+1. Verify the module is properly loaded
+2. Check that all required parameters are passed correctly
+3. Add print statements to track module execution
+4. Ensure state variables are updated appropriately
+5. Test the module in isolation if possible

@@ -25,7 +25,7 @@ func excrete_ore(dragon: Node) -> void:
 				dragon.egg_storage -= dragon.required_eggs_to_excrete
 				drop_scene = dragon.gold_drop_scene
 
-	# 🧾 Spawn actual drops
+	# Spawn actual drops
 	if drop_scene:
 		for i in drops_to_produce:
 			var instance = drop_scene.instantiate()
@@ -34,7 +34,7 @@ func excrete_ore(dragon: Node) -> void:
 			dragon.get_parent().add_child(instance)
 			dragon.ore_this_second += 1
 
-	# 🧠 Step 1: See if we can keep excreting the same type
+	# Step 1: See if we can keep excreting the same type
 	match dragon.excretion_type:
 		"lava":
 			if dragon.lava_storage >= dragon.required_lava_to_excrete:
@@ -49,7 +49,7 @@ func excrete_ore(dragon: Node) -> void:
 				dragon.cooldown_timer = dragon.cooldown_time
 				return
 
-	# 🧠 Step 2: Switch to something else if available
+	# Step 2: Switch to something else if available
 	if dragon.lava_storage >= dragon.required_lava_to_excrete:
 		dragon.excretion_type = "lava"
 		dragon.cooldown_timer = dragon.cooldown_time
@@ -63,6 +63,6 @@ func excrete_ore(dragon: Node) -> void:
 		dragon.cooldown_timer = dragon.cooldown_time
 		return
 
-	# 🧠 Step 3: Nothing left
+	# Step 3: Nothing left
 	dragon.is_cooling_down = false
 	dragon.cooldown_timer = 0.0

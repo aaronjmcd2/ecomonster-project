@@ -41,12 +41,6 @@ func _find_initial_targets(dragon: Node) -> void:
 			dragon.search_radius_tiles, 
 			4  # Ice
 		)
-	
-	# Log initial target
-	if dragon.target_tile:
-		print("Dragon initialized with target:", dragon.target_tile)
-	else:
-		print("Dragon initialized with no target")
 
 # Validate required nodes and resources
 func validate_dependencies(dragon: Node) -> bool:
@@ -56,9 +50,5 @@ func validate_dependencies(dragon: Node) -> bool:
 	if not dragon.tile_map_layer:
 		push_error("Dragon: Could not find TileMapLayer!")
 		valid = false
-	
-	# Check required scenes
-	if not dragon.ore_drop_scene:
-		push_warning("Dragon: ore_drop_scene not set")
 	
 	return valid

@@ -11,16 +11,36 @@ func move_toward_target(
 	wander_target: Vector2,
 	move_speed: float
 ) -> String:
-	var target = target_tile if target_tile else (target_egg.global_position if target_egg else wander_target)
+	var target
+	var target_type = "none"
+	
+	# Determine target, prioritizing tile > egg > wander
+	if target_tile:
+		target = target_tile
+		target_type = "tile"
+	elif target_egg:
+		target = target_egg.global_position
+		target_type = "egg"
+	elif wander_target != Vector2.ZERO:
+		target = wander_target
+		target_type = "wander"
+	else:
+		# No target at all
+		self_node.velocity = Vector2.ZERO
+		return ""
+	
 	var direction = (target - self_node.global_position).normalized()
 	self_node.velocity = direction * move_speed
 	self_node.move_and_slide()
 
+	# Check if we've arrived at the target
 	if self_node.global_position.distance_to(target) < 5.0:
-		if target_tile:
+		if target_type == "tile":
 			return "tile"
-		elif target_egg:
+		elif target_type == "egg":
 			return "egg"
 		else:
 			return "wander"
+	
+	# Still moving
 	return ""

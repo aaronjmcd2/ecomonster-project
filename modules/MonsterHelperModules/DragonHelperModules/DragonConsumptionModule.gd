@@ -25,8 +25,6 @@ func consume_tile(dragon: Node, target_tile, tile_map_layer: TileMapLayer) -> vo
 		# Clear the target tile
 		dragon.target_tile = null
 
-	print("ICE STORAGE:", dragon.ice_storage, " | REQUIRED:", dragon.required_ice_to_excrete, " | COOLING:", dragon.is_cooling_down)
-
 func consume_egg(dragon: Node, target_egg: Node) -> void:
 	if get_total_storage(dragon) >= dragon.max_total_storage:
 		return
