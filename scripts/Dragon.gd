@@ -12,6 +12,7 @@ extends CharacterBody2D
 @onready var consumption_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonConsumptionModule.gd").new()
 @onready var excretion_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonExcretionModule.gd").new()
 @onready var stats_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonStatsModule.gd").new()
+@onready var search_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonSearchModule.gd").new()
 
 
 @export var lava_yield: int = 2
@@ -51,7 +52,7 @@ var wander_timer: float = 0.0
 var wander_target: Vector2 = Vector2.ZERO
 
 func _ready():
-	target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 2)  # Lava
+	target_tile = search_module.search_for_lava(self)
 	if not target_tile:
 		target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 4)  # Ice
 
@@ -90,14 +91,14 @@ func _process(delta: float) -> void:
 				target_tile = null
 
 		else:
-			target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 2)  # Lava
+			target_tile = search_module.search_for_lava(self)
 			if not target_tile:
 				target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 4)  # Ice
 
 			if not target_tile:
-				if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
-					wander_target = wander_module.pick_wander_target(global_position)
-					target_tile = null
+				# FIXED: Always ensure we have a wander target
+				search_module.ensure_wander_target(self)
+				
 				var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
 
 				if move_result == "tile":
@@ -110,9 +111,9 @@ func _process(delta: float) -> void:
 
 	else:
 		# Storage full → wander
-		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
-			wander_target = wander_module.pick_wander_target(global_position)
-			target_tile = null
+		# FIXED: Always ensure we have a wander target when full
+		search_module.ensure_wander_target(self)
+		
 		var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
 
 		if move_result == "tile":
@@ -126,7 +127,7 @@ func _process(delta: float) -> void:
 
 	# === Egg Search ===
 	if not target_tile:
-		target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 2)
+		target_tile = search_module.search_for_lava(self)
 		if not target_tile:
 			target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 4)
 
@@ -139,12 +140,6 @@ func _process(delta: float) -> void:
 	# === Ore/min rolling log ===
 	stats_module.update_ore_log(self, delta)
 
-
-func _search_for_lava() -> void:
-	target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 2)
-	if not target_tile:
-		wander_target = wander_module.pick_wander_target(global_position)
-		target_tile = null
 
 func _input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
