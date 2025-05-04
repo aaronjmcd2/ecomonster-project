@@ -13,6 +13,7 @@ extends CharacterBody2D
 @onready var excretion_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonExcretionModule.gd").new()
 @onready var stats_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonStatsModule.gd").new()
 @onready var search_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonSearchModule.gd").new()
+@onready var ui_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonUIModule.gd").new()
 
 
 @export var lava_yield: int = 2
@@ -52,9 +53,8 @@ var wander_timer: float = 0.0
 var wander_target: Vector2 = Vector2.ZERO
 
 func _ready():
-	target_tile = search_module.search_for_lava(self)
-	if not target_tile:
-		target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 4)  # Ice
+	# Initialize by searching for resources
+	search_module.search_for_resources(self)
 
 	if not tile_map_layer:
 		push_error("Could not find TileMapLayer!")
@@ -91,12 +91,11 @@ func _process(delta: float) -> void:
 				target_tile = null
 
 		else:
-			target_tile = search_module.search_for_lava(self)
-			if not target_tile:
-				target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 4)  # Ice
+			# Use combined search_for_resources function
+			search_module.search_for_resources(self)
 
 			if not target_tile:
-				# FIXED: Always ensure we have a wander target
+				# No resources found, ensure we have a wander target
 				search_module.ensure_wander_target(self)
 				
 				var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
@@ -111,7 +110,6 @@ func _process(delta: float) -> void:
 
 	else:
 		# Storage full → wander
-		# FIXED: Always ensure we have a wander target when full
 		search_module.ensure_wander_target(self)
 		
 		var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
@@ -126,13 +124,9 @@ func _process(delta: float) -> void:
 
 
 	# === Egg Search ===
-	if not target_tile:
-		target_tile = search_module.search_for_lava(self)
-		if not target_tile:
-			target_tile = SearchModule.find_nearest_tile(global_position, search_radius_tiles, 4)
-
-		if not target_tile and not target_egg:
-			target_egg = SearchModule.find_closest_drop_of_type(global_position, search_radius_px, "egg", self)
+	if not target_tile and not target_egg:
+		# Use the search_for_resources function for a comprehensive search
+		search_module.search_for_resources(self)
 
 	# === Efficiency scoring ===
 	stats_module.update_efficiency(self, delta, is_efficient)
@@ -142,16 +136,7 @@ func _process(delta: float) -> void:
 
 
 func _input_event(viewport, event, shape_idx) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var info = {
-			"name": "Dragon",
-			"efficiency": int(float(lava_storage) / float(max_lava_storage) * 100.0),
-			"stats": "Lava Stored: %d/%d\nOre Output: %d\nCooldown: %.1f sec" % [
-				lava_storage, max_lava_storage, ore_drop_count, cooldown_time
-			],
-			"node": self
-		}
-		MonsterInfo.show_info(info, event.position)
+	ui_module.handle_input_event(self, viewport, event, shape_idx)
 
 func get_live_stats() -> Dictionary:
 	return stats_module.get_live_stats(self)
