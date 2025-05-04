@@ -9,6 +9,9 @@ extends CharacterBody2D
 @onready var anim_sprite := $AnimatedSprite2D  # Add this to the top with the other @onready vars
 @onready var wander_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonWanderModule.gd").new()
 @onready var movement_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonMovementModule.gd").new()
+@onready var consumption_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonConsumptionModule.gd").new()
+@onready var excretion_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonExcretionModule.gd").new()
+@onready var stats_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonStatsModule.gd").new()
 
 
 @export var lava_yield: int = 2
@@ -60,8 +63,6 @@ func _ready():
 	if search_display:
 		search_display.set_radius(search_radius_px)
 
-
-
 	anim_sprite.play("idle_down")
 
 func _process(delta: float) -> void:
@@ -72,7 +73,7 @@ func _process(delta: float) -> void:
 		if cooldown_timer > 0.0:
 			cooldown_timer -= delta
 		else:
-			_excrete_ore()
+			excretion_module.excrete_ore(self)
 		is_efficient = true
 
 	# === Behavior: Try to consume lava or ice if not full ===
@@ -81,9 +82,9 @@ func _process(delta: float) -> void:
 			var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
 
 			if move_result == "tile":
-				_consume_tile()
+				consumption_module.consume_tile(self, target_tile, tile_map_layer)
 			elif move_result == "egg":
-				_consume_egg()
+				consumption_module.consume_egg(self, target_egg)
 			elif move_result == "wander":
 				wander_target = wander_module.pick_wander_target(global_position)
 				target_tile = null
@@ -100,9 +101,9 @@ func _process(delta: float) -> void:
 				var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
 
 				if move_result == "tile":
-					_consume_tile()
+					consumption_module.consume_tile(self, target_tile, tile_map_layer)
 				elif move_result == "egg":
-					_consume_egg()
+					consumption_module.consume_egg(self, target_egg)
 				elif move_result == "wander":
 					wander_target = wander_module.pick_wander_target(global_position)
 					target_tile = null
@@ -115,9 +116,9 @@ func _process(delta: float) -> void:
 		var move_result = movement_module.move_toward_target(delta, self, target_tile, target_egg, wander_target, move_speed)
 
 		if move_result == "tile":
-			_consume_tile()
+			consumption_module.consume_tile(self, target_tile, tile_map_layer)
 		elif move_result == "egg":
-			_consume_egg()
+			consumption_module.consume_egg(self, target_egg)
 		elif move_result == "wander":
 			wander_target = wander_module.pick_wander_target(global_position)
 			target_tile = null
@@ -133,22 +134,10 @@ func _process(delta: float) -> void:
 			target_egg = SearchModule.find_closest_drop_of_type(global_position, search_radius_px, "egg", self)
 
 	# === Efficiency scoring ===
-	if is_efficient:
-		efficiency_score += EFFICIENCY_RATE * delta
-	else:
-		efficiency_score -= EFFICIENCY_RATE * delta
-
-	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
+	stats_module.update_efficiency(self, delta, is_efficient)
 
 	# === Ore/min rolling log ===
-	ore_timer += delta
-	if ore_timer >= 1.0:
-		ore_log.append(ore_this_second)
-		if ore_log.size() > ORE_LOG_SIZE:
-			ore_log.pop_front()
-
-		ore_this_second = 0
-		ore_timer = 0.0
+	stats_module.update_ore_log(self, delta)
 
 
 func _search_for_lava() -> void:
@@ -156,118 +145,6 @@ func _search_for_lava() -> void:
 	if not target_tile:
 		wander_target = wander_module.pick_wander_target(global_position)
 		target_tile = null
-
-
-
-func _pick_wander_target() -> void:
-	var angle = randf() * TAU
-	var offset = Vector2(cos(angle), sin(angle)) * 32
-	wander_target = global_position + offset
-	target_tile = null
-
-func _consume_tile() -> void:
-	if get_total_storage() >= max_total_storage:
-		return
-		
-	if not target_tile or (lava_storage >= max_lava_storage and ice_storage >= max_lava_storage):
-		return
-
-	var tile_pos = tile_map_layer.local_to_map(target_tile)
-	var source_id = tile_map_layer.get_cell_source_id(tile_pos)
-
-	match source_id:
-		2:  # Lava
-			tile_map_layer.set_cell(tile_pos, 3, Vector2i(0, 0))  # Soil
-			TileRefreshModule.refresh_neighbors(tile_map_layer, tile_pos, true)
-			tile_map_layer.fix_invalid_tiles()
-			lava_storage += 1
-			SearchModule.claimed_tile_positions.erase(target_tile)
-
-			if lava_storage >= required_lava_to_excrete and not is_cooling_down:
-				is_cooling_down = true
-				cooldown_timer = cooldown_time
-				excretion_type = "lava"
-
-		4:  # Ice
-			tile_map_layer.set_cell(tile_pos, 3, Vector2i(0, 0))  # Soil
-			TileRefreshModule.refresh_neighbors(tile_map_layer, tile_pos, true)
-			tile_map_layer.fix_invalid_tiles()
-			ice_storage += 1
-			SearchModule.claimed_tile_positions.erase(target_tile)
-
-			if ice_storage >= required_ice_to_excrete and not is_cooling_down:
-				is_cooling_down = true
-				cooldown_timer = cooldown_time
-				excretion_type = "ice"
-
-	target_tile = null
-
-	print("ICE STORAGE:", ice_storage, " | REQUIRED:", required_ice_to_excrete, " | COOLING:", is_cooling_down)
-
-func _excrete_ore() -> void:
-	var drop_scene: PackedScene = null
-	var drops_to_produce := 0
-
-	match excretion_type:
-		"lava":
-			if lava_storage >= required_lava_to_excrete:
-				drops_to_produce = lava_yield
-				lava_storage -= required_lava_to_excrete
-				drop_scene = ore_drop_scene
-		"ice":
-			if ice_storage >= required_ice_to_excrete and silver_drop_scene:
-				drops_to_produce = ice_yield
-				ice_storage -= required_ice_to_excrete
-				drop_scene = silver_drop_scene
-		"egg":
-			if egg_storage >= required_eggs_to_excrete and gold_drop_scene:
-				drops_to_produce = egg_yield
-				egg_storage -= required_eggs_to_excrete
-				drop_scene = gold_drop_scene
-
-	# 🧾 Spawn actual drops
-	if drop_scene:
-		for i in drops_to_produce:
-			var instance = drop_scene.instantiate()
-			var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
-			instance.global_position = global_position + offset
-			get_parent().add_child(instance)
-			ore_this_second += 1
-
-	# 🧠 Step 1: See if we can keep excreting the same type
-	match excretion_type:
-		"lava":
-			if lava_storage >= required_lava_to_excrete:
-				cooldown_timer = cooldown_time
-				return
-		"ice":
-			if ice_storage >= required_ice_to_excrete:
-				cooldown_timer = cooldown_time
-				return
-		"egg":
-			if egg_storage >= required_eggs_to_excrete:
-				cooldown_timer = cooldown_time
-				return
-
-	# 🧠 Step 2: Switch to something else if available
-	if lava_storage >= required_lava_to_excrete:
-		excretion_type = "lava"
-		cooldown_timer = cooldown_time
-		return
-	elif ice_storage >= required_ice_to_excrete:
-		excretion_type = "ice"
-		cooldown_timer = cooldown_time
-		return
-	elif egg_storage >= required_eggs_to_excrete:
-		excretion_type = "egg"
-		cooldown_timer = cooldown_time
-		return
-
-	# 🧠 Step 3: Nothing left
-	is_cooling_down = false
-	cooldown_timer = 0.0
-
-
 
 func _input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -282,52 +159,7 @@ func _input_event(viewport, event, shape_idx) -> void:
 		MonsterInfo.show_info(info, event.position)
 
 func get_live_stats() -> Dictionary:
-	var total_stored = get_total_storage()
-	var efficiency_pct = int(efficiency_score)
-
-	var next_output = "None"
-	var next_output_count = 0
-
-	if excretion_type == "lava":
-		next_output = "Iron Ore"
-		next_output_count = int(lava_storage / required_lava_to_excrete) * lava_yield
-	elif excretion_type == "ice":
-		next_output = "Silver Ore"
-		next_output_count = int(ice_storage / required_ice_to_excrete) * ice_yield
-	elif excretion_type == "egg":
-		next_output = "Gold Ore"
-		next_output_count = int(egg_storage / required_eggs_to_excrete) * egg_yield
-
-	var stat_text = "Storage: %d / %d\n" % [total_stored, max_total_storage]
-	stat_text += "- Lava: %d (%d needed → %d Iron Ore)\n" % [lava_storage, required_lava_to_excrete, lava_yield]
-	stat_text += "- Ice: %d (%d needed → %d Silver Ore)\n" % [ice_storage, required_ice_to_excrete, ice_yield]
-	stat_text += "- Eggs: %d (%d needed → %d Gold Ore)\n" % [egg_storage, required_eggs_to_excrete, egg_yield]
-	stat_text += "Cooldown: %.1f sec\n" % cooldown_time
-	stat_text += "Next Output: %s x%d" % [next_output, next_output_count]
-
-	return {
-		"efficiency": efficiency_pct,
-		"stats": stat_text
-	}
-
-	
-func _consume_egg() -> void:
-	if get_total_storage() >= max_total_storage:
-		return
-
-	if not target_egg or egg_storage >= max_lava_storage:
-		return
-
-	if target_egg.is_inside_tree():
-		target_egg.queue_free()
-
-	egg_storage += 1
-	target_egg = null
-
-	if egg_storage >= required_eggs_to_excrete and not is_cooling_down:
-		is_cooling_down = true
-		cooldown_timer = cooldown_time
-		excretion_type = "egg"
+	return stats_module.get_live_stats(self)
 
 func get_total_storage() -> int:
-	return lava_storage + ice_storage + egg_storage
+	return consumption_module.get_total_storage(self)
