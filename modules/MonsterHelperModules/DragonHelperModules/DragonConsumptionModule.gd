@@ -11,34 +11,19 @@ func consume_tile(dragon: Node, target_tile, tile_map_layer: TileMapLayer) -> vo
 		return
 
 	var tile_pos = tile_map_layer.local_to_map(target_tile)
-	var source_id = tile_map_layer.get_cell_source_id(tile_pos)
-
-	match source_id:
-		2:  # Lava
-			tile_map_layer.set_cell(tile_pos, 3, Vector2i(0, 0))  # Soil
-			TileRefreshModule.refresh_neighbors(tile_map_layer, tile_pos, true)
-			tile_map_layer.fix_invalid_tiles()
-			dragon.lava_storage += 1
-			SearchModule.claimed_tile_positions.erase(target_tile)
-
-			if dragon.lava_storage >= dragon.required_lava_to_excrete and not dragon.is_cooling_down:
-				dragon.is_cooling_down = true
-				dragon.cooldown_timer = dragon.cooldown_time
-				dragon.excretion_type = "lava"
-
-		4:  # Ice
-			tile_map_layer.set_cell(tile_pos, 3, Vector2i(0, 0))  # Soil
-			TileRefreshModule.refresh_neighbors(tile_map_layer, tile_pos, true)
-			tile_map_layer.fix_invalid_tiles()
-			dragon.ice_storage += 1
-			SearchModule.claimed_tile_positions.erase(target_tile)
-
-			if dragon.ice_storage >= dragon.required_ice_to_excrete and not dragon.is_cooling_down:
-				dragon.is_cooling_down = true
-				dragon.cooldown_timer = dragon.cooldown_time
-				dragon.excretion_type = "ice"
-
-	dragon.target_tile = null
+	
+	# Use the tile module to convert the tile and get the original type
+	var original_source = dragon.tile_module.convert_to_soil(dragon, tile_pos, tile_map_layer)
+	
+	if original_source != -1:
+		# Process the resource based on its type
+		dragon.tile_module.process_resource(dragon, original_source)
+		
+		# Release the tile from the claimed positions
+		dragon.tile_module.release_tile(target_tile)
+		
+		# Clear the target tile
+		dragon.target_tile = null
 
 	print("ICE STORAGE:", dragon.ice_storage, " | REQUIRED:", dragon.required_ice_to_excrete, " | COOLING:", dragon.is_cooling_down)
 
