@@ -1,136 +1,182 @@
-# Coal Worm Modules Guide
-
+Coal Worm Modules Guide
 This guide documents all the modules created for the Coal Worm monster, explaining their purpose, key functions, and how they work together.
-
-## Module Overview
-
+Module Overview
 The Coal Worm's behavior has been fully modularized into these components:
 
-1. **CoalWormInitModule** - Handles initialization and setup
-2. **CoalWormMovementModule** - Manages movement toward targets  
-3. **CoalWormSearchModule** - Finds iron ore drops
-4. **CoalWormConsumptionModule** - Handles ore drop consumption
-5. **CoalWormConversionModule** - Converts tiles to coal
-6. **CoalWormStatsModule** - Tracks efficiency and statistics
-7. **CoalWormUIModule** - Manages UI interactions
+CoalWormInitModule - Handles initialization and setup
+CoalWormMovementModule - Manages movement toward targets
+CoalWormSearchModule - Finds resources including drops and entities
+CoalWormConsumptionModule - Handles consumption of various resource types
+CoalWormConversionModule - Converts tiles based on consumed resources
+CoalWormStatsModule - Tracks efficiency and statistics
+CoalWormUIModule - Manages UI interactions
 
-## Module Details
+Module Details
+1. CoalWormInitModule
+Purpose: Set up the Coal Worm when it enters the scene.
 
-### 1. CoalWormInitModule
-**Purpose**: Set up the Coal Worm when it enters the scene.
-- `initialize(worm)` - Main initialization function
-- `_setup_physics(worm)` - Configures collision layers
-- `_setup_stats(worm)` - Adds stat tracking child node
-- `_setup_search_display(worm)` - Configures search radius display
+initialize(worm) - Main initialization function
+_setup_physics(worm) - Configures collision layers
+_setup_stats(worm) - Adds stat tracking child node
+_setup_search_display(worm) - Configures search radius display
 
-### 2. CoalWormMovementModule  
-**Purpose**: Handle movement toward ore drops.
-- `move_toward_target(worm, target_drop, speed, delta)` - Moves worm toward target, returns true if reached
+2. CoalWormMovementModule
+Purpose: Handle movement toward resources.
 
-### 3. CoalWormSearchModule
-**Purpose**: Find iron ore drops to target.
-- `find_target_drop(worm)` - Wraps WormSearchModule functionality to find closest iron drop
+move_toward_target(worm, target_drop, speed, delta) - Moves worm toward target, returns true if reached
 
-### 4. CoalWormConsumptionModule
-**Purpose**: Handle consumption of ore drops.
-- `consume_ore_drop(worm, target_drop)` - Consumes drop and handles cleanup
+3. CoalWormSearchModule
+Purpose: Find resources to target including drops and entities.
 
-### 5. CoalWormConversionModule
-**Purpose**: Convert tiles beneath worm to coal.
-- `convert_tile_beneath(worm, tile_map_layer)` - Uses ConversionModule to turn tile to coal
+find_target(worm) - Main search function that returns target data with type
+find_target_drop(worm) - Original function for finding iron drops
+_find_nearest_crystal(worm) - Finds crystal entities
+_find_nearest_melon(worm) - Finds melon entities
 
-### 6. CoalWormStatsModule
-**Purpose**: Track efficiency and production statistics.
-- `update_efficiency(worm, delta, was_efficient)` - Updates efficiency score
-- `update_coal_tracking(worm, delta)` - Manages coal production timer
-- `track_coal_produced(worm, amount)` - Records coal production
-- `get_live_stats(worm)` - Generates stats for display
+4. CoalWormConsumptionModule
+Purpose: Handle consumption of various resource types.
 
-### 7. CoalWormUIModule
-**Purpose**: Handle UI interactions.
-- `handle_input_event(worm, viewport, event, shape_idx)` - Processes clicks on Coal Worm
+consume_target(worm, target_data) - Main consumption function that handles different types
+consume_ore_drop(worm, target_drop) - Original function for ore drops
+_consume_entity(worm, entity, resource_type) - Handles crystals and melons
 
-## Interaction Flow
+5. CoalWormConversionModule
+Purpose: Convert tiles based on consumed resource type.
 
-1. **Initialization**:
-   - `CoalWormInitModule` sets up physics, stats tracking, and search display
+convert_tile_beneath(worm, tile_map_layer, resource_type, target_pos) - Converts tiles based on resource type:
 
-2. **Main Behavior Loop**:
-   - **Idle State**: `CoalWormSearchModule` finds iron ore drops
-   - **Movement**: `CoalWormMovementModule` handles movement to target
-   - **Consumption**: `CoalWormConsumptionModule` processes ore consumption  
-   - **Conversion**: `CoalWormConversionModule` turns tiles to coal
-   - **Cooldown**: Returns to idle state after cooldown period
-   - **Stats Tracking**: `CoalWormStatsModule` monitors efficiency and production
+Iron → Coal
 
-3. **UI Interaction**:
-   - `CoalWormUIModule` displays stats when clicked
 
-## CoalWorm.gd Role
 
+6. CoalWormStatsModule
+Purpose: Track efficiency and production statistics.
+
+update_efficiency(worm, delta, was_efficient) - Updates efficiency score
+update_coal_tracking(worm, delta) - Manages coal production timer
+track_coal_produced(worm, amount) - Records coal production
+get_live_stats(worm) - Generates stats for display
+
+7. CoalWormUIModule
+Purpose: Handle UI interactions.
+
+handle_input_event(worm, viewport, event, shape_idx) - Processes clicks on Coal Worm
+
+Supported Resource Types
+The CoalWorm can consume:
+
+Iron Ore Drops → Coal tiles (original behavior)
+
+Interaction Flow
+
+Initialization:
+
+CoalWormInitModule sets up physics, stats tracking, and search display
+
+
+Main Behavior Loop:
+
+Idle State: CoalWormSearchModule finds resources (drops or entities)
+Movement: CoalWormMovementModule handles movement to target
+Consumption: CoalWormConsumptionModule processes resource consumption
+Conversion: CoalWormConversionModule turns tiles based on resource type
+Cooldown: Returns to idle state after cooldown period
+Stats Tracking: CoalWormStatsModule monitors efficiency and production
+
+
+UI Interaction:
+
+CoalWormUIModule displays stats when clicked
+
+
+
+CoalWorm.gd Role
 The CoalWorm.gd script is now an orchestrator that:
-- Loads all necessary modules
-- Maintains state variables
-- Coordinates module interactions
-- Calls appropriate modules at the right times
 
-## Benefits of Modularization
+Loads all necessary modules
+Maintains state variables
+Coordinates module interactions
+Calls appropriate modules at the right times
 
-1. **Separation of Concerns** - Each behavior aspect is isolated
-2. **Improved Readability** - Main script is cleaner and easier to understand
-3. **Better Maintainability** - Changes to one behavior don't affect others  
-4. **Easier Testing** - Modules can be tested independently
-5. **Future Extensibility** - New behaviors can be added as new modules
-
-## Module Dependencies
-
-## State Management
-
+State Management
 The CoalWorm.gd maintains these key state variables:
-- `target_drop` - Current ore drop being pursued
-- `cooldown_timer` - Time until next action
-- `is_idle` - Whether worm is searching for targets  
-- `efficiency_score` - Performance metric
-- `coal_tick_timer` - Timer for production tracking
 
-## Extending the Module System
+target_data - Enhanced target system with type, target, and resource_type
+cooldown_timer - Time until next action
+is_idle - Whether worm is searching for targets
+efficiency_score - Performance metric
+coal_tick_timer - Timer for production tracking
 
+Benefits of Modularization
+
+Separation of Concerns - Each behavior aspect is isolated
+Improved Readability - Main script is cleaner and easier to understand
+Better Maintainability - Changes to one behavior don't affect others
+Easier Testing - Modules can be tested independently
+Future Extensibility - New behaviors can be added as new modules
+
+Module Dependencies
+CoalWorm.gd (Orchestrator)
+│
+├── Dependencies ──────┬─ EfficiencyTracker
+│                     ├─ RollingStatTracker  
+│                     └─ SearchRadiusDisplay
+│
+├── Initialization ──── CoalWormInitModule
+│
+├── Behavior ─────────┬─ CoalWormSearchModule ───── WormSearchModule
+│                     ├─ CoalWormMovementModule
+│                     ├─ CoalWormConsumptionModule
+│                     └─ CoalWormConversionModule ─ ConversionModule
+│
+├── Stats ────────────── CoalWormStatsModule
+│
+└── UI ───────────────── CoalWormUIModule ───────── MonsterInfo
+Extending the Module System
 To add new behavior to the Coal Worm:
 
-1. Create a new module in `res://modules/MonsterHelperModules/CoalWormHelperModules/`
-2. Add it to CoalWorm.gd with `@onready var new_module = preload("path").new()`
-3. Call the module's functions from CoalWorm.gd where needed
-4. Update this documentation
+Create a new module in res://modules/MonsterHelperModules/WormHelperModules/
+Add it to CoalWorm.gd with @onready var new_module = preload("path").new()
+Call the module's functions from CoalWorm.gd where needed
+Update this documentation
 
-## Best Practices
+Best Practices
 
-1. **Single Responsibility**: Each module handles one clear purpose
-2. **Minimal Dependencies**: Modules have few dependencies on each other
-3. **Consistent Interface**: Use similar parameter patterns across modules
-4. **Clear Documentation**: Comment purpose and key functions
-5. **Proper Error Handling**: Check validity before accessing nodes/resources
+Single Responsibility: Each module handles one clear purpose
+Minimal Dependencies: Modules have few dependencies on each other
+Consistent Interface: Use similar parameter patterns across modules
+Clear Documentation: Comment purpose and key functions
+Proper Error Handling: Check validity before accessing nodes/resources
 
-## Troubleshooting
-
+Troubleshooting
 If modules aren't working correctly:
 
-1. Verify module is loaded with correct path
-2. Check that all required parameters are passed
-3. Ensure state variables are properly updated
-4. Add print statements to track execution
-5. Test modules individually if possible
+Verify module is loaded with correct path
+Check that all required parameters are passed
+Ensure state variables are properly updated
+Add print statements to track execution
+Test modules individually if possible
 
-## File Structure
+File Structure
+res://modules/MonsterHelperModules/WormHelperModules/
+├── CoalWormInitModule.gd
+├── CoalWormMovementModule.gd
+├── CoalWormSearchModule.gd
+├── CoalWormConsumptionModule.gd
+├── CoalWormConversionModule.gd
+├── CoalWormStatsModule.gd
+├── CoalWormUIModule.gd
+└── CoalWormModulesGuide.txt (this file)
+Comparison with Other Modules
+The Coal Worm modularization follows the same patterns as the Dragon and Fire Elemental:
 
-## Comparison with Dragon Modules
+Similar module naming conventions
+Consistent function signatures
+Orchestrator pattern in main script
+Modules focused on single responsibilities
 
-The Coal Worm modularization follows the same patterns as the Dragon:
-- Similar module naming conventions
-- Consistent function signatures  
-- Orchestrator pattern in main script
-- Modules focused on single responsibilities
+Coal Worm modules are simpler due to less complex behavior:
 
-However, Coal Worm modules are simpler due to less complex behavior:
-- No resource storage management
-- Single target type (iron ore)
-- Simpler state machine (idle/pursuing/cooldown)
+No resource storage management
+Single output type (coal)
+Simpler state machine (idle/pursuing/cooldown)
