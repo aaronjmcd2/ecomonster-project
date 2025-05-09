@@ -46,6 +46,13 @@ func _consume_entity(worm: Node, entity: Node, resource_type: String) -> bool:
 				print("🐛 Coal Worm harvesting melon")
 				entity.harvest(true)  # true = consumed by worm
 				return true
+		# In _consume_entity function, add this case:
+		
+		"boulder":
+			if entity.has_method("consume"):
+				print("🐛 Coal Worm breaking boulder")
+				entity.consume()
+				return true
 	
 	# Clean up claiming
 	if entity.claimed_by == worm:

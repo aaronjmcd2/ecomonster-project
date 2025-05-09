@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=18 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://tiles/TileSet.tres" id="1_elqb8"]
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://scripts/Main.gd" id="1_q8u5g"]
@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://diaywsr5x8gc8" path="res://scenes/CoalWorm.tscn" id="12_bjd11"]
 [ext_resource type="PackedScene" uid="uid://b3bxyl8rwjxkt" path="res://scenes/Melon.tscn" id="13_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://scenes/FireElemental.tscn" id="15_3p2gp"]
+[ext_resource type="PackedScene" uid="uid://dg4ipcd10yxmr" path="res://scenes/Stone.tscn" id="16_ft6cd"]
+[ext_resource type="PackedScene" uid="uid://bcxfy3fqhhdx3" path="res://scenes/Boulder.tscn" id="17_bb450"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_q8u5g")
@@ -88,3 +90,15 @@ position = Vector2(-363, 612)
 
 [node name="FireElemental" parent="." instance=ExtResource("15_3p2gp")]
 position = Vector2(-1784, 875)
+
+[node name="Stone" parent="." instance=ExtResource("16_ft6cd")]
+position = Vector2(-3781, 1042)
+
+[node name="Stone2" parent="." instance=ExtResource("16_ft6cd")]
+position = Vector2(-4136, 754)
+
+[node name="Boulder" parent="." instance=ExtResource("17_bb450")]
+position = Vector2(-2402, 169)
+
+[node name="Boulder2" parent="." instance=ExtResource("17_bb450")]
+position = Vector2(-1178, 1364)

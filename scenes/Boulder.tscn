@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcxfy3fqhhdx3"]
+
+[ext_resource type="Script" uid="uid://bkejfa1jflcxv" path="res://scripts/Boulder.gd" id="1_i6t03"]
+[ext_resource type="Texture2D" uid="uid://doikhelmg2xni" path="res://sprites/Boulder.png" id="2_7tyja"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cupic"]
+radius = 98.732
+
+[node name="Boulder" type="Area2D"]
+script = ExtResource("1_i6t03")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_7tyja")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-5, 8)
+shape = SubResource("CircleShape2D_cupic")
