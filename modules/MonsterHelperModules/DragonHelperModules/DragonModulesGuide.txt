@@ -1,160 +1,184 @@
-# Dragon Modules Guide
+# Coal Worm Modules Guide
 
-This guide documents all the modules created for the Dragon monster, explaining their purpose, key functions, and how they work together.
+This guide documents all the modules created for the Coal Worm monster, explaining their purpose, key functions, and how they work together.
 
 ## Module Overview
 
-The Dragon's behavior has been fully modularized into these components:
+The Coal Worm's behavior has been fully modularized into these components:
 
-1. **DragonWanderModule** - Handles wandering target selection
-2. **DragonMovementModule** - Manages movement toward targets
-3. **DragonConsumptionModule** - Processes consumption of resources
-4. **DragonExcretionModule** - Controls ore excretion and cooldown
-5. **DragonStatsModule** - Tracks efficiency and statistics
-6. **DragonSearchModule** - Handles finding resources
-7. **DragonUIModule** - Manages UI interaction
-8. **DragonTileModule** - Handles tile-specific operations
-9. **DragonAnimationModule** - Manages animation states
-10. **DragonInitModule** - Handles initialization logic
+1. **CoalWormInitModule** - Handles initialization and setup
+2. **CoalWormMovementModule** - Manages movement toward targets  
+3. **CoalWormSearchModule** - Finds resources including drops and entities
+4. **CoalWormConsumptionModule** - Handles consumption of various resource types
+5. **CoalWormConversionModule** - Converts tiles based on consumed resources
+6. **CoalWormStatsModule** - Tracks efficiency and statistics
+7. **CoalWormUIModule** - Manages UI interactions
 
 ## Module Details
 
-### 1. DragonWanderModule
-**Purpose**: Determine where to wander when no resources are available.
-- `pick_wander_target(global_position)` - Creates a new random wander target
+### 1. CoalWormInitModule
+**Purpose**: Set up the Coal Worm when it enters the scene.
+- `initialize(worm)` - Main initialization function
+- `_setup_physics(worm)` - Configures collision layers
+- `_setup_stats(worm)` - Adds stat tracking child node
+- `_setup_search_display(worm)` - Configures search radius display
 
-### 2. DragonMovementModule
-**Purpose**: Handle movement toward various targets.
-- `move_toward_target(delta, self_node, target_tile, target_egg, wander_target, move_speed)` - Moves toward the highest priority target
+### 2. CoalWormMovementModule  
+**Purpose**: Handle movement toward resources.
+- `move_toward_target(worm, target_drop, speed, delta)` - Moves worm toward target, returns true if reached
 
-### 3. DragonConsumptionModule
-**Purpose**: Handle resource consumption.
-- `consume_tile(dragon, target_tile, tile_map_layer)` - Consumes a tile resource
-- `consume_egg(dragon, target_egg)` - Consumes an egg resource
-- `get_total_storage(dragon)` - Returns combined resource storage
+### 3. CoalWormSearchModule
+**Purpose**: Find resources to target including drops and entities.
+- `find_target(worm)` - Main search function that returns target data with type
+- `find_target_drop(worm)` - Original function for finding iron drops  
+- `_find_nearest_crystal(worm)` - Finds crystal entities
+- `_find_nearest_melon(worm)` - Finds melon entities
 
-### 4. DragonExcretionModule
-**Purpose**: Manage ore production.
-- `excrete_ore(dragon)` - Produces ore based on stored resources
+### 4. CoalWormConsumptionModule
+**Purpose**: Handle consumption of various resource types.
+- `consume_target(worm, target_data)` - Main consumption function that handles different types
+- `consume_ore_drop(worm, target_drop)` - Original function for ore drops
+- `_consume_entity(worm, entity, resource_type)` - Handles crystals and melons
 
-### 5. DragonStatsModule
-**Purpose**: Track efficiency and statistics.
-- `update_efficiency(dragon, delta, is_efficient)` - Updates efficiency score
-- `update_ore_log(dragon, delta)` - Tracks ore production over time
-- `get_live_stats(dragon)` - Generates stats for display
+### 5. CoalWormConversionModule
+**Purpose**: Convert tiles based on consumed resource type.
+- `convert_tile_beneath(worm, tile_map_layer, resource_type, target_pos)` - Converts tiles based on resource type:
+  - Iron → Coal
+  - Crystal → Ice  
+  - Melon → Water
 
-### 6. DragonSearchModule
-**Purpose**: Find resources to target.
-- `search_for_lava(dragon)` - Finds lava tiles
-- `search_for_ice(dragon)` - Finds ice tiles
-- `search_for_egg(dragon)` - Finds egg drops
-- `search_for_resources(dragon)` - Comprehensive search
-- `ensure_wander_target(dragon)` - Guarantees a valid wander target
+### 6. CoalWormStatsModule
+**Purpose**: Track efficiency and production statistics.
+- `update_efficiency(worm, delta, was_efficient)` - Updates efficiency score
+- `update_coal_tracking(worm, delta)` - Manages coal production timer
+- `track_coal_produced(worm, amount)` - Records coal production
+- `get_live_stats(worm)` - Generates stats for display
 
-### 7. DragonUIModule
+### 7. CoalWormUIModule
 **Purpose**: Handle UI interactions.
-- `handle_input_event(dragon, viewport, event, shape_idx)` - Processes clicks on the Dragon
+- `handle_input_event(worm, viewport, event, shape_idx)` - Processes clicks on Coal Worm
 
-### 8. DragonTileModule
-**Purpose**: Manage tile-specific operations.
-- `convert_to_soil(dragon, tile_pos, tile_map_layer)` - Converts resources to soil
-- `process_resource(dragon, source_id)` - Handles resource logic after gathering
-- `release_tile(tile_pos)` - Removes tiles from claimed list
+## Supported Resource Types
 
-### 9. DragonAnimationModule
-**Purpose**: Handle animation states.
-- `initialize(dragon)` - Sets up initial animation
-- `update_animation(dragon)` - Updates animation based on movement
-- `play_animation(dragon, anim_name)` - Plays specific animations
-- `play_excretion_animation(dragon)` - Special animation for excretion
+The CoalWorm can now consume and convert:
+1. **Iron Ore Drops** → Coal tiles (original behavior)
+2. **Crystal Entities** → Ice tiles  
+3. **Melon Entities** → Water tiles
 
-### 10. DragonInitModule
-**Purpose**: Handle initialization.
-- `initialize(dragon)` - Main setup function
-- `_setup_physics(dragon)` - Configures physics properties
-- `_setup_search_display(dragon)` - Sets up search radius display
-- `_find_initial_targets(dragon)` - Finds initial resource targets
-- `validate_dependencies(dragon)` - Checks for required resources/nodes
+Priority order: Iron → Crystal → Melon
 
 ## Interaction Flow
 
 1. **Initialization**:
-   - `DragonInitModule` sets up physics, search display, and initial targets
+   - `CoalWormInitModule` sets up physics, stats tracking, and search display
 
 2. **Main Behavior Loop**:
-   - **Finding Resources**: `DragonSearchModule` locates resources to target
-   - **Movement**: `DragonMovementModule` handles movement to targets
-   - **Resource Gathering**: `DragonConsumptionModule` + `DragonTileModule` process resource collection
-   - **Wandering**: When no resources are available, `DragonWanderModule` selects wander targets
-   - **Excretion**: `DragonExcretionModule` handles ore production after cooldown
-   - **Animation**: `DragonAnimationModule` manages visual state
-   - **Stats Tracking**: `DragonStatsModule` tracks efficiency and ore production
+   - **Idle State**: `CoalWormSearchModule` finds resources (drops or entities)
+   - **Movement**: `CoalWormMovementModule` handles movement to target
+   - **Consumption**: `CoalWormConsumptionModule` processes resource consumption  
+   - **Conversion**: `CoalWormConversionModule` turns tiles based on resource type
+   - **Cooldown**: Returns to idle state after cooldown period
+   - **Stats Tracking**: `CoalWormStatsModule` monitors efficiency and production
 
 3. **UI Interaction**:
-   - `DragonUIModule` handles displaying stats when clicked
+   - `CoalWormUIModule` displays stats when clicked
 
-## Dragon.gd Role
+## CoalWorm.gd Role
 
-The Dragon.gd script is now primarily an orchestrator that:
+The CoalWorm.gd script is now an orchestrator that:
 - Loads all necessary modules
 - Maintains state variables
-- Coordinates module interactions in the right sequence
-- Delegates specific behaviors to appropriate modules
+- Coordinates module interactions
+- Calls appropriate modules at the right times
 
-## Benefits of Complete Modularization
+## State Management
 
-1. **Clean separation of concerns** - Each aspect of behavior is isolated
-2. **Enhanced maintainability** - Changes to one behavior don't affect others
-3. **Simplified main script** - Dragon.gd is now much more readable
-4. **Future extensibility** - New behaviors can be added in new modules
-5. **Improved testing** - Modules can be tested independently
+The CoalWorm.gd maintains these key state variables:
+- `target_data` - Enhanced target system with type, target, and resource_type
+- `cooldown_timer` - Time until next action
+- `is_idle` - Whether worm is searching for targets  
+- `efficiency_score` - Performance metric
+- `coal_tick_timer` - Timer for production tracking
 
-## Module Interactions Diagram
+## Benefits of Modularization
+
+1. **Separation of Concerns** - Each behavior aspect is isolated
+2. **Improved Readability** - Main script is cleaner and easier to understand
+3. **Better Maintainability** - Changes to one behavior don't affect others  
+4. **Easier Testing** - Modules can be tested independently
+5. **Future Extensibility** - New behaviors can be added as new modules
+
+## Module Dependencies
 
 ```
-Dragon.gd (Orchestrator)
+CoalWorm.gd (Orchestrator)
 │
-├── Initialization ──── DragonInitModule
+├── Dependencies ──────┬─ EfficiencyTracker
+│                     ├─ RollingStatTracker  
+│                     └─ SearchRadiusDisplay
 │
-├── Movement ─────────┬─ DragonMovementModule
-│                     └─ DragonAnimationModule
+├── Initialization ──── CoalWormInitModule
 │
-├── Resource Finding ── DragonSearchModule ─── SearchModule
+├── Behavior ─────────┬─ CoalWormSearchModule ───── WormSearchModule
+│                     ├─ CoalWormMovementModule
+│                     ├─ CoalWormConsumptionModule
+│                     └─ CoalWormConversionModule ─ ConversionModule
 │
-├── Resource Collection ┬─ DragonConsumptionModule
-│                       └─ DragonTileModule ────── TileRefreshModule
+├── Stats ────────────── CoalWormStatsModule
 │
-├── Ore Production ───── DragonExcretionModule
-│
-├── Wandering ────────── DragonWanderModule
-│
-├── Stats ─────────────┬─ DragonStatsModule
-│                      └─ DragonUIModule ────────── MonsterInfo
+└── UI ───────────────── CoalWormUIModule ───────── MonsterInfo
 ```
-
-## Best Practices for Module Development
-
-1. **Single Responsibility**: Each module should have one clear purpose
-2. **Minimal Dependencies**: Modules should have few dependencies on other modules
-3. **Standard Interface**: Use consistent parameter patterns across modules
-4. **Incremental Development**: Add one module at a time and test thoroughly
-5. **Descriptive Names**: Use clear, descriptive names for modules and functions
-6. **Good Documentation**: Document each module with its purpose and key functions
 
 ## Extending the Module System
 
-To add new behavior to the Dragon:
+To add new behavior to the Coal Worm:
 
-1. Create a new module with appropriate functions
-2. Add it to Dragon.gd with `@onready var new_module = preload("path/to/NewModule.gd").new()`
-3. Call the module's functions from Dragon.gd where needed
+1. Create a new module in `res://modules/MonsterHelperModules/WormHelperModules/`
+2. Add it to CoalWorm.gd with `@onready var new_module = preload("path").new()`
+3. Call the module's functions from CoalWorm.gd where needed
+4. Update this documentation
+
+## Best Practices
+
+1. **Single Responsibility**: Each module handles one clear purpose
+2. **Minimal Dependencies**: Modules have few dependencies on each other
+3. **Consistent Interface**: Use similar parameter patterns across modules
+4. **Clear Documentation**: Comment purpose and key functions
+5. **Proper Error Handling**: Check validity before accessing nodes/resources
 
 ## Troubleshooting
 
-If a module is not working correctly:
+If modules aren't working correctly:
 
-1. Verify the module is properly loaded
-2. Check that all required parameters are passed correctly
-3. Add print statements to track module execution
-4. Ensure state variables are updated appropriately
-5. Test the module in isolation if possible
+1. Verify module is loaded with correct path
+2. Check that all required parameters are passed
+3. Ensure state variables are properly updated
+4. Add print statements to track execution
+5. Test modules individually if possible
+
+## File Structure
+
+```
+res://modules/MonsterHelperModules/WormHelperModules/
+├── CoalWormInitModule.gd
+├── CoalWormMovementModule.gd
+├── CoalWormSearchModule.gd
+├── CoalWormConsumptionModule.gd
+├── CoalWormConversionModule.gd
+├── CoalWormStatsModule.gd
+├── CoalWormUIModule.gd
+└── CoalWormModulesGuide.txt (this file)
+```
+
+## Comparison with Dragon Modules
+
+The Coal Worm modularization follows the same patterns as the Dragon:
+- Similar module naming conventions
+- Consistent function signatures  
+- Orchestrator pattern in main script
+- Modules focused on single responsibilities
+
+Coal Worm modules are simpler due to less complex behavior:
+- No resource storage management (unlike Dragon's lava/ice/egg storage)
+- More diverse target types (drops, tiles, entities)
+- Simpler state machine (idle/pursuing/cooldown)
