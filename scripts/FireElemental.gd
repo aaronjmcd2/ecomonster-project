@@ -1,5 +1,5 @@
 # FireElemental.gd
-# Handles Fire Elemental behavior: searching for coal, converting to lava, and wandering when idle.
+# Handles Fire Elemental behavior: searching for coal tiles, crystals, and melons; converting them appropriately
 # Uses: SearchModule, ConversionModule, MonsterInfo, SearchRadiusDisplay
 
 extends CharacterBody2D
@@ -12,7 +12,7 @@ extends CharacterBody2D
 @export var move_speed := 240.0
 @export var conversion_cooldown := 5.0
 
-var target_position = null  # ← Type will be inferred dynamically
+var target_data := {"type": "none", "target": null, "resource_type": ""}
 var is_busy := false
 var cooldown_timer := 0.0
 var wander_target: Vector2 = Vector2.ZERO
@@ -41,20 +41,12 @@ func _process(delta):
 		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
 			_pick_wander_target()
 		_move_toward_wander_target()
-	elif target_position:
+	elif target_data.target:
 		_move_toward_target(delta)
 		was_efficient = true
 	else:
 		_search_for_target()
 
-	# Efficiency logic
-	if was_efficient:
-		efficiency_score += EFFICIENCY_RATE * delta
-	else:
-		efficiency_score -= EFFICIENCY_RATE * delta
-
-	efficiency_score = clamp(efficiency_score, 0.0, 100.0)
-		
 	# Efficiency tracking
 	efficiency_score = EfficiencyTracker.update(delta, was_efficient, efficiency_score, EFFICIENCY_RATE)
 
@@ -64,8 +56,6 @@ func _process(delta):
 		lava_stat.tick()
 		lava_tick_timer = 0.0
 
-
-
 func _handle_cooldown(delta: float) -> void:
 	# Decrease cooldown and reset when ready
 	cooldown_timer -= delta
@@ -73,15 +63,72 @@ func _handle_cooldown(delta: float) -> void:
 		is_busy = false
 
 func _search_for_target() -> void:
-	# Attempts to find a coal tile using SearchModule
+	# First try coal tiles (original behavior)
 	var result = SearchModule.find_nearest_tile(global_position, search_radius, 0)  # 0 = coal
 	if result:
-		target_position = result
-	else:
-		if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
-			_pick_wander_target()
-		_move_toward_wander_target()
+		target_data = {"type": "tile", "target": result, "resource_type": "coal"}
+		return
+	
+	# Try to find crystal
+	var crystal = _find_nearest_crystal()
+	if crystal:
+		target_data = {"type": "entity", "target": crystal, "resource_type": "crystal"}
+		return
+	
+	# Try to find melon
+	var melon = _find_nearest_melon()
+	if melon:
+		target_data = {"type": "entity", "target": melon, "resource_type": "melon"}
+		return
+	
+	# No targets found - wander
+	if wander_target == Vector2.ZERO or global_position.distance_to(wander_target) < 5.0:
+		_pick_wander_target()
+	_move_toward_wander_target()
 
+func _find_nearest_crystal() -> Node:
+	var closest = null
+	var closest_dist = search_radius * 32.0
+	
+	var tree = get_tree()
+	if not tree:
+		return null
+		
+	for crystal in tree.get_nodes_in_group("crystals"):
+		if crystal.claimed_by != null and crystal.claimed_by != self:
+			continue
+			
+		var dist = global_position.distance_to(crystal.global_position)
+		if dist < closest_dist:
+			closest_dist = dist
+			closest = crystal
+	
+	if closest:
+		closest.claimed_by = self
+	
+	return closest
+
+func _find_nearest_melon() -> Node:
+	var closest = null
+	var closest_dist = search_radius * 32.0
+	
+	var tree = get_tree()
+	if not tree:
+		return null
+		
+	for melon in tree.get_nodes_in_group("melons"):
+		if not melon.is_harvestable or (melon.claimed_by != null and melon.claimed_by != self):
+			continue
+			
+		var dist = global_position.distance_to(melon.global_position)
+		if dist < closest_dist:
+			closest_dist = dist
+			closest = melon
+	
+	if closest:
+		closest.claimed_by = self
+	
+	return closest
 
 func _pick_wander_target() -> void:
 	var wander_distance = randf_range(32.0, 96.0)
@@ -90,34 +137,74 @@ func _pick_wander_target() -> void:
 	wander_target = global_position + offset
 
 func _move_toward_target(delta) -> void:
-	if target_position == null:
+	if not target_data.target:
+		target_data = {"type": "none", "target": null, "resource_type": ""}
 		return
 
-	var direction = (target_position - global_position).normalized()
+	# Get target position based on type
+	var target_pos = Vector2.ZERO
+	match target_data.type:
+		"tile":
+			target_pos = target_data.target
+		"entity":
+			if is_instance_valid(target_data.target):
+				target_pos = target_data.target.global_position
+			else:
+				target_data = {"type": "none", "target": null, "resource_type": ""}
+				return
+
+	var direction = (target_pos - global_position).normalized()
 	velocity = direction * move_speed
 	move_and_slide()
 
-	if global_position.distance_to(target_position) < 4.0:
-		_convert_coal_to_lava()
-		target_position = null
+	if global_position.distance_to(target_pos) < 4.0:
+		_convert_resource()
+		target_data = {"type": "none", "target": null, "resource_type": ""}
 		is_busy = true
 		cooldown_timer = conversion_cooldown
 
-func _convert_coal_to_lava() -> void:
-	lava_stat.add(1)
-	# Calls ConversionModule to replace coal with lava
-	ConversionModule.replace_tile(target_position, 0, 2)  # 0 = Coal, 2 = Lava
+func _convert_resource() -> void:
+	match target_data.resource_type:
+		"coal":
+			lava_stat.add(1)
+			# Original behavior - coal to lava
+			ConversionModule.replace_tile(target_data.target, 0, 2)  # 0 = Coal, 2 = Lava
+			SearchModule.claimed_tile_positions.erase(target_data.target)
+			
+		"crystal":
+			# Crystal to ice
+			var tilemap = get_tree().current_scene.get_node("TileMap/TileMapLayer")
+			var tile_pos = tilemap.local_to_map(target_data.target.global_position)
+			tilemap.set_cell(tile_pos, 4, Vector2i(0, 0))  # 4 = Ice
+			if target_data.target.has_method("consume"):
+				target_data.target.consume()
+			print("❄️ Fire Elemental converted crystal to ice at", tile_pos)
+			
+		"melon":
+			# Melon to water
+			var tilemap = get_tree().current_scene.get_node("TileMap/TileMapLayer")
+			var tile_pos = tilemap.local_to_map(target_data.target.global_position)
+			tilemap.set_cell(tile_pos, 5, Vector2i(0, 0))  # 5 = Water
+			if target_data.target.has_method("harvest"):
+				target_data.target.harvest(true)  # true = consumed by monster
+			print("💧 Fire Elemental converted melon to water at", tile_pos)
 
-	# Remove the tile from claimed list so others can target it later
-	SearchModule.claimed_tile_positions.erase(target_position)
+func _move_toward_wander_target() -> void:
+	var direction = (wander_target - global_position).normalized()
+	velocity = direction * move_speed
+	move_and_slide()
 
 func _input_event(viewport, event, shape_idx):
 	# Handle left-click to show monster info popup
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var target_str = "None"
+		if target_data.target:
+			target_str = target_data.resource_type.capitalize()
+		
 		var info = {
 			"name": "Fire Elemental",
 			"efficiency": int(efficiency_score),
-			"stats": "Currently Targeting: %s\nCooldown: %.1f seconds" % [str(target_position), conversion_cooldown],
+			"stats": "Currently Targeting: %s\nCooldown: %.1f seconds" % [target_str, conversion_cooldown],
 			"node": self
 		}
 		MonsterInfo.show_info(info, event.position)
@@ -134,8 +221,3 @@ func get_live_stats() -> Dictionary:
 			max_lava_per_min
 		]
 	}
-
-func _move_toward_wander_target() -> void:
-	var direction = (wander_target - global_position).normalized()
-	velocity = direction * move_speed
-	move_and_slide()
