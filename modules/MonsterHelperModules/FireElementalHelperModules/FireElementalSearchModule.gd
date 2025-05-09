@@ -1,12 +1,14 @@
 # FireElementalSearchModule.gd
+# Handles search functionality for Fire Elemental
+
 extends Node
 
-# Find target based on priority: coal tiles -> crystals -> melons
-func find_target(elemental: Node) -> Dictionary:
+# Search for targets in priority order
+func search_for_target(elemental: Node) -> Dictionary:
 	# First try coal tiles (original behavior)
-	var coal_tile = SearchModule.find_nearest_tile(elemental.global_position, elemental.search_radius, 0)  # 0 = coal
-	if coal_tile:
-		return {"type": "tile", "target": coal_tile, "resource_type": "coal"}
+	var result = SearchModule.find_nearest_tile(elemental.global_position, elemental.search_radius, 0)  # 0 = coal
+	if result:
+		return {"type": "tile", "target": result, "resource_type": "coal"}
 	
 	# Try to find crystal
 	var crystal = _find_nearest_crystal(elemental)
@@ -20,6 +22,7 @@ func find_target(elemental: Node) -> Dictionary:
 	
 	return {"type": "none", "target": null, "resource_type": ""}
 
+# Find nearest crystal
 func _find_nearest_crystal(elemental: Node) -> Node:
 	var closest = null
 	var closest_dist = elemental.search_radius * 32.0
@@ -42,6 +45,7 @@ func _find_nearest_crystal(elemental: Node) -> Node:
 	
 	return closest
 
+# Find nearest melon
 func _find_nearest_melon(elemental: Node) -> Node:
 	var closest = null
 	var closest_dist = elemental.search_radius * 32.0
