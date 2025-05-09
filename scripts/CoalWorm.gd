@@ -28,7 +28,7 @@ extends CharacterBody2D
 const EFFICIENCY_RATE := 100.0 / (5 * 60.0)
 var efficiency_score: float = 0.0
 var coal_tick_timer: float = 0.0
-var target_drop = null
+var target_data := {"type": "none", "target": null, "resource_type": ""}  # Enhanced target system
 var cooldown_timer: float = 0.0
 var is_idle := true
 var move_vector := Vector2.ZERO
@@ -44,8 +44,8 @@ func _physics_process(delta: float) -> void:
 		was_efficient = true
 	else:
 		if is_idle:
-			target_drop = search_module.find_target_drop(self)
-			if target_drop:
+			target_data = search_module.find_target(self)
+			if target_data.target:
 				is_idle = false
 		else:
 			_move_toward_target(delta)
@@ -55,24 +55,51 @@ func _physics_process(delta: float) -> void:
 	stats_module.update_coal_tracking(self, delta)
 
 func _move_toward_target(delta: float) -> void:
-	if movement_module.move_toward_target(self, target_drop, speed, delta):
-		if is_instance_valid(target_drop):
-			_consume_ore_drop()
-		else:
-			_reset_worm()
+	if not target_data.target:
+		_reset_worm()
+		return
+		
+	# Get target position based on type
+	var target_pos = Vector2.ZERO
+	match target_data.type:
+		"drop", "entity":
+			if is_instance_valid(target_data.target):
+				target_pos = target_data.target.global_position
+		"tile":
+			target_pos = target_data.target
+	
+	if target_pos == Vector2.ZERO:
+		_reset_worm()
+		return
+	
+	# Move toward target
+	var direction = (target_pos - global_position).normalized()
+	move_vector = direction * speed
+	velocity = move_vector
+	move_and_slide()
+	
+	# Check if reached target
+	if global_position.distance_to(target_pos) < 5.0:
+		_consume_target()
 
-func _consume_ore_drop() -> void:
-	consumption_module.consume_ore_drop(self, target_drop)
-	conversion_module.convert_tile_beneath(self, tile_map_layer)
-	stats_module.track_coal_produced(self, 1)
+func _consume_target() -> void:
+	if consumption_module.consume_target(self, target_data):
+		# Convert tile based on resource type
+		var target_pos = Vector2.ZERO
+		if target_data.type == "tile":
+			target_pos = target_data.target
+		elif target_data.type == "entity" and is_instance_valid(target_data.target):
+			target_pos = target_data.target.global_position
+			
+		conversion_module.convert_tile_beneath(self, tile_map_layer, target_data.resource_type, target_pos)
+		stats_module.track_coal_produced(self, 1)
+	
 	_reset_worm()
 
 func _reset_worm() -> void:
 	is_idle = true
 	cooldown_timer = cooldown_time
-
-	if target_drop and is_instance_valid(target_drop) and target_drop.claimed_by == self:
-		target_drop.claimed_by = null
+	target_data = {"type": "none", "target": null, "resource_type": ""}
 
 func _input_event(viewport, event, shape_idx):
 	ui_module.handle_input_event(self, viewport, event, shape_idx)

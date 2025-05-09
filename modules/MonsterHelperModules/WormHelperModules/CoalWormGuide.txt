@@ -83,3 +83,54 @@ The CoalWorm.gd script is now an orchestrator that:
 5. **Future Extensibility** - New behaviors can be added as new modules
 
 ## Module Dependencies
+
+## State Management
+
+The CoalWorm.gd maintains these key state variables:
+- `target_drop` - Current ore drop being pursued
+- `cooldown_timer` - Time until next action
+- `is_idle` - Whether worm is searching for targets  
+- `efficiency_score` - Performance metric
+- `coal_tick_timer` - Timer for production tracking
+
+## Extending the Module System
+
+To add new behavior to the Coal Worm:
+
+1. Create a new module in `res://modules/MonsterHelperModules/CoalWormHelperModules/`
+2. Add it to CoalWorm.gd with `@onready var new_module = preload("path").new()`
+3. Call the module's functions from CoalWorm.gd where needed
+4. Update this documentation
+
+## Best Practices
+
+1. **Single Responsibility**: Each module handles one clear purpose
+2. **Minimal Dependencies**: Modules have few dependencies on each other
+3. **Consistent Interface**: Use similar parameter patterns across modules
+4. **Clear Documentation**: Comment purpose and key functions
+5. **Proper Error Handling**: Check validity before accessing nodes/resources
+
+## Troubleshooting
+
+If modules aren't working correctly:
+
+1. Verify module is loaded with correct path
+2. Check that all required parameters are passed
+3. Ensure state variables are properly updated
+4. Add print statements to track execution
+5. Test modules individually if possible
+
+## File Structure
+
+## Comparison with Dragon Modules
+
+The Coal Worm modularization follows the same patterns as the Dragon:
+- Similar module naming conventions
+- Consistent function signatures  
+- Orchestrator pattern in main script
+- Modules focused on single responsibilities
+
+However, Coal Worm modules are simpler due to less complex behavior:
+- No resource storage management
+- Single target type (iron ore)
+- Simpler state machine (idle/pursuing/cooldown)
