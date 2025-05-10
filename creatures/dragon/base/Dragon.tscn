@@ -1,22 +1,22 @@
 [gd_scene load_steps=20 format=3 uid="uid://b7he5tq8l7t7i"]
 
-[ext_resource type="Script" uid="uid://d2fbxnvdgoy1v" path="res://scripts/Dragon.gd" id="1_yknt0"]
+[ext_resource type="Script" uid="uid://d2fbxnvdgoy1v" path="res://creatures/dragon/base/Dragon.gd" id="1_yknt0"]
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="2_2awct"]
-[ext_resource type="Texture2D" uid="uid://c8lry6q258q0" path="res://sprites/Monsters/Dragon/dragon-idle0000.png" id="3_jjn10"]
+[ext_resource type="Texture2D" uid="uid://c8lry6q258q0" path="res://creatures/dragon/base/animations/dragon-idle0000.png" id="3_jjn10"]
 [ext_resource type="PackedScene" uid="uid://qt38ufsl3w3s" path="res://scenes/SilverOreDrop.tscn" id="3_t2axl"]
 [ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="4_2awct"]
 [ext_resource type="PackedScene" uid="uid://uyxcqd1w6ubl" path="res://scenes/GoldOreDrop.tscn" id="4_2mrcb"]
-[ext_resource type="Texture2D" uid="uid://dm45scrbfdc6h" path="res://sprites/Monsters/Dragon/dragon-idle0001.png" id="4_t2axl"]
-[ext_resource type="Texture2D" uid="uid://dq2xqs1pwxsct" path="res://sprites/Monsters/Dragon/dragon-idle0002.png" id="5_2mrcb"]
-[ext_resource type="Texture2D" uid="uid://bwqqwqll8owup" path="res://sprites/Monsters/Dragon/dragon-idle0003.png" id="6_ngdy2"]
-[ext_resource type="Texture2D" uid="uid://c5y2dwfy4sg83" path="res://sprites/Monsters/Dragon/dragon-idle0004.png" id="7_ex7uv"]
-[ext_resource type="Texture2D" uid="uid://cnc1dq0kpbmwo" path="res://sprites/Monsters/Dragon/dragon-idle0005.png" id="8_gx5jg"]
-[ext_resource type="Texture2D" uid="uid://bto3fbmmmwysu" path="res://sprites/Monsters/Dragon/dragon-idle0006.png" id="9_onn22"]
-[ext_resource type="Texture2D" uid="uid://b36ialuxl0tgg" path="res://sprites/Monsters/Dragon/dragon-idle0007.png" id="10_qxjhd"]
-[ext_resource type="Texture2D" uid="uid://b2j1btm0esk5q" path="res://sprites/Monsters/Dragon/dragon-idle0008.png" id="11_xqcmr"]
-[ext_resource type="Texture2D" uid="uid://drwsrg8lj6yah" path="res://sprites/Monsters/Dragon/dragon-idle0009.png" id="12_vgls8"]
-[ext_resource type="Texture2D" uid="uid://bbqxp4fa8noqk" path="res://sprites/Monsters/Dragon/dragon-idle0010.png" id="13_8rk7y"]
-[ext_resource type="Texture2D" uid="uid://frg5ujcxldxa" path="res://sprites/Monsters/Dragon/dragon-idle0011.png" id="14_whvpt"]
+[ext_resource type="Texture2D" uid="uid://dm45scrbfdc6h" path="res://creatures/dragon/base/animations/dragon-idle0001.png" id="4_t2axl"]
+[ext_resource type="Texture2D" uid="uid://dq2xqs1pwxsct" path="res://creatures/dragon/base/animations/dragon-idle0002.png" id="5_2mrcb"]
+[ext_resource type="Texture2D" uid="uid://bwqqwqll8owup" path="res://creatures/dragon/base/animations/dragon-idle0003.png" id="6_ngdy2"]
+[ext_resource type="Texture2D" uid="uid://c5y2dwfy4sg83" path="res://creatures/dragon/base/animations/dragon-idle0004.png" id="7_ex7uv"]
+[ext_resource type="Texture2D" uid="uid://cnc1dq0kpbmwo" path="res://creatures/dragon/base/animations/dragon-idle0005.png" id="8_gx5jg"]
+[ext_resource type="Texture2D" uid="uid://bto3fbmmmwysu" path="res://creatures/dragon/base/animations/dragon-idle0006.png" id="9_onn22"]
+[ext_resource type="Texture2D" uid="uid://b36ialuxl0tgg" path="res://creatures/dragon/base/animations/dragon-idle0007.png" id="10_qxjhd"]
+[ext_resource type="Texture2D" uid="uid://b2j1btm0esk5q" path="res://creatures/dragon/base/animations/dragon-idle0008.png" id="11_xqcmr"]
+[ext_resource type="Texture2D" uid="uid://drwsrg8lj6yah" path="res://creatures/dragon/base/animations/dragon-idle0009.png" id="12_vgls8"]
+[ext_resource type="Texture2D" uid="uid://bbqxp4fa8noqk" path="res://creatures/dragon/base/animations/dragon-idle0010.png" id="13_8rk7y"]
+[ext_resource type="Texture2D" uid="uid://frg5ujcxldxa" path="res://creatures/dragon/base/animations/dragon-idle0011.png" id="14_whvpt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2n00n"]
 animations = [{
@@ -69,9 +69,22 @@ radius = 260.768
 collision_layer = 2
 input_pickable = true
 script = ExtResource("1_yknt0")
+lava_yield = null
+ice_yield = null
+egg_yield = null
+required_lava_to_excrete = null
+required_ice_to_excrete = null
+required_eggs_to_excrete = null
 ore_drop_scene = ExtResource("2_2awct")
 silver_drop_scene = ExtResource("3_t2axl")
 gold_drop_scene = ExtResource("4_2mrcb")
+ore_drop_count = null
+search_radius_tiles = null
+search_radius_px = null
+move_speed = null
+max_total_storage = null
+max_lava_storage = null
+cooldown_time = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(2.99998, 2.00002)

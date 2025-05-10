@@ -16,16 +16,16 @@ extends CharacterBody2D
 @onready var anim_sprite := $AnimatedSprite2D
 
 # === Dragon Helper Modules ===
-@onready var wander_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonWanderModule.gd").new()
-@onready var movement_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonMovementModule.gd").new()
-@onready var consumption_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonConsumptionModule.gd").new()
-@onready var excretion_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonExcretionModule.gd").new()
-@onready var stats_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonStatsModule.gd").new()
-@onready var search_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonSearchModule.gd").new()
-@onready var ui_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonUIModule.gd").new()
-@onready var tile_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonTileModule.gd").new()
-@onready var animation_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonAnimationModule.gd").new()
-@onready var init_module = preload("res://modules/MonsterHelperModules/DragonHelperModules/DragonInitModule.gd").new()
+@onready var wander_module = preload("res://creatures/dragon/base/modules/DragonWanderModule.gd").new()
+@onready var movement_module = preload("res://creatures/dragon/base/modules/DragonMovementModule.gd").new()
+@onready var consumption_module = preload("res://creatures/dragon/base/modules/DragonConsumptionModule.gd").new()
+@onready var excretion_module = preload("res://creatures/dragon/base/modules/DragonExcretionModule.gd").new()
+@onready var stats_module = preload("res://creatures/dragon/base/modules/DragonStatsModule.gd").new()
+@onready var search_module = preload("res://creatures/dragon/base/modules/DragonSearchModule.gd").new()
+@onready var ui_module = preload("res://creatures/dragon/base/modules/DragonUIModule.gd").new()
+@onready var tile_module = preload("res://creatures/dragon/base/modules/DragonTileModule.gd").new()
+@onready var animation_module = preload("res://creatures/dragon/base/modules/DragonAnimationModule.gd").new()
+@onready var init_module = preload("res://creatures/dragon/base/modules/DragonInitModule.gd").new()
 
 # === Configuration Parameters ===
 @export_group("Resource Production")

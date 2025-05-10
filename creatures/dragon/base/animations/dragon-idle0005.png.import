@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dm45scrbfdc6h"
-path="res://.godot/imported/dragon-idle0001.png-f4e3297c853a7ce18d856bb6e095e57e.ctex"
+uid="uid://cnc1dq0kpbmwo"
+path="res://.godot/imported/dragon-idle0005.png-8321eba475c43eb04f12bd5a593c87ff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Monsters/Dragon/dragon-idle0001.png"
-dest_files=["res://.godot/imported/dragon-idle0001.png-f4e3297c853a7ce18d856bb6e095e57e.ctex"]
+source_file="res://creatures/dragon/base/animations/dragon-idle0005.png"
+dest_files=["res://.godot/imported/dragon-idle0005.png-8321eba475c43eb04f12bd5a593c87ff.ctex"]
 
 [params]
 

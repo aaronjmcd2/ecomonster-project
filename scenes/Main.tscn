@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://scenes/IronOreDrop.tscn" id="3_rarhs"]
 [ext_resource type="PackedScene" uid="uid://bhhoj62iadqlc" path="res://scenes/Egg.tscn" id="4_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://ba27fgyy8fnjy" path="res://scenes/Crystal.tscn" id="5_qmy6f"]
-[ext_resource type="PackedScene" uid="uid://b7he5tq8l7t7i" path="res://scenes/Dragon.tscn" id="6_c01mt"]
+[ext_resource type="PackedScene" uid="uid://b7he5tq8l7t7i" path="res://creatures/dragon/base/Dragon.tscn" id="6_c01mt"]
 [ext_resource type="PackedScene" uid="uid://ccfcrl5wxjvor" path="res://scenes/MonsterInfoPopup.tscn" id="7_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://dskqqlloghbas" path="res://scenes/UI/InventoryUI.tscn" id="9_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://yw22vu84qjjn" path="res://scenes/Items/Weapons/SwordDrop.tscn" id="10_lhr70"]
