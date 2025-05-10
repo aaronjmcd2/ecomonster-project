@@ -12,6 +12,6 @@ func get_item_data() -> Dictionary:
 	return {
 		"name": "Stone",
 		"count": count,
-		"icon": preload("res://sprites/Stone.png"),
-		"scene": preload("res://scenes/Stone.tscn")
+		"icon": preload("res://items/drops/resources/Stone.png"),
+		"scene": preload("res://items/drops/resources/Stone.tscn")
 	}

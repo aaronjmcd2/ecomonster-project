@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5njab7obe4cq"
-path="res://.godot/imported/Egg.png-9c981019ba0cccab939e9efe05ab5f1d.ctex"
+uid="uid://desc2atryfn7k"
+path="res://.godot/imported/Stone.png-14b0ba788afee70af5e44c64b95a45ed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Egg.png"
-dest_files=["res://.godot/imported/Egg.png-9c981019ba0cccab939e9efe05ab5f1d.ctex"]
+source_file="res://items/drops/resources/Stone.png"
+dest_files=["res://.godot/imported/Stone.png-14b0ba788afee70af5e44c64b95a45ed.ctex"]
 
 [params]
 

@@ -18,7 +18,7 @@ var hotbar_selected_index := 0
 var sword_item := {
 	"type": "weapon",
 	"name": "Sword",
-	"icon": preload("res://sprites/Items/Weapons/Sword.png"), # Replace with actual path
+	"icon": preload("res://items/equipment/weapons/Sword.png"), # Replace with actual path
 	"count": 1,
 	#"scene": preload("res://items/SwordHitbox.tscn") # Optional, for spawning hitbox
 }
@@ -74,17 +74,17 @@ func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stac
 	else:
 		match item["name"]:
 			"IronOre":
-				drop_scene = preload("res://scenes/IronOreDrop.tscn")
+				drop_scene = preload("res://items/drops/ores/IronOreDrop.tscn")
 			"Egg":
-				drop_scene = preload("res://scenes/Egg.tscn")
+				drop_scene = preload("res://items/drops/resources/Egg.tscn")
 			"GoldOre":
-				drop_scene = preload("res://scenes/GoldOreDrop.tscn")
+				drop_scene = preload("res://items/drops/ores/GoldOreDrop.tscn")
 			"SilverOre":
-				drop_scene = preload("res://scenes/SilverOreDrop.tscn")
+				drop_scene = preload("res://items/drops/ores/SilverOreDrop.tscn")
 			"Melon":
-				drop_scene = preload("res://scenes/Melon.tscn")
+				drop_scene = preload("res://items/drops/resources/Melon.tscn")
 			"Stone":
-				drop_scene = preload("res://scenes/Stone.tscn")
+				drop_scene = preload("res://items/drops/resources/Stone.tscn")
 			_:
 				print("⚠️ No drop scene found for item:", item["name"])
 				return

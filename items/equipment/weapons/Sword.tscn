@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://be6r3gurdpklx"]
 
-[ext_resource type="Script" uid="uid://bhdlx15587tmp" path="res://scripts/Item/Weapons/Sword.gd" id="1_np5rs"]
-[ext_resource type="Texture2D" uid="uid://bsfxiiuyl7v6b" path="res://sprites/Items/Weapons/Sword.png" id="2_jlq0o"]
+[ext_resource type="Script" uid="uid://bhdlx15587tmp" path="res://items/equipment/weapons/Sword.gd" id="1_np5rs"]
+[ext_resource type="Texture2D" uid="uid://bsfxiiuyl7v6b" path="res://items/equipment/weapons/Sword.png" id="2_jlq0o"]
 
 [sub_resource type="Animation" id="Animation_jlq0o"]
 length = 0.001

@@ -13,7 +13,7 @@ func get_item_data() -> Dictionary:
 		"name": "Sword",
 		"type": "weapon",
 		"count": count,
-		"icon": preload("res://sprites/Items/Weapons/Sword.png"),
-		"scene": preload("res://scenes/Items/Weapons/SwordDrop.tscn"),
-		"use_scene": preload("res://scenes/Items/Weapons/Sword.tscn")
+		"icon": preload("res://items/equipment/weapons/Sword.png"),
+		"scene": preload("res://items/equipment/weapons/SwordDrop.tscn"),
+		"use_scene": preload("res://items/equipment/weapons/Sword.tscn")
 	}

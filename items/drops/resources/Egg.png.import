@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsfxiiuyl7v6b"
-path="res://.godot/imported/Sword.png-744e05aa0a38b805f7d97fbfca5ff542.ctex"
+uid="uid://b5njab7obe4cq"
+path="res://.godot/imported/Egg.png-61abb1663c4541120a70b7ee60a77d1a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Items/Weapons/Sword.png"
-dest_files=["res://.godot/imported/Sword.png-744e05aa0a38b805f7d97fbfca5ff542.ctex"]
+source_file="res://items/drops/resources/Egg.png"
+dest_files=["res://.godot/imported/Egg.png-61abb1663c4541120a70b7ee60a77d1a.ctex"]
 
 [params]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://yw22vu84qjjn"]
 
-[ext_resource type="Script" uid="uid://bieoba1e0o70k" path="res://scripts/Item/Weapons/SwordDrop.gd" id="1_30b2q"]
-[ext_resource type="Texture2D" uid="uid://bsfxiiuyl7v6b" path="res://sprites/Items/Weapons/Sword.png" id="2_8wwne"]
+[ext_resource type="Script" uid="uid://bieoba1e0o70k" path="res://items/equipment/weapons/SwordDrop.gd" id="1_30b2q"]
+[ext_resource type="Texture2D" uid="uid://bsfxiiuyl7v6b" path="res://items/equipment/weapons/Sword.png" id="2_8wwne"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sijk3"]
 size = Vector2(76.5117, 206.778)

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://doikhelmg2xni"
-path="res://.godot/imported/Boulder.png-b201c9955080d2052998f06ec473b669.ctex"
+path="res://.godot/imported/Boulder.png-7b92dae0fd591899947ab986819ae3d0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Boulder.png"
-dest_files=["res://.godot/imported/Boulder.png-b201c9955080d2052998f06ec473b669.ctex"]
+source_file="res://items/drops/resources/Boulder.png"
+dest_files=["res://.godot/imported/Boulder.png-7b92dae0fd591899947ab986819ae3d0.ctex"]
 
 [params]
 

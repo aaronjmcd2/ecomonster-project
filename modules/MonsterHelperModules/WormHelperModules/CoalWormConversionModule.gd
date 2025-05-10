@@ -25,7 +25,7 @@ func convert_tile_beneath(worm: Node, tile_map_layer: TileMapLayer, resource_typ
 
 # Create stone drops when boulder is consumed
 func _create_stone_drops(worm: Node, position: Vector2) -> void:
-	var stone_scene = preload("res://scenes/Stone.tscn")
+	var stone_scene = preload("res://items/drops/resources/Stone.tscn")
 	var num_stones = randi_range(2, 4)  # Create 2-4 stone drops
 	
 	# Get the tree from the worm

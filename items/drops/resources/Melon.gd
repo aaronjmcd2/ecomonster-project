@@ -20,6 +20,6 @@ func get_item_data() -> Dictionary:
 	return {
 		"name": "Melon",
 		"count": count,
-		"icon": preload("res://sprites/Melon.png"),  # This is the inventory PNG
-		"scene": preload("res://scenes/Melon.tscn")  # Reference to this same scene
+		"icon": preload("res://items/drops/resources/Melon.png"),  # This is the inventory PNG
+		"scene": preload("res://items/drops/resources/Melon.tscn")  # Reference to this same scene
 	}

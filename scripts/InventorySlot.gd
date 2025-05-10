@@ -24,12 +24,21 @@ func set_item(item: Dictionary) -> void:
 		if item.has("icon") and item["icon"] is Texture2D:
 			icon.texture = item["icon"]
 		else:
-			# Fallback to loading from name if no icon provided
-			var path := "res://sprites/%s.png" % item.name
-			if ResourceLoader.exists(path):
-				icon.texture = load(path)
-			else:
-				icon.texture = null
+			# Updated fallback paths to check multiple locations
+			var paths = [
+				"res://items/drops/ores/%s.png" % item.name,
+				"res://items/drops/resources/%s.png" % item.name,
+				"res://items/equipment/%s.png" % item.name,
+				"res://sprites/%s.png" % item.name  # Legacy fallback
+			]
+			
+			for path in paths:
+				if ResourceLoader.exists(path):
+					icon.texture = load(path)
+					break
+			
+			if icon.texture == null:
+				print("Warning: Could not find icon for item: ", item.name)
 
 		count_label.text = str(item.count)
 		icon.visible = true
@@ -73,16 +82,21 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 
 	var preview := TextureRect.new()
 	preview.texture = drag_texture
-
-	# Scale it manually to 32x32, regardless of original image size
-	var original_size = drag_texture.get_size()
-	var scale_factor = 64.0 / max(original_size.x, original_size.y)
-	preview.scale = Vector2(scale_factor, scale_factor)
+	
+	# Check if drag_texture is null before trying to get its size
+	if drag_texture:
+		# Scale it manually to 32x32, regardless of original image size
+		var original_size = drag_texture.get_size()
+		var scale_factor = 64.0 / max(original_size.x, original_size.y)
+		preview.scale = Vector2(scale_factor, scale_factor)
+	else:
+		# Fallback if no texture
+		preview.scale = Vector2(1, 1)
+		print("Warning: No texture for drag preview of item: ", drag_name)
 
 	# Center the preview visually under the cursor
 	preview.position = -Vector2(16, 16)
 	preview_wrapper.add_child(preview)
-
 
 	set_drag_preview(preview_wrapper)
 
@@ -90,7 +104,6 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 		"item": item_to_drag,
 		"source": self
 	}
-
 
 # === Determine if we can accept the incoming dropped item ===
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:

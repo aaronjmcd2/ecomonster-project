@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://h1actcqqigy5"
-path="res://.godot/imported/Melon.png-99bb9cb49b562769fd36b7773e8a9453.ctex"
+uid="uid://ca5hco0fduvsl"
+path="res://.godot/imported/SilverOre.png-e30410ab01b0293a3f5ecf9b6e0eaa9f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Melon.png"
-dest_files=["res://.godot/imported/Melon.png-99bb9cb49b562769fd36b7773e8a9453.ctex"]
+source_file="res://items/drops/ores/SilverOre.png"
+dest_files=["res://.godot/imported/SilverOre.png-e30410ab01b0293a3f5ecf9b6e0eaa9f.ctex"]
 
 [params]
 
