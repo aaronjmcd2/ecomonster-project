@@ -16,12 +16,12 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
-SearchModule="*res://modules/SearchModule.gd"
-ConversionModule="*res://modules/ConversionModule.gd"
-InventoryDataScript="*res://scripts/InventoryData.gd"
+SearchModule="*res://systems/modules/SearchModule.gd"
+ConversionModule="*res://systems/modules/ConversionModule.gd"
+InventoryDataScript="*res://systems/inventory/InventoryData.gd"
 MonsterInfo="*res://scenes/MonsterInfoPopup.tscn"
-TileRefreshModule="*res://modules/TileRefreshModule.gd"
-WormSearchModule="*res://modules/WormSearchModule.gd"
+TileRefreshModule="*res://systems/modules/TileRefreshModule.gd"
+WormSearchModule="*res://systems/modules/WormSearchModule.gd"
 
 [global_group]
 

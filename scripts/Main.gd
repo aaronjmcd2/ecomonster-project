@@ -5,7 +5,7 @@
 
 extends Node
 
-@onready var InventorySlotScene := preload("res://scenes/InventorySlot.tscn")
+@onready var InventorySlotScene := preload("res://systems/inventory/InventorySlot.tscn")
 
 func _ready() -> void:
 	await get_tree().process_frame  # Ensure all nodes are ready before setup

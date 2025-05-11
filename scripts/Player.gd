@@ -21,9 +21,9 @@ var velocity_vector := Vector2.ZERO
 var facing_direction := Vector2.DOWN
 
 # === Modules ===
-var zoom_module = preload("res://Modules/PlayerZoomModule.gd").new()
-var pickup_module = preload("res://Modules/PlayerPickupModule.gd").new()
-var combat_module = preload("res://Modules/PlayerCombatModule.gd").new()
+var zoom_module = preload("res://systems/modules/player/PlayerZoomModule.gd").new()
+var pickup_module = preload("res://systems/modules/player/PlayerPickupModule.gd").new()
+var combat_module = preload("res://systems/modules/player/PlayerCombatModule.gd").new()
 
 # === Initialization ===
 func _ready():

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dskqqlloghbas"]
 
-[ext_resource type="PackedScene" uid="uid://bnn0vxiod4mwd" path="res://scenes/InventorySlot.tscn" id="1_5entl"]
-[ext_resource type="Script" uid="uid://cskpkyl2n71sq" path="res://scripts/InventoryUI.gd" id="1_31fix"]
+[ext_resource type="PackedScene" uid="uid://bnn0vxiod4mwd" path="res://systems/inventory/InventorySlot.tscn" id="1_5entl"]
+[ext_resource type="Script" uid="uid://cskpkyl2n71sq" path="res://systems/inventory/InventoryUI.gd" id="1_31fix"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mxytl"]
 bg_color = Color(0, 0, 0, 0)
