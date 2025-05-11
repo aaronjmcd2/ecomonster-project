@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://d34k3bh2ptavc" path="res://items/drops/ores/IronOreDrop.tscn" id="2_2awct"]
 [ext_resource type="Texture2D" uid="uid://c8lry6q258q0" path="res://creatures/dragon/base/animations/dragon-idle0000.png" id="3_jjn10"]
 [ext_resource type="PackedScene" uid="uid://qt38ufsl3w3s" path="res://items/drops/ores/SilverOreDrop.tscn" id="3_t2axl"]
-[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="4_2awct"]
+[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://ui/SearchRadiusDisplay.gd" id="4_2awct"]
 [ext_resource type="PackedScene" uid="uid://uyxcqd1w6ubl" path="res://items/drops/ores/GoldOreDrop.tscn" id="4_2mrcb"]
 [ext_resource type="Texture2D" uid="uid://dm45scrbfdc6h" path="res://creatures/dragon/base/animations/dragon-idle0001.png" id="4_t2axl"]
 [ext_resource type="Texture2D" uid="uid://dq2xqs1pwxsct" path="res://creatures/dragon/base/animations/dragon-idle0002.png" id="5_2mrcb"]

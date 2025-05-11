@@ -13,8 +13,8 @@ extends CharacterBody2D
 @onready var ui_module = preload("res://creatures/elemental/base/UIModule.gd").new()
 
 # === Existing dependencies ===
-@onready var EfficiencyTracker := preload("res://scripts/MonsterHelperScripts/EfficiencyTracker.gd").new()
-@onready var lava_stat := preload("res://scripts/MonsterHelperScripts/RollingStatTracker.gd").new()
+@onready var EfficiencyTracker := preload("res://systems/modules/helpers/EfficiencyTracker.gd").new()
+@onready var lava_stat := preload("res://systems/modules/helpers/RollingStatTracker.gd").new()
 @onready var search_display := $SearchRadiusDisplay
 
 # === Configuration ===

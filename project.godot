@@ -19,7 +19,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 SearchModule="*res://systems/modules/SearchModule.gd"
 ConversionModule="*res://systems/modules/ConversionModule.gd"
 InventoryDataScript="*res://systems/inventory/InventoryData.gd"
-MonsterInfo="*res://scenes/MonsterInfoPopup.tscn"
+MonsterInfo="*res://ui/popups/MonsterInfoPopup.tscn"
 TileRefreshModule="*res://systems/modules/TileRefreshModule.gd"
 WormSearchModule="*res://systems/modules/WormSearchModule.gd"
 

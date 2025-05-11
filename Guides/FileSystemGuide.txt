@@ -1,0 +1,112 @@
+# EcoMonster FileSystem Guide
+Version: 2.0 | Updated: [Current Date]
+
+## Project Structure Overview
+The EcoMonster project follows a feature-based architecture, organizing files by game feature rather than file type. This structure supports future creature evolution and specialization.
+
+## Directory Structure
+
+res://
+├── Main.tscn                     # Main entry point scene
+├── Main.gd                       # Main game initialization script
+│
+├── creatures/                    # All game entities
+│   ├── dragon/
+│   │   └── base/                # Base dragon implementation
+│   │       ├── Dragon.tscn
+│   │       ├── Dragon.gd
+│   │       ├── animations/      # Dragon sprite animations
+│   │       └── modules/         # Dragon-specific modules
+│   │
+│   ├── elemental/
+│   │   └── base/                # Base elemental (future: fire, ice, etc.)
+│   │       ├── Elemental.tscn
+│   │       ├── Elemental.gd
+│   │       └── modules/         # Elemental-specific modules
+│   │
+│   ├── worm/
+│   │   └── base/                # Base worm (future: coal, stone, etc.)
+│   │       ├── Worm.tscn
+│   │       ├── Worm.gd
+│   │       └── modules/         # Worm-specific modules
+│   │
+│   └── player/
+│       ├── Player.tscn
+│       └── Player.gd
+│
+├── items/                       # All collectible/usable items
+│   ├── drops/
+│   │   ├── ores/               # Ore drops (iron, silver, gold)
+│   │   └── resources/          # Resource drops (eggs, stones, melons)
+│   └── equipment/              # Equipment items (weapons, tools)
+│
+├── systems/                     # Core game systems
+│   ├── inventory/              # Inventory management system
+│   │   ├── InventoryUI.tscn
+│   │   ├── InventoryUI.gd
+│   │   ├── InventorySlot.tscn
+│   │   ├── InventorySlot.gd
+│   │   └── InventoryData.gd    # Autoload
+│   │
+│   └── modules/                # Shared modules
+│       ├── SearchModule.gd     # Autoload
+│       ├── ConversionModule.gd # Autoload
+│       ├── TileRefreshModule.gd
+│       ├── WormSearchModule.gd
+│       ├── player/            # Player-specific modules
+│       └── helpers/           # Helper utilities
+│
+├── ui/                        # User interface components
+│   ├── popups/
+│   │   ├── MonsterInfoPopup.tscn
+│   │   └── MonsterInfoPopup.gd
+│   └── SearchRadiusDisplay.gd
+│
+└── assets/                    # Art and other resources
+	├── sprites/
+	│   ├── creatures/
+	│   ├── items/
+	│   ├── tiles/
+	│   └── ui/
+	└── tiles/                 # Tileset resources
+
+## Autoload Scripts
+The following scripts are configured as autoloads in Project Settings:
+- SearchModule: res://systems/modules/SearchModule.gd
+- ConversionModule: res://systems/modules/ConversionModule.gd  
+- InventoryDataScript: res://systems/inventory/InventoryData.gd
+- MonsterInfo: res://ui/popups/MonsterInfoPopup.gd
+
+## Evolution Structure
+The project is organized to support future creature evolution:
+- Each creature has a "base" folder for the common implementation
+- Future specializations will be added as siblings to "base"
+- Example: creatures/worm/coal_worm/ and creatures/worm/stone_worm/
+
+## Module Organization
+Each creature's modules are now self-contained within their folder:
+- Dragon modules: creatures/dragon/base/modules/
+- Elemental modules: creatures/elemental/base/modules/
+- Worm modules: creatures/worm/base/modules/
+
+Module files are named simply (e.g., InitModule.gd, MovementModule.gd) since they're already organized by creature type.
+
+## Asset Organization
+All visual and audio assets are organized under the assets/ directory:
+- Sprites are organized by feature (creatures, items, ui)
+- Tile resources are kept separate for easy tilemap management
+- Each creature's animations are stored within their own folder
+
+## Benefits of This Structure
+1. **Feature Isolation**: Each game feature is self-contained
+2. **Evolution Ready**: Easy to add specialized creature variants
+3. **Clear Dependencies**: Shared systems are clearly separated
+4. **Maintainable**: Related files are grouped together
+5. **Scalable**: New features can be added without disrupting existing organization
+
+## Migration Notes
+- FireElemental renamed to Elemental (base class)
+- CoalWorm renamed to Worm (base class)
+- All module prefixes simplified (FireElementalInitModule → InitModule)
+- Shader dependencies removed from Player
+- All scripts updated with new preload paths

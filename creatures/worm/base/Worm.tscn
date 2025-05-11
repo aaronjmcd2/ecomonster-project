@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://diaywsr5x8gc8"]
 
 [ext_resource type="Script" uid="uid://cgx45kq67jmex" path="res://creatures/worm/base/Worm.gd" id="1_ehp7w"]
-[ext_resource type="Texture2D" uid="uid://ctu7fhsgyhp5j" path="res://sprites/Monsters/CoalWorm.png" id="2_fgvab"]
-[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="3_fgvab"]
+[ext_resource type="Texture2D" uid="uid://ctu7fhsgyhp5j" path="res://creatures/worm/base/Worm.png" id="2_fgvab"]
+[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://ui/SearchRadiusDisplay.gd" id="3_fgvab"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ehp7w"]
 size = Vector2(186, 359.75)

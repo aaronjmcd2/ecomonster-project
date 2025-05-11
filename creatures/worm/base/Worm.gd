@@ -14,8 +14,8 @@ extends CharacterBody2D
 @onready var ui_module = preload("res://creatures/worm/base/WormUIModule.gd").new()
 
 # === Existing dependencies ===
-@onready var EfficiencyTracker := preload("res://scripts/MonsterHelperScripts/EfficiencyTracker.gd").new()
-@onready var coal_stat := preload("res://scripts/MonsterHelperScripts/RollingStatTracker.gd").new()
+@onready var EfficiencyTracker := preload("res://systems/modules/helpers/EfficiencyTracker.gd").new()
+@onready var coal_stat := preload("res://systems/modules/helpers/RollingStatTracker.gd").new()
 @onready var tile_map_layer := get_node("/root/Main/TileMap/TileMapLayer")
 @onready var search_display := $SearchRadiusDisplay
 
