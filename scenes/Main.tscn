@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://uyxcqd1w6ubl" path="res://items/drops/ores/GoldOreDrop.tscn" id="11_bjd11"]
 [ext_resource type="PackedScene" uid="uid://diaywsr5x8gc8" path="res://scenes/CoalWorm.tscn" id="12_bjd11"]
 [ext_resource type="PackedScene" uid="uid://b3bxyl8rwjxkt" path="res://items/drops/resources/Melon.tscn" id="13_qmy6f"]
-[ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://scenes/FireElemental.tscn" id="15_3p2gp"]
+[ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://creatures/elemental/base/Elemental.tscn" id="15_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://dg4ipcd10yxmr" path="res://items/drops/resources/Stone.tscn" id="16_ft6cd"]
 [ext_resource type="PackedScene" uid="uid://bcxfy3fqhhdx3" path="res://items/drops/resources/Boulder.tscn" id="17_bb450"]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dmu5gj4pq8apf"]
 
-[ext_resource type="Script" uid="uid://c8pam7rqh754n" path="res://scripts/FireElemental.gd" id="1_84vng"]
+[ext_resource type="Script" uid="uid://c8pam7rqh754n" path="res://creatures/elemental/base/Elemental.gd" id="1_84vng"]
 [ext_resource type="Texture2D" uid="uid://c2efpqjg6600s" path="res://sprites/Monsters/FireElemental.png" id="2_1x2w1"]
 [ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="3_1x2w1"]
 

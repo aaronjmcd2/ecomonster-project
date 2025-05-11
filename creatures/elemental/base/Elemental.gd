@@ -5,12 +5,12 @@
 extends CharacterBody2D
 
 # === Modules ===
-@onready var init_module = preload("res://modules/MonsterHelperModules/FireElementalHelperModules/FireElementalInitModule.gd").new()
-@onready var movement_module = preload("res://modules/MonsterHelperModules/FireElementalHelperModules/FireElementalMovementModule.gd").new()
-@onready var search_module = preload("res://modules/MonsterHelperModules/FireElementalHelperModules/FireElementalSearchModule.gd").new()
-@onready var conversion_module = preload("res://modules/MonsterHelperModules/FireElementalHelperModules/FireElementalConversionModule.gd").new()
-@onready var stats_module = preload("res://modules/MonsterHelperModules/FireElementalHelperModules/FireElementalStatsModule.gd").new()
-@onready var ui_module = preload("res://modules/MonsterHelperModules/FireElementalHelperModules/FireElementalUIModule.gd").new()
+@onready var init_module = preload("res://creatures/elemental/base/InitModule.gd").new()
+@onready var movement_module = preload("res://creatures/elemental/base/MovementModule.gd").new()
+@onready var search_module = preload("res://creatures/elemental/base/SearchModule.gd").new()
+@onready var conversion_module = preload("res://creatures/elemental/base/ConversionModule.gd").new()
+@onready var stats_module = preload("res://creatures/elemental/base/StatsModule.gd").new()
+@onready var ui_module = preload("res://creatures/elemental/base/UIModule.gd").new()
 
 # === Existing dependencies ===
 @onready var EfficiencyTracker := preload("res://scripts/MonsterHelperScripts/EfficiencyTracker.gd").new()
