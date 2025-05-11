@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://diaywsr5x8gc8"]
 
-[ext_resource type="Script" uid="uid://cgx45kq67jmex" path="res://scripts/CoalWorm.gd" id="1_ehp7w"]
+[ext_resource type="Script" uid="uid://cgx45kq67jmex" path="res://creatures/worm/base/Worm.gd" id="1_ehp7w"]
 [ext_resource type="Texture2D" uid="uid://ctu7fhsgyhp5j" path="res://sprites/Monsters/CoalWorm.png" id="2_fgvab"]
 [ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://scripts/SearchRadiusDisplay.gd" id="3_fgvab"]
 

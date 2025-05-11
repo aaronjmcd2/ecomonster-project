@@ -5,13 +5,13 @@
 extends CharacterBody2D
 
 # === Modules ===
-@onready var init_module = preload("res://modules/MonsterHelperModules/WormHelperModules/CoalWormInitModule.gd").new()
-@onready var movement_module = preload("res://modules/MonsterHelperModules/WormHelperModules/CoalWormMovementModule.gd").new()
-@onready var search_module = preload("res://modules/MonsterHelperModules/WormHelperModules/CoalWormSearchModule.gd").new()
-@onready var consumption_module = preload("res://modules/MonsterHelperModules/WormHelperModules/CoalWormConsumptionModule.gd").new()
-@onready var conversion_module = preload("res://modules/MonsterHelperModules/WormHelperModules/CoalWormConversionModule.gd").new()
-@onready var stats_module = preload("res://modules/MonsterHelperModules/WormHelperModules/CoalWormStatsModule.gd").new()
-@onready var ui_module = preload("res://modules/MonsterHelperModules/WormHelperModules/CoalWormUIModule.gd").new()
+@onready var init_module = preload("res://creatures/worm/base/WormInitModule.gd").new()
+@onready var movement_module = preload("res://creatures/worm/base/WormMovementModule.gd").new()
+@onready var search_module = preload("res://creatures/worm/base/WormSearchModule.gd").new()
+@onready var consumption_module = preload("res://creatures/worm/base/WormConsumptionModule.gd").new()
+@onready var conversion_module = preload("res://creatures/worm/base/WormConversionModule.gd").new()
+@onready var stats_module = preload("res://creatures/worm/base/WormStatsModule.gd").new()
+@onready var ui_module = preload("res://creatures/worm/base/WormUIModule.gd").new()
 
 # === Existing dependencies ===
 @onready var EfficiencyTracker := preload("res://scripts/MonsterHelperScripts/EfficiencyTracker.gd").new()
