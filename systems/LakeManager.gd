@@ -1,3 +1,72 @@
+# LakeManager.gd
+# Manages lake detection, fog effects, and specter spawning
+extends Node
+
+@onready var tile_map_layer: TileMapLayer = get_node("/root/Main/TileMap/TileMapLayer")
+
+# References to modules
+@onready var lake_detection_module = preload("res://systems/modules/LakeDetectionModule.gd").new()
+
+# References to scenes
+@export var specter_scene: PackedScene
+@export var fog_effect_scene: PackedScene
+
+# Configuration
+@export var detection_interval: float = 30.0  # Seconds between lake detection
+@export var spawn_interval: float = 15.0  # Seconds between specter spawns
+@export var max_specters_per_lake: int = 5
+
+# Tracking variables
+var detection_timer: float = 0.0
+var lakes = []
+var fog_effects = {}  # Map of lake index to fog effect node
+
+func _ready():
+	# Initial lake detection
+	_detect_lakes()
+
+func _process(delta: float):
+	# Update detection timer
+	detection_timer += delta
+	if detection_timer >= detection_interval:
+		_detect_lakes()
+		detection_timer = 0.0
+	
+	# Update lake fog timers
+	lake_detection_module.update_lakes(delta)
+	
+	# Process foggy lakes
+	_process_foggy_lakes(delta)
+	
+	# Update fog effects
+	_update_fog_effects()
+
+# Check for silver ingots dropped in water
+func check_silver_ingot_drop(ingot_pos: Vector2) -> bool:
+	return lake_detection_module.make_lake_foggy(tile_map_layer, ingot_pos)
+
+# Detect lakes in the current tilemap
+func _detect_lakes():
+	lakes = lake_detection_module.detect_lakes(tile_map_layer)
+	print("Found %d lakes in the map" % lakes.size())
+
+# Process all foggy lakes (spawn specters, etc.)
+func _process_foggy_lakes(delta: float):
+	for i in range(lakes.size()):
+		var lake = lakes[i]
+		
+		if lake.is_foggy:
+			# Update spawn timer
+			if not lake.has("spawn_timer"):
+				lake.spawn_timer = spawn_interval
+			
+			lake.spawn_timer -= delta
+			
+			# Spawn specter if timer expired
+			if lake.spawn_timer <= 0:
+				_spawn_specter(lake)
+				lake.spawn_timer = spawn_interval
+
 # Update fog effects for each lake
 func _update_fog_effects():
 	# Add fog to newly foggy lakes
@@ -35,3 +104,26 @@ func _update_fog_effects():
 		elif not lake.is_foggy and fog_effects.has(i):
 			fog_effects[i].queue_free()
 			fog_effects.erase(i)
+
+# Spawn a specter from a foggy lake
+func _spawn_specter(lake):
+	# Count existing specters from this lake
+	var specters_from_lake = 0
+	for specter in get_tree().get_nodes_in_group("specters"):
+		if specter.birth_lake == lake:
+			specters_from_lake += 1
+	
+	# Don't spawn if at max capacity
+	if specters_from_lake >= max_specters_per_lake:
+		return
+	
+	# Choose a random tile in the lake
+	var spawn_tile = lake.tiles[randi() % lake.tiles.size()]
+	var spawn_pos = Vector2(spawn_tile.x * 32, spawn_tile.y * 32)
+	
+	# Spawn the specter
+	var specter = specter_scene.instantiate()
+	specter.global_position = spawn_pos
+	specter.birth_lake = lake
+	get_parent().add_child(specter)
+	print("👻 Spawned specter from foggy lake")

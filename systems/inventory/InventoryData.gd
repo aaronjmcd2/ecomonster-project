@@ -119,4 +119,5 @@ func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stac
 			slot_ref.set_item(item)
 			
 	# Signal that an item was dropped (for lake interaction, etc.)
-	EventBus.emit_signal("item_dropped", item, drop_position)
+	# Signal that an item was dropped (for lake interaction, etc.)
+	EventBus.emit_signal("item_dropped", item, drop_pos)

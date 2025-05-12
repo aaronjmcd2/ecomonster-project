@@ -1,9 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://dkjeecidtjsb1"]
+[gd_scene load_steps=4 format=3 uid="uid://dkjeecidtjsb1"]
 
 [ext_resource type="Script" uid="uid://miqeiiosetu1" path="res://systems/LakeManager.gd" id="1_y8po6"]
+[ext_resource type="PackedScene" uid="uid://cfruggx0j3pyo" path="res://creatures/specter/base/Specter.tscn" id="2_lv62n"]
+[ext_resource type="PackedScene" uid="uid://0h40p2l2bjmm" path="res://effects/FogEffect.tscn" id="3_5012u"]
 
 [node name="LakeManager" type="Node"]
 script = ExtResource("1_y8po6")
-detection_interval = null
-spawn_interval = null
-max_specters_per_lake = null
+specter_scene = ExtResource("2_lv62n")
+fog_effect_scene = ExtResource("3_5012u")

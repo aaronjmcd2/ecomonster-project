@@ -15,7 +15,14 @@ func setup(player_node, inventory_ui_ref, radius: float = 100.0) -> void:
 	pickup_radius = radius
 
 # Try to pickup items near a world position
+# Try to pickup items near a world position
 func try_pickup_item(world_pos: Vector2) -> bool:
+	# Get the tree reference once from the parent node
+	var tree = parent_node.get_tree()
+	if tree == null:
+		print("ERROR: Could not get scene tree from parent node")
+		return false
+		
 	# Array of all item groups we can pick up
 	var pickup_groups = [
 		"ore_drops",
@@ -31,7 +38,7 @@ func try_pickup_item(world_pos: Vector2) -> bool:
 	
 	# Check each group for items
 	for group in pickup_groups:
-		var items = get_tree().get_nodes_in_group(group)
+		var items = tree.get_nodes_in_group(group)
 		
 		for item in items:
 			if is_instance_valid(item):

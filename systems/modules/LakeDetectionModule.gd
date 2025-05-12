@@ -59,7 +59,7 @@ func detect_lakes(tile_map_layer: TileMapLayer) -> Array:
 		# Create lake if it meets size threshold
 		if lake_tiles.size() >= lake_size_threshold:
 			var existing_lake = _find_existing_lake(lake_tiles)
-			if existing_lake != null:
+			if !existing_lake.is_empty():  # Check if Dictionary is not empty
 				# Update existing lake
 				existing_lake.tiles = lake_tiles
 			else:
@@ -76,12 +76,14 @@ func detect_lakes(tile_map_layer: TileMapLayer) -> Array:
 	return new_lakes
 
 # Finds if any tiles in a lake match an existing lake
+# Finds if any tiles in a lake match an existing lake
+# Finds if any tiles in a lake match an existing lake
 func _find_existing_lake(tiles: Array) -> Dictionary:
 	for lake in lakes:
 		for tile in lake.tiles:
 			if tile in tiles:
 				return lake
-	return null
+	return {}  # Return empty Dictionary instead of null
 
 # Makes a lake foggy when silver ingot is dropped into it
 func make_lake_foggy(tile_map_layer: TileMapLayer, pos: Vector2) -> bool:

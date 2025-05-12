@@ -1,5 +1,4 @@
 # Soul.gd
-# Soul dropped when specters are killed before crystallizing
 extends Area2D
 
 var claimed_by = null

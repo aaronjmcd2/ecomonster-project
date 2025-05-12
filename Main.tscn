@@ -47,6 +47,3 @@ position = Vector2(-3679, 1675)
 [node name="LakeManager" parent="." instance=ExtResource("10_5vvyt")]
 specter_scene = ExtResource("11_c6i3y")
 fog_effect_scene = ExtResource("12_c2ibq")
-detection_interval = null
-spawn_interval = null
-max_specters_per_lake = null
