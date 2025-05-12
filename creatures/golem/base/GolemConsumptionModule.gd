@@ -3,9 +3,11 @@
 
 extends Node
 
+# Update the GolemConsumptionModule.gd functions
+
 # Consume lava from a tile
 func consume_lava(golem: Node, target_tile, tile_map_layer: TileMapLayer) -> void:
-	if golem.lava_storage >= golem.max_storage:
+	if golem.is_lava_storage_full():
 		return
 	
 	if not target_tile:
@@ -34,7 +36,7 @@ func consume_lava(golem: Node, target_tile, tile_map_layer: TileMapLayer) -> voi
 
 # Consume material from a resource
 func consume_material(golem: Node, target_material: Node, material_type: String) -> void:
-	if golem.get_total_storage() >= golem.max_storage:
+	if golem.is_material_storage_full():
 		return
 	
 	if not target_material or not is_instance_valid(target_material):

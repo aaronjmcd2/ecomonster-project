@@ -25,7 +25,8 @@ func update_ingot_log(golem: Node, delta: float) -> void:
 
 # Get stats for display
 func get_live_stats(golem: Node) -> Dictionary:
-	var total_stored = golem.get_total_storage()
+	var lava_stored = golem.lava_storage
+	var materials_stored = golem.get_total_material_storage()
 	var efficiency_pct = int(golem.efficiency_score)
 	
 	var next_output = "None"
@@ -56,9 +57,9 @@ func get_live_stats(golem: Node) -> Dictionary:
 	else:
 		cooldown_display = "Cooldown: Ready"
 	
-	# Build stats text
-	var stat_text = "Storage: %d / %d\n" % [total_stored, golem.max_storage]
-	stat_text += "- Lava: %d\n" % golem.lava_storage
+	# Build stats text with separate storage displays
+	var stat_text = "Lava Storage: %d / %d\n" % [lava_stored, golem.max_lava_storage]
+	stat_text += "Material Storage: %d / %d\n" % [materials_stored, golem.max_material_storage] 
 	stat_text += "- Stone: %d\n" % golem.stone_storage
 	stat_text += "- Iron Ore: %d\n" % golem.iron_ore_storage
 	stat_text += "- Silver Ore: %d\n" % golem.silver_ore_storage

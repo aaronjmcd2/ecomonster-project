@@ -1,0 +1,65 @@
+# Golem Monster Guide
+Version: 1.0 | Created: May 2025
+
+## Overview
+The Golem is a resource processing creature that combines lava with various materials to create valuable products. 
+It serves as a competitor in the ecosystem, creating interesting ecological dynamics.
+
+## Core Behaviors
+- Gathers lava from lava tiles
+- Collects various ores and stones
+- Processes these resources into ingots and concrete
+- Moves between resource gathering and production phases
+
+## Resource Management
+The Golem maintains separate storage systems:
+- Lava Storage: Dedicated space for stored lava (max_lava_storage)
+- Material Storage: Shared space for all solid materials (max_material_storage)
+
+## Production Recipes
+The Golem can produce:
+1. Lava + Stone → Reinforced Concrete
+2. Lava + Iron Ore → Iron Ingots
+3. Lava + Silver Ore → Silver Ingots
+4. Lava + Gold Ore → Gold Ingots
+5. Lava + Aetherdrift Ore → Aetherdrift Ingots
+
+## Configuration Parameters
+Tunable parameters to adjust the Golem's behavior:
+- max_lava_storage: Maximum lava storage capacity
+- max_material_storage: Maximum material storage capacity
+- reinforced_concrete_yield: Number of concrete blocks produced per recipe
+- [iron/silver/gold/aetherdrift]_ingot_yield: Number of ingots produced per recipe
+- lava_required: Amount of lava needed per recipe
+- material_required: Amount of material needed per recipe
+- search_radius_tiles/px: How far the Golem searches for resources
+- move_speed: Movement speed
+- cooldown_time: Time between production cycles
+
+## Modular Architecture
+The Golem uses the standard modular system:
+- GolemInitModule: Handles initialization
+- GolemMovementModule: Controls movement
+- GolemSearchModule: Finds resources
+- GolemConsumptionModule: Consumes resources
+- GolemProductionModule: Creates products
+- GolemStatsModule: Tracks efficiency
+- GolemUIModule: Handles UI interactions
+
+## Ecosystem Role
+The Golem competes with other creatures for resources:
+- Competes with Dragons for lava
+- Competes with Worms for ores and stones
+- Acts as a competitor in the ecosystem, potentially creating resource scarcity
+
+## Integration Notes
+The Golem creates interesting ecological dynamics:
+- With high numbers, can cause ecosystem collapse through competition
+- Can be tuned to be more or less competitive by adjusting parameters
+- Creates a realistic competitive exclusion scenario in the simulated ecosystem
+
+## Future Enhancement Ideas
+- Create new resource types only Golem can use
+- Add resource contribution back to ecosystem
+- Develop territorial behavior to avoid other creatures
+- Dynamic parameter adjustment based on ecosystem health

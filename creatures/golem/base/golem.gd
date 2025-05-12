@@ -11,10 +11,6 @@
 extends CharacterBody2D
 
 # === Node References ===
-# Golem.gd - Update the node references section at the top
-
-# === Node References ===
-# Golem.gd - updated node references
 @onready var tile_map_layer: TileMapLayer = get_node("/root/Main/TileMap/TileMapLayer")
 @onready var search_display := $SearchRadiusDisplay
 @onready var sprite := $Sprite2D if has_node("Sprite2D") else null
@@ -52,7 +48,8 @@ extends CharacterBody2D
 @export var move_speed: float = 180.0
 
 @export_group("Resource Storage")
-@export var max_storage: int = 8
+@export var max_lava_storage: int = 4  # Maximum lava storage capacity
+@export var max_material_storage: int = 4  # Maximum material storage capacity
 @export var cooldown_time: float = 10.0
 
 # === State Variables ===
@@ -98,7 +95,7 @@ func _process(delta: float) -> void:
 		is_efficient = true
 	
 	# === Phase 2: Resource gathering or wandering behavior ===
-	if _can_gather_more_resources():
+	if not (is_lava_storage_full() and is_material_storage_full()):
 		_execute_gathering_behavior(delta)
 	else:
 		_execute_wandering_behavior(delta)
@@ -117,8 +114,17 @@ func _input_event(viewport, event, shape_idx) -> void:
 func get_live_stats() -> Dictionary:
 	return stats_module.get_live_stats(self)
 
+func get_total_material_storage() -> int:
+	return stone_storage + iron_ore_storage + silver_ore_storage + gold_ore_storage + aetherdrift_ore_storage
+
 func get_total_storage() -> int:
-	return lava_storage + stone_storage + iron_ore_storage + silver_ore_storage + gold_ore_storage + aetherdrift_ore_storage
+	return lava_storage + get_total_material_storage()
+
+func is_lava_storage_full() -> bool:
+	return lava_storage >= max_lava_storage
+
+func is_material_storage_full() -> bool:
+	return get_total_material_storage() >= max_material_storage
 
 # === Helper Functions ===
 func _handle_production(delta: float) -> void:
@@ -127,12 +133,9 @@ func _handle_production(delta: float) -> void:
 	else:
 		production_module.produce_output(self)
 
-func _can_gather_more_resources() -> bool:
-	return get_total_storage() < max_storage
-
 func _execute_gathering_behavior(delta: float) -> void:
 	# First prioritize gathering lava if needed
-	if lava_storage < lava_required and target_lava:
+	if not is_lava_storage_full() and target_lava:
 		var move_result = movement_module.move_toward_target(delta, self, target_lava, "lava", move_speed)
 		
 		if move_result == "reached":
@@ -140,7 +143,7 @@ func _execute_gathering_behavior(delta: float) -> void:
 			target_lava = null
 	
 	# Then gather other materials if needed
-	elif target_material:
+	elif not is_material_storage_full() and target_material:
 		var move_result = movement_module.move_toward_target(delta, self, target_material, material_type, move_speed)
 		
 		if move_result == "reached":

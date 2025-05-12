@@ -4,40 +4,50 @@
 extends Node
 
 # Search for lava and material resources
+# Search for lava and material resources
 func search_for_resources(golem: Node) -> bool:
-	# First search for lava if needed
-	if golem.lava_storage < golem.lava_required and not golem.target_lava:
-		golem.target_lava = search_for_lava(golem)
+	var found_target = false
 	
-	# Then search for other materials based on what we have and priority
-	if not golem.target_material:
+	# First search for lava if needed and not already having a lava target
+	if not golem.is_lava_storage_full() and not golem.target_lava:
+		golem.target_lava = search_for_lava(golem)
+		if golem.target_lava:
+			found_target = true
+	
+	# Then search for materials if there's storage space and no material target
+	if not golem.is_material_storage_full() and not golem.target_material:
 		# Check each material in priority order
 		if golem.stone_storage < golem.material_required:
 			golem.target_material = search_for_stone(golem)
 			if golem.target_material:
 				golem.material_type = "stone"
+				found_target = true
 		
 		if not golem.target_material and golem.iron_ore_storage < golem.material_required:
 			golem.target_material = search_for_ore(golem, "iron")
 			if golem.target_material:
 				golem.material_type = "iron"
+				found_target = true
 		
 		if not golem.target_material and golem.silver_ore_storage < golem.material_required:
 			golem.target_material = search_for_ore(golem, "silver")
 			if golem.target_material:
 				golem.material_type = "silver"
+				found_target = true
 		
 		if not golem.target_material and golem.gold_ore_storage < golem.material_required:
 			golem.target_material = search_for_ore(golem, "gold")
 			if golem.target_material:
 				golem.material_type = "gold"
+				found_target = true
 		
 		if not golem.target_material and golem.aetherdrift_ore_storage < golem.material_required:
 			golem.target_material = search_for_ore(golem, "aetherdrift")
 			if golem.target_material:
 				golem.material_type = "aetherdrift"
+				found_target = true
 	
-	return golem.target_lava != null or golem.target_material != null
+	return found_target
 
 # Search for lava tiles
 func search_for_lava(golem: Node) -> Variant:
