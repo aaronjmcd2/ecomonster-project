@@ -68,6 +68,7 @@ func _process_foggy_lakes(delta: float):
 				lake.spawn_timer = spawn_interval
 
 # Update fog effects for each lake
+# Update fog effects for each lake
 func _update_fog_effects():
 	# Add fog to newly foggy lakes
 	for i in range(lakes.size()):
@@ -77,20 +78,23 @@ func _update_fog_effects():
 		if lake.is_foggy and not fog_effects.has(i):
 			var fog = fog_effect_scene.instantiate()
 			
-			# Calculate center of lake
-			var center = Vector2.ZERO
+			# Calculate center of lake in tile coordinates
+			var tile_center = Vector2.ZERO
 			for tile_pos in lake.tiles:
-				center += Vector2(tile_pos.x, tile_pos.y)
-			center /= lake.tiles.size()
+				tile_center += Vector2(tile_pos.x, tile_pos.y)
+			tile_center /= lake.tiles.size()
 			
-			# Convert to world position
-			center = Vector2(center.x * 32, center.y * 32)
+			# Convert to world position - this is the key fix
+			var world_center = tile_map_layer.map_to_local(Vector2i(int(tile_center.x), int(tile_center.y)))
+			
+			print("🌫️ Lake center in tiles: " + str(tile_center))
+			print("🌫️ Lake center in world: " + str(world_center))
 			
 			# Calculate size based on lake size
 			var size = sqrt(lake.tiles.size()) * 32 * 2  # Rough estimate
 			
 			# Position the fog effect at the lake center
-			fog.position = center
+			fog.position = world_center
 			
 			# Set the bounds for the fog effect
 			fog.set_bounds(Vector2(size, size))
@@ -98,7 +102,7 @@ func _update_fog_effects():
 			add_child(fog)
 			fog_effects[i] = fog
 			
-			print("🌫️ Created fog effect for lake at ", center)
+			print("🌫️ Created fog effect for lake at " + str(world_center))
 		
 		# Remove fog effect if the lake is no longer foggy
 		elif not lake.is_foggy and fog_effects.has(i):
@@ -119,7 +123,11 @@ func _spawn_specter(lake):
 	
 	# Choose a random tile in the lake
 	var spawn_tile = lake.tiles[randi() % lake.tiles.size()]
-	var spawn_pos = Vector2(spawn_tile.x * 32, spawn_tile.y * 32)
+	
+	# Convert tile position to world position
+	var spawn_pos = tile_map_layer.map_to_local(spawn_tile)
+	
+	print("👻 Spawning specter at tile: " + str(spawn_tile) + ", world pos: " + str(spawn_pos))
 	
 	# Spawn the specter
 	var specter = specter_scene.instantiate()

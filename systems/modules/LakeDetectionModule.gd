@@ -12,6 +12,8 @@ var lakes = []
 
 # Detects lakes in the tilemap
 # Returns: Array of lakes (each a dictionary with lake data)
+# Detects lakes in the tilemap
+# Returns: Array of lakes (each a dictionary with lake data)
 func detect_lakes(tile_map_layer: TileMapLayer) -> Array:
 	var water_tiles = []
 	var lake_size_threshold = 9  # 3x3 minimum
@@ -23,6 +25,8 @@ func detect_lakes(tile_map_layer: TileMapLayer) -> Array:
 			var pos = Vector2i(x, y)
 			if tile_map_layer.get_cell_source_id(pos) == 5:  # Water tile
 				water_tiles.append(pos)
+	
+	print("Found " + str(water_tiles.size()) + " water tiles total")
 	
 	# Step 2: Group connected water tiles into lakes
 	var visited = {}
@@ -58,8 +62,10 @@ func detect_lakes(tile_map_layer: TileMapLayer) -> Array:
 		
 		# Create lake if it meets size threshold
 		if lake_tiles.size() >= lake_size_threshold:
+			print("Found lake with " + str(lake_tiles.size()) + " tiles")
+			
 			var existing_lake = _find_existing_lake(lake_tiles)
-			if !existing_lake.is_empty():  # Check if Dictionary is not empty
+			if !existing_lake.is_empty():
 				# Update existing lake
 				existing_lake.tiles = lake_tiles
 			else:
@@ -74,9 +80,7 @@ func detect_lakes(tile_map_layer: TileMapLayer) -> Array:
 	# Keep track of detected lakes
 	self.lakes = new_lakes
 	return new_lakes
-
-# Finds if any tiles in a lake match an existing lake
-# Finds if any tiles in a lake match an existing lake
+	
 # Finds if any tiles in a lake match an existing lake
 func _find_existing_lake(tiles: Array) -> Dictionary:
 	for lake in lakes:

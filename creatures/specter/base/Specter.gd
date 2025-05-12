@@ -33,6 +33,9 @@ func _ready():
 	# Set up properties
 	sprite.modulate = Color(0.8, 0.9, 1.0, 0.7)  # Ghostly appearance
 	
+	# Reduce collision shape size
+	var collision_shape = $CollisionShape2D
+	
 	# Set up collision
 	collision_layer = 2
 	collision_mask = 1
@@ -41,10 +44,18 @@ func _ready():
 	life_timer.wait_time = life_duration
 	life_timer.start()
 	life_remaining = life_duration
+	
+	print("👻 Specter spawned at position: " + str(global_position))
 
 func _process(delta: float) -> void:
 	# Update life remaining
 	life_remaining = life_timer.time_left
+	
+	# Force crystal transformation if time is almost up
+	if life_remaining < 0.1:
+		print("⚠️ Force triggering crystal transformation due to low life")
+		_on_life_timer_timeout()
+		return  # Exit early since we're now destroyed
 	
 	# Simple ghostly effect - pulsing transparency
 	time_passed += delta
@@ -115,10 +126,26 @@ func _execute_wandering_behavior(delta: float) -> void:
 	var move_result = movement_module.float_toward_target(delta, self, wander_target, hover_speed)
 
 func _on_life_timer_timeout() -> void:
-	# Turn into crystal
-	var crystal = crystal_scene.instantiate()
-	crystal.global_position = global_position
-	get_parent().add_child(crystal)
+	print("⏰ Specter life timer expired - transforming to crystal")
+	
+	# Make sure the crystal scene is valid
+	if crystal_scene:
+		# Create the crystal
+		var crystal = crystal_scene.instantiate()
+		crystal.global_position = global_position
+		
+		# Add crystal to the main scene (not as a child of the specter)
+		if get_parent():
+			get_parent().add_child(crystal)
+			print("💎 Crystal created at: " + str(global_position))
+		else:
+			# Fallback if parent is not available
+			get_tree().current_scene.add_child(crystal)
+			print("💎 Crystal created at: " + str(global_position) + " (using fallback)")
+	else:
+		print("❌ ERROR: crystal_scene is not set!")
+	
+	# Remove the specter
 	queue_free()
 
 func _drop_soul() -> void:
