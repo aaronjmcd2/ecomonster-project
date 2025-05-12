@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmdbpj6nccbov"]
+
+[ext_resource type="Script" uid="uid://c5x1dwqiqege1" path="res://items/drops/ores/AetherdriftOre.gd" id="1_2tjp7"]
+[ext_resource type="Texture2D" uid="uid://csb7nlcll2xtl" path="res://items/drops/ores/AetherdriftOre.png" id="2_6cror"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qk40e"]
+radius = 33.0
+
+[node name="AetherdriftOre" type="Area2D"]
+script = ExtResource("1_2tjp7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, 1)
+scale = Vector2(0.261719, 0.261719)
+texture = ExtResource("2_6cror")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5, -3)
+shape = SubResource("CircleShape2D_qk40e")

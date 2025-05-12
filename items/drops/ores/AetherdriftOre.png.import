@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6ipauybx3yj8"
-path="res://.godot/imported/ReinforcedConcrete.png-064a72a2f7800cd38c9892e92f57598a.ctex"
+uid="uid://csb7nlcll2xtl"
+path="res://.godot/imported/AetherdriftOre.png-7f992924eed50bdc9275bbc0d6723813.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ReinforcedConcrete.png"
-dest_files=["res://.godot/imported/ReinforcedConcrete.png-064a72a2f7800cd38c9892e92f57598a.ctex"]
+source_file="res://items/drops/ores/AetherdriftOre.png"
+dest_files=["res://.godot/imported/AetherdriftOre.png-7f992924eed50bdc9275bbc0d6723813.ctex"]
 
 [params]
 

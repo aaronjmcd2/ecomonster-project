@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqxuhcrub14hs"]
+
+[ext_resource type="Script" uid="uid://igwh6c4tk0w1" path="res://items/drops/resources/SilverIngot.gd" id="1_xasfx"]
+[ext_resource type="Texture2D" uid="uid://bpbd3ii606u7p" path="res://items/drops/resources/SilverIngot.png" id="2_3meym"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pfctk"]
+size = Vector2(99, 61)
+
+[node name="SilverIngot" type="Area2D"]
+script = ExtResource("1_xasfx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.999985, -1.52588e-05)
+scale = Vector2(0.257813, 0.257813)
+texture = ExtResource("2_3meym")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4, -13)
+shape = SubResource("RectangleShape2D_pfctk")

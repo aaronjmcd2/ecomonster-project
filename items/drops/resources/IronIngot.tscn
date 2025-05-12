@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://x3gcwu2p5tui"]
+
+[ext_resource type="Script" uid="uid://vd8n2qgeyqop" path="res://items/drops/resources/IronIngot.gd" id="1_8x0ac"]
+[ext_resource type="Texture2D" uid="uid://bovbicwrje7hh" path="res://items/drops/resources/IronIngot.png" id="2_8hh2q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_alhar"]
+size = Vector2(161.5, 104.5)
+
+[node name="IronIngot" type="Area2D"]
+script = ExtResource("1_8x0ac")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(0.455078, 0.455078)
+texture = ExtResource("2_8hh2q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, -26)
+shape = SubResource("RectangleShape2D_alhar")

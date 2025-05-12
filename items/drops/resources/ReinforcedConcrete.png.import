@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjga2542frcub"
-path="res://.godot/imported/Golem.png-17a27bda19727c9c53d24866d49f67f9.ctex"
+uid="uid://b6ipauybx3yj8"
+path="res://.godot/imported/ReinforcedConcrete.png-da8eb7ea20901917dc1ce5e6d5a84ba8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Golem.png"
-dest_files=["res://.godot/imported/Golem.png-17a27bda19727c9c53d24866d49f67f9.ctex"]
+source_file="res://items/drops/resources/ReinforcedConcrete.png"
+dest_files=["res://.godot/imported/ReinforcedConcrete.png-da8eb7ea20901917dc1ce5e6d5a84ba8.ctex"]
 
 [params]
 

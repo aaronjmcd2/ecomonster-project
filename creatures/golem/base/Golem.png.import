@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8acsia4g6w5"
-path="res://.godot/imported/GoldIngot.png-9a5144cee4eac03a3f4953de2ff3b191.ctex"
+uid="uid://bjga2542frcub"
+path="res://.godot/imported/Golem.png-74b5d076c8bf730e71fb6959330f0599.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/GoldIngot.png"
-dest_files=["res://.godot/imported/GoldIngot.png-9a5144cee4eac03a3f4953de2ff3b191.ctex"]
+source_file="res://creatures/golem/base/Golem.png"
+dest_files=["res://.godot/imported/Golem.png-74b5d076c8bf730e71fb6959330f0599.ctex"]
 
 [params]
 

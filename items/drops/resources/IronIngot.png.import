@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3g43jk7cixbc"
-path="res://.godot/imported/AetherdriftIngot.png-3f0b63d2ffd8f6db14d2be100f27cb6a.ctex"
+uid="uid://bovbicwrje7hh"
+path="res://.godot/imported/IronIngot.png-45aeb7548df5a90e90ef933b59de99de.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/AetherdriftIngot.png"
-dest_files=["res://.godot/imported/AetherdriftIngot.png-3f0b63d2ffd8f6db14d2be100f27cb6a.ctex"]
+source_file="res://items/drops/resources/IronIngot.png"
+dest_files=["res://.godot/imported/IronIngot.png-45aeb7548df5a90e90ef933b59de99de.ctex"]
 
 [params]
 

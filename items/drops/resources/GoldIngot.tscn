@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dr6ofwe4gykeb"]
+
+[ext_resource type="Script" uid="uid://ckfjl8n3sm4ln" path="res://items/drops/resources/GoldIngot.gd" id="1_skjbt"]
+[ext_resource type="Texture2D" uid="uid://8acsia4g6w5" path="res://items/drops/resources/GoldIngot.png" id="2_arcjk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dt0g8"]
+size = Vector2(126, 96.5)
+
+[node name="GoldIngot" type="Area2D"]
+script = ExtResource("1_skjbt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 2)
+scale = Vector2(0.384766, 0.384766)
+texture = ExtResource("2_arcjk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, -15)
+shape = SubResource("RectangleShape2D_dt0g8")

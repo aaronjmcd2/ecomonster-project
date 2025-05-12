@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bpbd3ii606u7p"
-path="res://.godot/imported/SilverIngot.png-cdaf3564970366a717bfbc4513aa27cf.ctex"
+path="res://.godot/imported/SilverIngot.png-bd1e61a8ed628c90241941e89a927fe4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/SilverIngot.png"
-dest_files=["res://.godot/imported/SilverIngot.png-cdaf3564970366a717bfbc4513aa27cf.ctex"]
+source_file="res://items/drops/resources/SilverIngot.png"
+dest_files=["res://.godot/imported/SilverIngot.png-bd1e61a8ed628c90241941e89a927fe4.ctex"]
 
 [params]
 
