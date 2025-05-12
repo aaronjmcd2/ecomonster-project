@@ -41,8 +41,8 @@ _data = {
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_np5rs"]
-radius = 108.655
-height = 217.309
+radius = 86.423
+height = 617.352
 
 [node name="Sword" type="Node2D"]
 script = ExtResource("1_np5rs")

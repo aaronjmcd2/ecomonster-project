@@ -8,7 +8,10 @@
 radius = 171.945
 
 [node name="Specter" type="CharacterBody2D" groups=["monsters", "specters"]]
+scale = Vector2(1.24, 1.24)
+input_pickable = true
 script = ExtResource("1_78e8r")
+life_duration = 30.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-8, 1)
@@ -22,7 +25,8 @@ shape = SubResource("CircleShape2D_1msgw")
 
 [node name="SearchRadiusDisplay" type="Node2D" parent="."]
 script = ExtResource("3_1msgw")
+radius = 1000.0
 
 [node name="LifeTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 30.0
 one_shot = true

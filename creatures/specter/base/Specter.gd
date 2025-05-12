@@ -1,5 +1,4 @@
-# Specter.gd
-# Handles Specter behavior - born from foggy lakes, turns to crystal over time
+# Specter.gd - modify at the top of the file
 extends CharacterBody2D
 
 # === Node References ===
@@ -9,6 +8,10 @@ extends CharacterBody2D
 # === Specter Helper Modules ===
 @onready var movement_module = preload("res://creatures/specter/base/SpecterMovementModule.gd").new()
 @onready var ui_module = preload("res://creatures/specter/base/SpecterUIModule.gd").new()
+
+# Explicitly load scenes
+@onready var crystal_scene_ref = preload("res://items/drops/resources/Crystal.tscn")
+@onready var soul_scene_ref = preload("res://items/drops/resources/Soul.tscn")
 
 # === Configuration Parameters ===
 @export_group("Movement & Search")
@@ -29,23 +32,41 @@ var health: int = 3  # Hit points
 var time_passed: float = 0.0  # For simple visual effects
 
 # === Core Functions ===
+# Add this to Specter.gd's _ready function
 func _ready():
-	# Set up properties
-	sprite.modulate = Color(0.8, 0.9, 1.0, 0.7)  # Ghostly appearance
+	# Make sure we can be clicked
+	input_pickable = true
 	
-	# Reduce collision shape size
-	var collision_shape = $CollisionShape2D
+	# Set up visual properties
+	sprite.modulate = Color(0.8, 0.9, 1.0, 0.7)  # Ghostly appearance
 	
 	# Set up collision
 	collision_layer = 2
 	collision_mask = 1
 	
-	# Start life timer
+	# Set a reasonable life duration (10 seconds for testing)
+	life_duration = 10.0
+	
+	# Connect timer signal
+	life_timer.timeout.connect(Callable(self, "_on_life_timer_timeout"))
+	
+	# Start with a fresh timer
+	life_timer.stop()  # Make sure any existing timer is stopped
 	life_timer.wait_time = life_duration
 	life_timer.start()
 	life_remaining = life_duration
 	
-	print("👻 Specter spawned at position: " + str(global_position))
+	print("👻 Specter spawned with life duration: " + str(life_duration) + " seconds")
+
+# Add these functions
+func _on_hurtbox_body_entered(body):
+	print("⚔️ Body entered hurtbox: " + body.name)
+
+func _on_hurtbox_area_entered(area):
+	print("⚔️ Area entered hurtbox: " + area.name)
+	if area.name == "Hitbox" and area.get_parent().name == "EquippedSword":
+		print("⚔️ Sword hit detected!")
+		take_damage(1)
 
 func _process(delta: float) -> void:
 	# Update life remaining
@@ -68,6 +89,10 @@ func _process(delta: float) -> void:
 	
 	# Execute floating/wandering behavior
 	_execute_wandering_behavior(delta)
+	
+	if Input.is_action_just_pressed("ui_focus_next"): # This is the Tab key
+		print("🧪 Testing damage on specter")
+		take_damage(1)
 
 func _input_event(viewport, event, shape_idx) -> void:
 	ui_module.handle_input_event(self, viewport, event, shape_idx)
@@ -127,28 +152,41 @@ func _execute_wandering_behavior(delta: float) -> void:
 
 func _on_life_timer_timeout() -> void:
 	print("⏰ Specter life timer expired - transforming to crystal")
+	print("⏰ Crystal scene valid: " + str(crystal_scene != null))
+	print("⏰ Explicit crystal scene valid: " + str(crystal_scene_ref != null))
+	
+	# Use explicitly loaded scene if the exported one isn't valid
+	var scene_to_use = crystal_scene if crystal_scene != null else crystal_scene_ref
 	
 	# Make sure the crystal scene is valid
-	if crystal_scene:
+	if scene_to_use:
 		# Create the crystal
-		var crystal = crystal_scene.instantiate()
+		var crystal = scene_to_use.instantiate()
 		crystal.global_position = global_position
 		
 		# Add crystal to the main scene (not as a child of the specter)
 		if get_parent():
+			print("⏰ Parent valid, adding crystal at: " + str(global_position))
 			get_parent().add_child(crystal)
 			print("💎 Crystal created at: " + str(global_position))
 		else:
 			# Fallback if parent is not available
+			print("⚠️ Parent invalid, using fallback")
 			get_tree().current_scene.add_child(crystal)
 			print("💎 Crystal created at: " + str(global_position) + " (using fallback)")
 	else:
-		print("❌ ERROR: crystal_scene is not set!")
+		print("❌ ERROR: Both crystal scene references are invalid!")
 	
 	# Remove the specter
 	queue_free()
 
 func _drop_soul() -> void:
-	var soul = soul_scene.instantiate()
-	soul.global_position = global_position
-	get_parent().add_child(soul)
+	var scene_to_use = soul_scene if soul_scene != null else soul_scene_ref
+	
+	if scene_to_use:
+		var soul = scene_to_use.instantiate()
+		soul.global_position = global_position
+		get_parent().add_child(soul)
+		print("👻 Soul dropped at: " + str(global_position))
+	else:
+		print("❌ ERROR: Soul scene is not set!")
