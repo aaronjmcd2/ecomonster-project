@@ -17,28 +17,33 @@ func _ready() -> void:
 	pass
 
 # === Set the item in this slot and update visuals ===
+# In InventorySlot.gd - set_item function
 func set_item(item: Dictionary) -> void:
 	item_data = item
 
 	if item:
+		print("🖼️ Setting item in slot: ", item.name, " with icon: ", item.get("icon"))
+		
 		if item.has("icon") and item["icon"] is Texture2D:
 			icon.texture = item["icon"]
 		else:
-			# Updated fallback paths to check multiple locations
+			# Try to load icon from various paths
+			var icon_found = false
 			var paths = [
 				"res://items/drops/ores/%s.png" % item.name,
 				"res://items/drops/resources/%s.png" % item.name,
-				"res://items/equipment/%s.png" % item.name,
-				"res://sprites/%s.png" % item.name  # Legacy fallback
+				"res://items/equipment/%s.png" % item.name
 			]
 			
 			for path in paths:
 				if ResourceLoader.exists(path):
+					print("✅ Found icon at: ", path)
 					icon.texture = load(path)
+					icon_found = true
 					break
 			
-			if icon.texture == null:
-				print("Warning: Could not find icon for item: ", item.name)
+			if not icon_found:
+				print("❌ Could not find icon for item: ", item.name)
 
 		count_label.text = str(item.count)
 		icon.visible = true

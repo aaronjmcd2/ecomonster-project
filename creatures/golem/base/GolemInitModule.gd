@@ -12,8 +12,11 @@ func initialize(golem: Node) -> void:
 	_setup_search_display(golem)
 	
 	# Initialize animations if available
-	if golem.has_node("AnimatedSprite2D"):
+	if golem.has_node("AnimatedSprite2D") and golem.anim_sprite != null:
 		golem.anim_sprite.play("idle")
+	# If using a regular sprite, make sure it's visible
+	elif golem.has_node("Sprite2D") and golem.sprite != null:
+		golem.sprite.visible = true
 
 # Set up physics properties
 func _setup_physics(golem: Node) -> void:

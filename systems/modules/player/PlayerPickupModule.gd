@@ -25,107 +25,59 @@ func try_pickup_item(world_pos: Vector2) -> void:
 		if node == null:
 			continue
 
-		if node.is_in_group("ore_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("✨ Picked up:", node.name)
-				var drop_count = node.count
-				var item_data = {
-					"name": "IronOre",
-					"count": drop_count
-				}
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
-				
-		elif node.is_in_group("egg_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("🥚 Picked up egg:", node.name)
-				var drop_count = node.count
-				var item_data = {
-					"name": "Egg",  # ✅ Corrected from "IronOre"
-					"count": drop_count
-				}
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
-				
-		elif node.is_in_group("gold_ore_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("🪙 Picked up gold:", node.name)
-				var drop_count = node.count
-				var item_data = {
-					"name": "GoldOre",
-					"count": drop_count
-				}
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
+		# Check distance to avoid picking up items too far away
+		if player.global_position.distance_to(node.global_position) > pickup_radius:
+			continue
 
+		# Prioritize the get_item_data method if it exists
+		if node.has_method("get_item_data"):
+			print("✨ Picking up item using get_item_data(): ", node.name)
+			var item_data = node.get_item_data()
+			print("📦 Item data: ", item_data)
+			inventory_ui.add_item_to_inventory(item_data.duplicate(true))
+			node.queue_free()
+			return
+		
+		# For nodes without get_item_data, handle based on groups
+		if node.is_in_group("aetherdrift_ore_drops"):
+			_pickup_specific_ore(node, "AetherdriftOre", "aetherdrift ore")
+			return
 		elif node.is_in_group("silver_ore_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("🥈 Picked up silver:", node.name)
-				var drop_count = node.count
-				var item_data = {
-					"name": "SilverOre",
-					"count": drop_count
-				}
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
-
-		elif node.is_in_group("melon_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("🍈 Picked up melon:", node.name)
-				var item_data = node.get_item_data()
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
-				
-		elif node.is_in_group("stone_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("🪨 Picked up stone:", node.name)
-				var item_data = node.get_item_data()
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
-
-		# For Aetherdrift Ore
-		elif node.is_in_group("aetherdrift_ore_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("✨ Picked up aetherdrift ore:", node.name)
-				var drop_count = node.count
-				var item_data = {
-					"name": "AetherdriftOre",
-					"count": drop_count
-				}
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
-
-		# For Reinforced Concrete
-		elif node.is_in_group("concrete_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("🧱 Picked up reinforced concrete:", node.name)
-				var item_data = node.get_item_data()
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
-
-		# For Ingots (can be used for all ingot types)
+			_pickup_specific_ore(node, "SilverOre", "silver ore")
+			return
+		elif node.is_in_group("gold_ore_drops"):
+			_pickup_specific_ore(node, "GoldOre", "gold ore")  
+			return
+		elif node.is_in_group("ore_drops"):
+			# Generic ore_drops are assumed to be iron if not in a more specific group
+			_pickup_specific_ore(node, "IronOre", "iron ore")
+			return
 		elif node.is_in_group("ingot_drops"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("🔩 Picked up ingot:", node.name)
-				var item_data = node.get_item_data()
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
+			# Try to determine ingot type from resource_type if available
+			var ingot_type = "IronIngot"  # Default
+			if "resource_type" in node:
+				match node.resource_type:
+					"iron_ingot": ingot_type = "IronIngot"
+					"silver_ingot": ingot_type = "SilverIngot"
+					"gold_ingot": ingot_type = "GoldIngot"
+					"aetherdrift_ingot": ingot_type = "AetherdriftIngot"
+			
+			_pickup_specific_ore(node, ingot_type, "ingot")
+			return
+		elif node.is_in_group("concrete_drops"):
+			_pickup_specific_ore(node, "ReinforcedConcrete", "reinforced concrete")
+			return
+		
+		# Add other item types as needed
 
-
-
-		elif node.is_in_group("world_items"):
-			if player.global_position.distance_to(node.global_position) <= pickup_radius:
-				print("🗡️ Picked up world item:", node.name)
-				var item_data = node.get_item_data()
-				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
-				node.queue_free()
-				break
+# Helper function to handle picking up specific ore types
+func _pickup_specific_ore(node, item_name: String, display_name: String) -> void:
+	print("🔹 Picking up " + display_name + ": " + node.name)
+	var drop_count = node.get("count") if "count" in node else 1
+	var item_data = {
+		"name": item_name,
+		"count": drop_count
+	}
+	print("📦 Item data: ", item_data)
+	inventory_ui.add_item_to_inventory(item_data.duplicate(true))
+	node.queue_free()

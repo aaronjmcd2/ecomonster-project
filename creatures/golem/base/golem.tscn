@@ -1,15 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://di3mjx276jjit"]
+[gd_scene load_steps=10 format=3 uid="uid://di3mjx276jjit"]
 
 [ext_resource type="Script" uid="uid://88emc7b381bc" path="res://creatures/golem/base/golem.gd" id="1_xoysh"]
 [ext_resource type="Texture2D" uid="uid://bjga2542frcub" path="res://creatures/golem/base/Golem.png" id="2_gkgil"]
+[ext_resource type="PackedScene" uid="uid://b5uiuholbk3q6" path="res://items/drops/resources/ReinforcedConcrete.tscn" id="2_q03q7"]
+[ext_resource type="PackedScene" uid="uid://x3gcwu2p5tui" path="res://items/drops/resources/IronIngot.tscn" id="3_0pghv"]
 [ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://ui/SearchRadiusDisplay.gd" id="3_gkgil"]
+[ext_resource type="PackedScene" uid="uid://dqxuhcrub14hs" path="res://items/drops/resources/SilverIngot.tscn" id="4_5ts3i"]
+[ext_resource type="PackedScene" uid="uid://dr6ofwe4gykeb" path="res://items/drops/resources/GoldIngot.tscn" id="5_jxaeq"]
+[ext_resource type="PackedScene" uid="uid://ckvyf7m85gmh0" path="res://items/drops/resources/AetherdriftIngot.tscn" id="6_sjqjv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_30qgq"]
 size = Vector2(284.5, 466.5)
 
 [node name="Golem" type="CharacterBody2D" groups=["monsters"]]
 collision_layer = 2
+input_pickable = true
 script = ExtResource("1_xoysh")
+reinforced_concrete_scene = ExtResource("2_q03q7")
+iron_ingot_scene = ExtResource("3_0pghv")
+silver_ingot_scene = ExtResource("4_5ts3i")
+gold_ingot_scene = ExtResource("5_jxaeq")
+aetherdrift_ingot_scene = ExtResource("6_sjqjv")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-1, 1)

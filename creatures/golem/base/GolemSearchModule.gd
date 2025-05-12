@@ -49,36 +49,28 @@ func search_for_lava(golem: Node) -> Variant:
 
 # Search for stone drops
 func search_for_stone(golem: Node) -> Node2D:
-	# First try to find stones using safe method
 	for drop in golem.get_tree().get_nodes_in_group("stone_drops"):
 		if not is_instance_valid(drop):
 			continue
 			
-		# Safe way to check and set claimed_by
+		# Safe way to check claimed_by
 		var already_claimed = false
-		if drop.has_method("get") and drop.has_method("set"):
-			already_claimed = drop.get("claimed_by") != null and drop.get("claimed_by") != golem
-		elif drop.has_variable("claimed_by"):
-			already_claimed = drop.claimed_by != null and drop.claimed_by != golem
+		if drop.get("claimed_by") != null and drop.get("claimed_by") != golem:
+			already_claimed = true
 			
 		if already_claimed:
 			continue
 			
 		var dist = golem.global_position.distance_to(drop.global_position)
 		if dist <= golem.search_radius_px:
-			# Safe way to claim
-			if drop.has_method("set"):
-				drop.set("claimed_by", golem)
-			elif drop.has_variable("claimed_by"):
-				drop.claimed_by = golem
-				
+			# Safe way to set claimed_by
+			drop.claimed_by = golem
 			return drop
 	
 	return null
 
 # Search for various ore drops
 func search_for_ore(golem: Node, ore_type: String) -> Node2D:
-	var target = null
 	var group_name = ""
 	
 	match ore_type:
@@ -101,31 +93,17 @@ func search_for_ore(golem: Node, ore_type: String) -> Node2D:
 		
 		# For "ore_drops" group, filter by resource_type
 		if group_name == "ore_drops" and ore_type == "iron":
-			if drop.has_variable("resource_type"):
-				if drop.resource_type != "iron":
-					continue
-			else:
-				# Skip if we can't determine the type
+			if drop.get("resource_type") != "iron":
 				continue
 		
-		# Safe way to check and set claimed_by
-		var already_claimed = false
-		if drop.has_method("get") and drop.has_method("set"):
-			already_claimed = drop.get("claimed_by") != null and drop.get("claimed_by") != golem
-		elif drop.has_variable("claimed_by"):
-			already_claimed = drop.claimed_by != null and drop.claimed_by != golem
-			
-		if already_claimed:
+		# Safe way to check claimed_by
+		if drop.get("claimed_by") != null and drop.get("claimed_by") != golem:
 			continue
 			
 		var dist = golem.global_position.distance_to(drop.global_position)
 		if dist <= golem.search_radius_px:
-			# Safe way to claim
-			if drop.has_method("set"):
-				drop.set("claimed_by", golem)
-			elif drop.has_variable("claimed_by"):
-				drop.claimed_by = golem
-				
+			# Safe way to set claimed_by
+			drop.claimed_by = golem
 			print("🔖 " + ore_type.capitalize() + " drop claimed by:", golem.name)
 			return drop
 	

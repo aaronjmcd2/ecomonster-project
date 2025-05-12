@@ -23,6 +23,7 @@ func determine_production_type(golem: Node) -> String:
 
 # Produce the selected output
 func produce_output(golem: Node) -> void:
+	
 	# If no production type is set, determine one
 	if golem.production_type == "":
 		golem.production_type = determine_production_type(golem)

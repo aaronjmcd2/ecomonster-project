@@ -85,6 +85,19 @@ func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stac
 				drop_scene = preload("res://items/drops/resources/Melon.tscn")
 			"Stone":
 				drop_scene = preload("res://items/drops/resources/Stone.tscn")
+			# Inside the match statement for drop_scene
+			"AetherdriftOre":
+				drop_scene = preload("res://items/drops/ores/AetherdriftOre.tscn")
+			"ReinforcedConcrete":
+				drop_scene = preload("res://items/drops/resources/ReinforcedConcrete.tscn")
+			"IronIngot":
+				drop_scene = preload("res://items/drops/resources/IronIngot.tscn")
+			"SilverIngot":
+				drop_scene = preload("res://items/drops/resources/SilverIngot.tscn")
+			"GoldIngot":
+				drop_scene = preload("res://items/drops/resources/GoldIngot.tscn")
+			"AetherdriftIngot":
+				drop_scene = preload("res://items/drops/resources/AetherdriftIngot.tscn")
 			_:
 				print("⚠️ No drop scene found for item:", item["name"])
 				return

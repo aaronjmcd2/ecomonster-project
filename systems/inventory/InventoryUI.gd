@@ -15,9 +15,22 @@ func _ready():
 func add_item_to_inventory(item: Dictionary):
 	var name = item.get("name", "")
 	var count = item.get("count", 1)
+	
+	print("📦 InventoryUI adding: ", name, " x", count)
+	
+	# Print existing hotbar slots for debugging
+	var hotbar = $HotbarWrapper/Hotbar
+	print("🔍 Current hotbar items:")
+	for i in range(hotbar.get_child_count()):
+		var slot = hotbar.get_child(i)
+		if slot is InventorySlot:
+			var slot_item = slot.get_item()
+			if not slot_item.is_empty():
+				print("  - Slot", i, ":", slot_item.name, "x", slot_item.count)
+			else:
+				print("  - Slot", i, ": empty")
 
 	# Get all hotbar & inventory slots
-	var hotbar = $HotbarWrapper/Hotbar
 	var hotbar_slots = []
 	for child in hotbar.get_children():
 		if child is InventorySlot:

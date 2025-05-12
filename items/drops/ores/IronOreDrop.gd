@@ -15,3 +15,11 @@ func _ready():
 # FireElemental consumes this ore drop
 func consume():
 	queue_free()
+
+func get_item_data() -> Dictionary:
+	return {
+		"name": "IronOre",
+		"count": count,
+		"icon": preload("res://items/drops/ores/IronOre.png"),
+		"scene": preload("res://items/drops/ores/IronOreDrop.tscn")
+	}

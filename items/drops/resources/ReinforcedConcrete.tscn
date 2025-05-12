@@ -1,12 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://b5uiuholbk3q6"]
+[gd_scene load_steps=4 format=3 uid="uid://b5uiuholbk3q6"]
 
 [ext_resource type="Script" uid="uid://bahdl1tq7snsc" path="res://items/drops/resources/ReinforcedConcrete.gd" id="1_yt1v1"]
 [ext_resource type="Texture2D" uid="uid://b6ipauybx3yj8" path="res://items/drops/resources/ReinforcedConcrete.png" id="2_1thqa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yt1v1"]
+size = Vector2(158, 85)
 
 [node name="ReinforcedConcrete" type="Area2D"]
 script = ExtResource("1_yt1v1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.999996, 1)
+scale = Vector2(0.488281, 0.488281)
 texture = ExtResource("2_1thqa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-4, -29.5)
+shape = SubResource("RectangleShape2D_yt1v1")

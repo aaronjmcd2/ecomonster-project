@@ -9,3 +9,11 @@ func _ready():
 	add_to_group("silver_ore_drops")
 	add_to_group("ore_drops")  # Add to general ore_drops group too
 	print("🪙 Silver ore spawned | count:", count)
+
+func get_item_data() -> Dictionary:
+	return {
+		"name": "SilverOre",
+		"count": count,
+		"icon": preload("res://items/drops/ores/SilverOre.png"),
+		"scene": preload("res://items/drops/ores/SilverOreDrop.tscn")
+	}
