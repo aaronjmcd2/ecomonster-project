@@ -12,6 +12,17 @@ func _ready() -> void:
 	
 	_init_inventory_ui()
 	_setup_test_items()
+	
+	 # Connect to item drop events to detect silver ingots in water
+	EventBus.connect("item_dropped", Callable(self, "_on_item_dropped"))
+
+# Add item drop handler
+func _on_item_dropped(item_data, world_position):
+	# Check if it's a silver ingot
+	if item_data.name == "SilverIngot":
+		var lake_manager = get_node_or_null("LakeManager")
+		if lake_manager:
+			lake_manager.check_silver_ingot_drop(world_position)
 
 # === Populates inventory and hotbar UI ===
 func _init_inventory_ui() -> void:

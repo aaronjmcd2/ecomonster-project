@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://cfruggx0j3pyo"]
+
+[ext_resource type="Script" uid="uid://bqixjse8bnhw" path="res://creatures/specter/base/Specter.gd" id="1_78e8r"]
+[ext_resource type="PackedScene" uid="uid://ba27fgyy8fnjy" path="res://items/drops/resources/Crystal.tscn" id="2_1msgw"]
+[ext_resource type="Texture2D" uid="uid://cogqodoso1w64" path="res://creatures/specter/base/Specter.png" id="2_46382"]
+[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://ui/SearchRadiusDisplay.gd" id="3_1msgw"]
+[ext_resource type="PackedScene" uid="uid://yquut537q7yr" path="res://items/drops/resources/Soul.tscn" id="3_vrwnb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1msgw"]
+radius = 171.945
+
+[node name="Specter" type="CharacterBody2D" groups=["monsters", "specters"]]
+script = ExtResource("1_78e8r")
+crystal_scene = ExtResource("2_1msgw")
+soul_scene = ExtResource("3_vrwnb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.52588e-05, 1.52588e-05)
+scale = Vector2(0.50293, 0.50293)
+texture = ExtResource("2_46382")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(14, -30)
+shape = SubResource("CircleShape2D_1msgw")
+
+[node name="SearchRadiusDisplay" type="Node2D" parent="."]
+script = ExtResource("3_1msgw")
+
+[node name="LifeTimer" type="Timer" parent="."]
+wait_time = 120.0
+one_shot = true

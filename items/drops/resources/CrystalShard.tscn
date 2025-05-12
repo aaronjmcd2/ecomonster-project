@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqtldafr60705"]
+
+[ext_resource type="Script" uid="uid://cqfh5sx0ww7sr" path="res://items/drops/resources/CrystalShard.gd" id="1_6lyao"]
+[ext_resource type="Texture2D" uid="uid://cmok7n5lyhl7w" path="res://items/drops/resources/CrystalShard.png" id="2_hn3r5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yxotg"]
+radius = 47.0744
+
+[node name="CrystalShard" type="Area2D"]
+script = ExtResource("1_6lyao")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 2)
+scale = Vector2(0.503906, 0.503906)
+texture = ExtResource("2_hn3r5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(10, -30)
+shape = SubResource("CircleShape2D_yxotg")

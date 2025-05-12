@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://yquut537q7yr"]
+
+[ext_resource type="Script" uid="uid://ddr2kiot6o7e8" path="res://items/drops/resources/Soul.gd" id="1_locsf"]
+[ext_resource type="Texture2D" uid="uid://na1o0dk16180" path="res://items/drops/resources/Soul.png" id="2_p1xb2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_plt7w"]
+radius = 68.4471
+
+[node name="Soul" type="Area2D"]
+script = ExtResource("1_locsf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-3, -1)
+scale = Vector2(0.496094, 0.496094)
+texture = ExtResource("2_p1xb2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_plt7w")

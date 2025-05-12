@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cogqodoso1w64"
-path="res://.godot/imported/Specter.png-3592def25454f8519949a03e2b81db2b.ctex"
+path="res://.godot/imported/Specter.png-7c18884e6ca4958a0d0bd0578da4e57d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Specter.png"
-dest_files=["res://.godot/imported/Specter.png-3592def25454f8519949a03e2b81db2b.ctex"]
+source_file="res://creatures/specter/base/Specter.png"
+dest_files=["res://.godot/imported/Specter.png-7c18884e6ca4958a0d0bd0578da4e57d.ctex"]
 
 [params]
 

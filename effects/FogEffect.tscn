@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://0h40p2l2bjmm"]
+
+[ext_resource type="Script" uid="uid://bdr4ul20lsey6" path="res://effects/FogEffect.gd" id="1_5bbxs"]
+
+[node name="FogEffect" type="Node2D"]
+script = ExtResource("1_5bbxs")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]

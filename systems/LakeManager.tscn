@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkjeecidtjsb1"]
+
+[ext_resource type="Script" uid="uid://miqeiiosetu1" path="res://systems/LakeManager.gd" id="1_y8po6"]
+
+[node name="LakeManager" type="Node"]
+script = ExtResource("1_y8po6")
+detection_interval = null
+spawn_interval = null
+max_specters_per_lake = null

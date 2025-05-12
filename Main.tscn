@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=13 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://Main.gd" id="1_sc1dx"]
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://assets/tiles/TileSet.tres" id="2_kjvhd"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://dskqqlloghbas" path="res://systems/inventory/InventoryUI.tscn" id="7_bg4s2"]
 [ext_resource type="PackedScene" uid="uid://b7he5tq8l7t7i" path="res://creatures/dragon/base/Dragon.tscn" id="8_hhcpw"]
 [ext_resource type="PackedScene" uid="uid://bweokypfxckvu" path="res://creatures/player/Player.tscn" id="9_mxvw5"]
+[ext_resource type="PackedScene" uid="uid://dkjeecidtjsb1" path="res://systems/LakeManager.tscn" id="10_5vvyt"]
+[ext_resource type="PackedScene" uid="uid://cfruggx0j3pyo" path="res://creatures/specter/base/Specter.tscn" id="11_c6i3y"]
+[ext_resource type="PackedScene" uid="uid://0h40p2l2bjmm" path="res://effects/FogEffect.tscn" id="12_c2ibq"]
 [ext_resource type="PackedScene" uid="uid://diaywsr5x8gc8" path="res://creatures/worm/base/Worm.tscn" id="12_hri7i"]
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://creatures/elemental/base/Elemental.tscn" id="15_oye8v"]
 [ext_resource type="PackedScene" uid="uid://di3mjx276jjit" path="res://creatures/golem/base/golem.tscn" id="18_kjvhd"]
@@ -40,3 +43,10 @@ position = Vector2(-2496, -543)
 
 [node name="Golem" parent="." instance=ExtResource("18_kjvhd")]
 position = Vector2(-3679, 1675)
+
+[node name="LakeManager" parent="." instance=ExtResource("10_5vvyt")]
+specter_scene = ExtResource("11_c6i3y")
+fog_effect_scene = ExtResource("12_c2ibq")
+detection_interval = null
+spawn_interval = null
+max_specters_per_lake = null
