@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=19 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://Main.gd" id="1_sc1dx"]
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://assets/tiles/TileSet.tres" id="2_kjvhd"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://creatures/elemental/base/Elemental.tscn" id="15_oye8v"]
 [ext_resource type="PackedScene" uid="uid://dg4ipcd10yxmr" path="res://items/drops/resources/Stone.tscn" id="16_40n85"]
 [ext_resource type="PackedScene" uid="uid://bcxfy3fqhhdx3" path="res://items/drops/resources/Boulder.tscn" id="17_gb15f"]
+[ext_resource type="PackedScene" uid="uid://di3mjx276jjit" path="res://creatures/golem/base/golem.tscn" id="18_kjvhd"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_sc1dx")
@@ -102,3 +103,6 @@ position = Vector2(-2402, 169)
 
 [node name="Boulder2" parent="." instance=ExtResource("17_gb15f")]
 position = Vector2(-1178, 1364)
+
+[node name="Golem" parent="." instance=ExtResource("18_kjvhd")]
+position = Vector2(-3679, 1675)

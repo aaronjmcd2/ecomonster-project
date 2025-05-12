@@ -1,6 +1,7 @@
 # Stone.gd
 extends Area2D
 
+var claimed_by: Node = null
 var count: int = 1
 var resource_type := "stone"
 

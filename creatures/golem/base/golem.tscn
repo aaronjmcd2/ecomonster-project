@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://di3mjx276jjit"]
+[gd_scene load_steps=5 format=3 uid="uid://di3mjx276jjit"]
 
 [ext_resource type="Script" uid="uid://88emc7b381bc" path="res://creatures/golem/base/golem.gd" id="1_xoysh"]
 [ext_resource type="Texture2D" uid="uid://bjga2542frcub" path="res://creatures/golem/base/Golem.png" id="2_gkgil"]
+[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://ui/SearchRadiusDisplay.gd" id="3_gkgil"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_30qgq"]
 size = Vector2(284.5, 466.5)
 
-[node name="Golem" type="Area2D"]
+[node name="Golem" type="CharacterBody2D" groups=["monsters"]]
+collision_layer = 2
 script = ExtResource("1_xoysh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -17,3 +19,6 @@ texture = ExtResource("2_gkgil")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-5.75, 15.75)
 shape = SubResource("RectangleShape2D_30qgq")
+
+[node name="SearchRadiusDisplay" type="Node2D" parent="."]
+script = ExtResource("3_gkgil")

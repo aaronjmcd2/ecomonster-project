@@ -89,6 +89,37 @@ func try_pickup_item(world_pos: Vector2) -> void:
 				node.queue_free()
 				break
 
+		# For Aetherdrift Ore
+		elif node.is_in_group("aetherdrift_ore_drops"):
+			if player.global_position.distance_to(node.global_position) <= pickup_radius:
+				print("✨ Picked up aetherdrift ore:", node.name)
+				var drop_count = node.count
+				var item_data = {
+					"name": "AetherdriftOre",
+					"count": drop_count
+				}
+				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
+				node.queue_free()
+				break
+
+		# For Reinforced Concrete
+		elif node.is_in_group("concrete_drops"):
+			if player.global_position.distance_to(node.global_position) <= pickup_radius:
+				print("🧱 Picked up reinforced concrete:", node.name)
+				var item_data = node.get_item_data()
+				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
+				node.queue_free()
+				break
+
+		# For Ingots (can be used for all ingot types)
+		elif node.is_in_group("ingot_drops"):
+			if player.global_position.distance_to(node.global_position) <= pickup_radius:
+				print("🔩 Picked up ingot:", node.name)
+				var item_data = node.get_item_data()
+				inventory_ui.add_item_to_inventory(item_data.duplicate(true))
+				node.queue_free()
+				break
+
 
 
 		elif node.is_in_group("world_items"):
