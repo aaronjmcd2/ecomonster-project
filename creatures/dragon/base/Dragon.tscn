@@ -69,22 +69,9 @@ radius = 260.768
 collision_layer = 2
 input_pickable = true
 script = ExtResource("1_yknt0")
-lava_yield = null
-ice_yield = null
-egg_yield = null
-required_lava_to_excrete = null
-required_ice_to_excrete = null
-required_eggs_to_excrete = null
 ore_drop_scene = ExtResource("2_2awct")
 silver_drop_scene = ExtResource("3_t2axl")
 gold_drop_scene = ExtResource("4_2mrcb")
-ore_drop_count = null
-search_radius_tiles = null
-search_radius_px = null
-move_speed = null
-max_total_storage = null
-max_lava_storage = null
-cooldown_time = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(2.99998, 2.00002)

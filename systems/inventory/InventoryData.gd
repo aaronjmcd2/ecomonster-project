@@ -60,7 +60,13 @@ func move_item(from_row: int, from_col: int, to_row: int, to_col: int) -> void:
 # === Drops an item from inventory into the world near the player ===
 # slot_ref: the inventory slot node this came from (used to clear/update)
 func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stack: bool = false) -> void:
-	var player = get_tree().get_root().get_node_or_null("Main/Player")
+	# Get reference to Main scene and Player using the scene tree
+	var main_scene = Engine.get_main_loop().get_root().get_node_or_null("Main")
+	if main_scene == null:
+		print("❌ Main scene not found. Cannot drop item.")
+		return
+	
+	var player = main_scene.get_node_or_null("Player")
 	if player == null:
 		print("❌ Player not found. Cannot drop item.")
 		return
@@ -98,14 +104,17 @@ func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stac
 				drop_scene = preload("res://items/drops/resources/GoldIngot.tscn")
 			"AetherdriftIngot":
 				drop_scene = preload("res://items/drops/resources/AetherdriftIngot.tscn")
+			"TemperedGlass":
+				drop_scene = preload("res://items/drops/resources/TemperedGlass.tscn")
+			"Glass":
+				drop_scene = preload("res://items/drops/resources/TemperedGlass.tscn")  # Using TemperedGlass for both types
 			_:
 				print("⚠️ No drop scene found for item:", item["name"])
 				return
 
-
 	var drop_instance = drop_scene.instantiate()
 	drop_instance.position = drop_pos
-	get_tree().get_root().add_child(drop_instance)
+	main_scene.add_child(drop_instance)
 
 	if drop_entire_stack:
 		drop_instance.count = item.get("count", 1)
@@ -118,6 +127,5 @@ func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stac
 		else:
 			slot_ref.set_item(item)
 			
-	# Signal that an item was dropped (for lake interaction, etc.)
 	# Signal that an item was dropped (for lake interaction, etc.)
 	EventBus.emit_signal("item_dropped", item, drop_pos)

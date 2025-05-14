@@ -56,13 +56,17 @@ extends CharacterBody2D
 @export_group("Evolution")
 @export var required_lava_to_evolve: int = 6
 @export var required_ice_to_evolve: int = 6
-@export var glass_dragon_scene: PackedScene = preload("res://creatures/dragon/glass/GlassDragon.tscn")
+@export var glass_dragon_scene: PackedScene = preload("res://creatures/dragon/GlassDragon/GlassDragon.tscn")
 
 # === State Variables ===
 # Storage
 var lava_storage: int = 0
 var ice_storage: int = 0
 var egg_storage: int = 0
+
+# Lifetime resource tracking for evolution
+var total_lava_collected: int = 0
+var total_ice_collected: int = 0
 
 # Targets
 var target_tile = null
@@ -188,7 +192,7 @@ func _execute_wandering_behavior(delta: float) -> void:
 
 # === Evolution Functions ===
 func _check_evolution_eligibility() -> void:
-	can_evolve = lava_storage >= required_lava_to_evolve and ice_storage >= required_ice_to_evolve
+	can_evolve = total_lava_collected >= required_lava_to_evolve and total_ice_collected >= required_ice_to_evolve
 
 func _show_evolution_dialog() -> void:
 	# Get the ConfirmationDialog from the UI
@@ -210,6 +214,10 @@ func _evolve_to_glass_dragon() -> void:
 	
 	# Transfer the relevant properties
 	glass_dragon.global_position = global_position
+	
+	# Transfer current lava and ice storage to the Glass Dragon
+	glass_dragon.lava_storage = lava_storage
+	glass_dragon.ice_storage = ice_storage
 	
 	# Add the glass dragon to the scene
 	get_parent().add_child(glass_dragon)

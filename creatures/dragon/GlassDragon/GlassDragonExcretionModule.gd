@@ -1,59 +1,47 @@
-# GlassDragonStatsModule.gd
-# Handles efficiency tracking and stat calculations for Glass Dragon
+# GlassDragonExcretionModule.gd
+# Handles the excretion of glass from the Glass Dragon
+# Manages cooldown and choosing which type of glass to excrete
 
 extends Node
 
-func update_efficiency(dragon: Node, delta: float, is_efficient: bool) -> void:
-	if is_efficient:
-		dragon.efficiency_score += dragon.EFFICIENCY_RATE * delta
-	else:
-		dragon.efficiency_score -= dragon.EFFICIENCY_RATE * delta
+func excrete_glass(dragon: Node) -> void:
+	var drop_scene: PackedScene = null
+	var drops_to_produce := 0
 
-	dragon.efficiency_score = clamp(dragon.efficiency_score, 0.0, 100.0)
-
-func update_glass_log(dragon: Node, delta: float) -> void:
-	dragon.glass_timer += delta
-	if dragon.glass_timer >= 1.0:
-		dragon.glass_log.append(dragon.glass_this_second)
-		if dragon.glass_log.size() > dragon.GLASS_LOG_SIZE:
-			dragon.glass_log.pop_front()
-
-		dragon.glass_this_second = 0
-		dragon.glass_timer = 0.0
-
-func get_live_stats(dragon: Node) -> Dictionary:
-	var total_stored = dragon.get_total_storage()
-	var efficiency_pct = int(dragon.efficiency_score)
-	var balance_ratio = 0.0
-	
-	if dragon.lava_storage > 0 and dragon.ice_storage > 0:
-		var max_val = max(dragon.lava_storage, dragon.ice_storage)
-		var min_val = min(dragon.lava_storage, dragon.ice_storage)
-		balance_ratio = float(min_val) / float(max_val) * 100.0
-	
-	var glass_type = "Regular Glass"
-	if dragon.lava_storage > dragon.ice_storage:
-		glass_type = "Tempered Glass"
-		
-	var next_output_count = 0
+	# Check if we have enough resources to produce glass
 	if dragon.lava_storage >= dragon.required_lava_to_excrete and dragon.ice_storage >= dragon.required_ice_to_excrete:
-		next_output_count = dragon.glass_yield
+		# Determine what type of glass to produce
+		if dragon.lava_storage > dragon.ice_storage and dragon.tempered_glass_drop_scene:
+			# More lava than ice = tempered glass (stronger)
+			drop_scene = dragon.tempered_glass_drop_scene
+		else:
+			# Otherwise regular glass
+			drop_scene = dragon.glass_drop_scene
+			
+		drops_to_produce = dragon.glass_yield
+		
+		# Consume the resources
+		dragon.lava_storage -= dragon.required_lava_to_excrete
+		dragon.ice_storage -= dragon.required_ice_to_excrete
+	
+	# Spawn actual glass drops
+	if drop_scene and drops_to_produce > 0:
+		print("Spawning glass drops: ", drops_to_produce)
+		for i in drops_to_produce:
+			var instance = drop_scene.instantiate()
+			var offset = Vector2(randi_range(-8, 8), randi_range(-8, 8))
+			instance.global_position = dragon.global_position + offset
+			dragon.get_parent().add_child(instance)
+			dragon.glass_this_second += 1
 
-	# Format the cooldown timer display
-	var cooldown_display = ""
-	if dragon.is_cooling_down:
-		cooldown_display = "Cooldown: %.1f / %.1f sec" % [dragon.cooldown_timer, dragon.cooldown_time]
+	# Check if we can continue producing glass
+	if dragon.lava_storage >= dragon.required_lava_to_excrete and dragon.ice_storage >= dragon.required_ice_to_excrete:
+		# We can keep producing, reset cooldown
+		print("Glass Dragon can produce more, resetting cooldown")
+		dragon.cooldown_timer = dragon.cooldown_time
+		dragon.is_cooling_down = true
 	else:
-		cooldown_display = "Cooldown: Ready"
-
-	var stat_text = "Storage: %d / %d\n" % [total_stored, dragon.max_total_storage]
-	stat_text += "- Lava: %d (%d needed for glass)\n" % [dragon.lava_storage, dragon.required_lava_to_excrete]
-	stat_text += "- Ice: %d (%d needed for glass)\n" % [dragon.ice_storage, dragon.required_ice_to_excrete]
-	stat_text += cooldown_display + "\n"
-	stat_text += "Next Output: %s x%d\n" % [glass_type, next_output_count]
-	stat_text += "Balance Ratio: %d%%" % [int(balance_ratio)]
-
-	return {
-		"efficiency": efficiency_pct,
-		"stats": stat_text
-	}
+		# We don't have enough resources, stop cooling down
+		print("Glass Dragon doesn't have enough resources, stopping cooldown")
+		dragon.is_cooling_down = false
+		dragon.cooldown_timer = 0.0

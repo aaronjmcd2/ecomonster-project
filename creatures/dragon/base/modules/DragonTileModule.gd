@@ -24,6 +24,10 @@ func process_resource(dragon: Node, source_id: int) -> void:
 	match source_id:
 		2:  # Lava
 			dragon.lava_storage += 1
+			# Track total lava collected for evolution tracking
+			if dragon.get("total_lava_collected") != null:
+				dragon.total_lava_collected += 1
+				
 			if dragon.lava_storage >= dragon.required_lava_to_excrete and not dragon.is_cooling_down:
 				dragon.is_cooling_down = true
 				dragon.cooldown_timer = dragon.cooldown_time
@@ -31,6 +35,10 @@ func process_resource(dragon: Node, source_id: int) -> void:
 		
 		4:  # Ice
 			dragon.ice_storage += 1
+			# Track total ice collected for evolution tracking
+			if dragon.get("total_ice_collected") != null:
+				dragon.total_ice_collected += 1
+				
 			if dragon.ice_storage >= dragon.required_ice_to_excrete and not dragon.is_cooling_down:
 				dragon.is_cooling_down = true
 				dragon.cooldown_timer = dragon.cooldown_time
