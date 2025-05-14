@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://0u77xaudadiy"]
+
+[ext_resource type="Script" uid="uid://b2uj6lgeie0ar" path="res://creatures/dragon/GlassDragon/GlassDragon.gd" id="1_kbids"]
+[ext_resource type="Texture2D" uid="uid://cswcb7gaoc1t" path="res://creatures/dragon/GlassDragon/GlassDragon.png" id="2_jptl1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_me34x"]
+radius = 229.593
+
+[node name="GlassDragon" type="CharacterBody2D"]
+script = ExtResource("1_kbids")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, -4)
+scale = Vector2(0.496094, 0.496094)
+texture = ExtResource("2_jptl1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_me34x")

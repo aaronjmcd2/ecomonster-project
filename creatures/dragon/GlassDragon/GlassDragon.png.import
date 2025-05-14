@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4wh1debrr2fv"
-path="res://.godot/imported/TemperedGlass.png-79a25d3970a5a67c98b43e4fdbbd48f2.ctex"
+uid="uid://cswcb7gaoc1t"
+path="res://.godot/imported/GlassDragon.png-829e3c0c5ac32a70eb73737d51b97a4e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/TemperedGlass.png"
-dest_files=["res://.godot/imported/TemperedGlass.png-79a25d3970a5a67c98b43e4fdbbd48f2.ctex"]
+source_file="res://creatures/dragon/GlassDragon/GlassDragon.png"
+dest_files=["res://.godot/imported/GlassDragon.png-829e3c0c5ac32a70eb73737d51b97a4e.ctex"]
 
 [params]
 
