@@ -37,7 +37,7 @@ func try_pickup_item(world_pos: Vector2) -> bool:
 	
 	# Get all other item groups
 	var additional_groups = ["egg_drops", "world_items", "soul_drops", "crystal_shard_drops", 
-							 "ingot_drops", "concrete_drops", "melon_drops", "glass_drops"]
+							 "ingot_drops", "concrete_drops", "melon_drops", "glass_drops", "mana_drops"]
 	for group in additional_groups:
 		for item in scene_tree.get_nodes_in_group(group):
 			if not potential_items.has(item): # Avoid duplicates

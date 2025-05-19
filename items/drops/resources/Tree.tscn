@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bt0yrqeh3r7g0"]
+
+[ext_resource type="Script" uid="uid://c2ovxyg1vppfe" path="res://items/drops/resources/Tree.gd" id="1_qekwf"]
+[ext_resource type="Texture2D" uid="uid://dacrk0oml4ri2" path="res://items/drops/resources/Tree.png" id="2_ii3q2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jwslo"]
+radius = 445.889
+
+[node name="Tree" type="StaticBody2D" groups=["trees"]]
+script = ExtResource("1_qekwf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ii3q2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_jwslo")

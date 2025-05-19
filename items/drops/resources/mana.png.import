@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://csl2tk83m6vsp"
-path="res://.godot/imported/Wisp.png-864e2ffac46e96858afdd46f9e622d30.ctex"
+uid="uid://doadat4ip2rgm"
+path="res://.godot/imported/mana.png-32c03dc3db28ebb2aea2c34c37ed57e7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Wisp.png"
-dest_files=["res://.godot/imported/Wisp.png-864e2ffac46e96858afdd46f9e622d30.ctex"]
+source_file="res://items/drops/resources/mana.png"
+dest_files=["res://.godot/imported/mana.png-32c03dc3db28ebb2aea2c34c37ed57e7.ctex"]
 
 [params]
 

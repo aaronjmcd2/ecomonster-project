@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2ymnpcly16x"]
+
+[ext_resource type="Script" uid="uid://dcosf74f66lw5" path="res://systems/ForestManager.gd" id="1_7vf24"]
+[ext_resource type="PackedScene" uid="uid://gljd5aovjpp4" path="res://creatures/wisp/Wisp.tscn" id="2_o74m6"]
+
+[node name="ForestManager" type="Node2D"]
+script = ExtResource("1_7vf24")
+wisp_scene = ExtResource("2_o74m6")

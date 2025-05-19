@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://emv78x8gkai8"]
+
+[ext_resource type="Script" uid="uid://dxe7m5uylmjfv" path="res://items/drops/resources/Mana.gd" id="1_nad7g"]
+[ext_resource type="Texture2D" uid="uid://doadat4ip2rgm" path="res://items/drops/resources/mana.png" id="2_ejjo8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g47xh"]
+radius = 37.054
+
+[node name="Mana" type="Area2D" groups=["mana_drops", "world_items"]]
+script = ExtResource("1_nad7g")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.00003, 0.999969)
+scale = Vector2(0.232422, 0.232422)
+texture = ExtResource("2_ejjo8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 10)
+shape = SubResource("CircleShape2D_g47xh")

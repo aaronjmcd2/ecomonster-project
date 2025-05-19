@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://gljd5aovjpp4"]
+
+[ext_resource type="Script" uid="uid://knbi0kuogi5j" path="res://creatures/wisp/Wisp.gd" id="1_vrl75"]
+[ext_resource type="Texture2D" uid="uid://csl2tk83m6vsp" path="res://creatures/wisp/Wisp.png" id="2_x34k6"]
+[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://ui/SearchRadiusDisplay.gd" id="3_8nqsk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_egyv0"]
+radius = 55.9327
+
+[node name="Wisp" type="CharacterBody2D" groups=["monsters", "wisps"]]
+scale = Vector2(1.2, 1.2)
+collision_layer = 2
+input_pickable = true
+script = ExtResource("1_vrl75")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.5, 1, 0.6, 0.8)
+position = Vector2(-4.16667, 1.66667)
+scale = Vector2(0.347005, 0.347005)
+texture = ExtResource("2_x34k6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.833333, 20.8333)
+shape = SubResource("CircleShape2D_egyv0")
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("3_8nqsk")
+
+[node name="LifeTimer" type="Timer" parent="."]
+wait_time = 180.0
+one_shot = true

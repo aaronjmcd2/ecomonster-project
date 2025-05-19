@@ -32,6 +32,10 @@ egg_drops=""
 gold_ore_drops=""
 silver_ore_drops=""
 specters=""
+wisps=""
+world_items=""
+mana_drops=""
+trees=""
 
 [input]
 
