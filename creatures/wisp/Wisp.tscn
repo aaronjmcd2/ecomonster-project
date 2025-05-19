@@ -12,6 +12,7 @@ scale = Vector2(1.2, 1.2)
 collision_layer = 2
 input_pickable = true
 script = ExtResource("1_vrl75")
+life_duration = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.5, 1, 0.6, 0.8)
@@ -23,7 +24,7 @@ texture = ExtResource("2_x34k6")
 position = Vector2(-0.833333, 20.8333)
 shape = SubResource("CircleShape2D_egyv0")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="SearchRadiusDisplay" type="Node2D" parent="."]
 script = ExtResource("3_8nqsk")
 
 [node name="LifeTimer" type="Timer" parent="."]

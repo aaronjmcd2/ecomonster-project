@@ -1,14 +1,18 @@
-[gd_scene load_steps=12 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=16 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://Main.gd" id="1_sc1dx"]
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://assets/tiles/TileSet.tres" id="2_kjvhd"]
+[ext_resource type="PackedScene" uid="uid://b7he5tq8l7t7i" path="res://creatures/dragon/base/Dragon.tscn" id="5_03owx"]
 [ext_resource type="PackedScene" uid="uid://ccfcrl5wxjvor" path="res://ui/popups/MonsterInfoPopup.tscn" id="6_3b0ty"]
+[ext_resource type="PackedScene" uid="uid://dqxuhcrub14hs" path="res://items/drops/resources/SilverIngot.tscn" id="6_20pc6"]
+[ext_resource type="PackedScene" uid="uid://diaywsr5x8gc8" path="res://creatures/worm/base/Worm.tscn" id="6_wkp8b"]
 [ext_resource type="PackedScene" uid="uid://dskqqlloghbas" path="res://systems/inventory/InventoryUI.tscn" id="7_bg4s2"]
 [ext_resource type="PackedScene" uid="uid://bweokypfxckvu" path="res://creatures/player/Player.tscn" id="9_mxvw5"]
 [ext_resource type="PackedScene" uid="uid://dkjeecidtjsb1" path="res://systems/LakeManager.tscn" id="10_5vvyt"]
 [ext_resource type="PackedScene" uid="uid://b3bxyl8rwjxkt" path="res://items/drops/resources/Melon.tscn" id="10_wkp8b"]
 [ext_resource type="PackedScene" uid="uid://bt0yrqeh3r7g0" path="res://items/drops/resources/Tree.tscn" id="11_20pc6"]
 [ext_resource type="PackedScene" uid="uid://yw22vu84qjjn" path="res://items/equipment/weapons/SwordDrop.tscn" id="12_5vvyt"]
+[ext_resource type="PackedScene" uid="uid://b2ymnpcly16x" path="res://systems/ForestManager.tscn" id="12_c6i3y"]
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://creatures/elemental/base/Elemental.tscn" id="15_oye8v"]
 [ext_resource type="PackedScene" uid="uid://di3mjx276jjit" path="res://creatures/golem/base/golem.tscn" id="18_kjvhd"]
 
@@ -66,6 +70,8 @@ position = Vector2(2786, -1897)
 [node name="Tree5" parent="." instance=ExtResource("11_20pc6")]
 position = Vector2(3828, -1751)
 
+[node name="ForestManager" parent="." instance=ExtResource("12_c6i3y")]
+
 [node name="Tree6" parent="." instance=ExtResource("11_20pc6")]
 position = Vector2(4895, -1678)
 
@@ -74,3 +80,15 @@ position = Vector2(1647, -2418)
 
 [node name="Tree8" parent="." instance=ExtResource("11_20pc6")]
 position = Vector2(3527, -2890)
+
+[node name="Dragon" parent="." instance=ExtResource("5_03owx")]
+position = Vector2(-3077, -1027)
+
+[node name="FireElemental" parent="." instance=ExtResource("15_oye8v")]
+position = Vector2(-2718, 1444)
+
+[node name="CoalWorm" parent="." instance=ExtResource("6_wkp8b")]
+position = Vector2(-1704, 1148)
+
+[node name="SilverIngot" parent="." instance=ExtResource("6_20pc6")]
+position = Vector2(-5010, -1147)

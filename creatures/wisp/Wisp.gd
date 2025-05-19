@@ -121,7 +121,8 @@ func _execute_wandering_behavior(delta: float) -> void:
 	var move_result = movement_module.float_toward_target(delta, self, wander_target, hover_speed)
 
 func _on_life_timer_timeout() -> void:
-	print("⏰ Wisp life timer expired - despawning")
+	print("⏰ Wisp life timer expired - dropping mana and despawning")
+	_drop_mana()  # Drop mana when timer runs out
 	queue_free()
 
 func _drop_mana() -> void:

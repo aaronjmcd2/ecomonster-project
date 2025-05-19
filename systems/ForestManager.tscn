@@ -6,3 +6,4 @@
 [node name="ForestManager" type="Node2D"]
 script = ExtResource("1_7vf24")
 wisp_scene = ExtResource("2_o74m6")
+forest_radius = 10000.0
