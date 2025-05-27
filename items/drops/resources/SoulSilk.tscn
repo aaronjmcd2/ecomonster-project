@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfgra8ygi4qmh"]
+
+[ext_resource type="Script" uid="uid://c8cjx0m2khhfx" path="res://items/drops/resources/SoulSilk.gd" id="1_3c050"]
+[ext_resource type="Texture2D" uid="uid://do6lvdq80h4ym" path="res://items/drops/resources/SoulSilk.png" id="2_deadf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ws02m"]
+radius = 37.1214
+
+[node name="SoulSilk" type="Area2D"]
+script = ExtResource("1_3c050")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, -1)
+scale = Vector2(0.296875, 0.296875)
+texture = ExtResource("2_deadf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -8)
+shape = SubResource("CircleShape2D_ws02m")

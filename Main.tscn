@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=17 format=4 uid="uid://bvvp1cd0hjp72"]
 
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://Main.gd" id="1_sc1dx"]
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://assets/tiles/TileSet.tres" id="2_kjvhd"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://yw22vu84qjjn" path="res://items/equipment/weapons/SwordDrop.tscn" id="12_5vvyt"]
 [ext_resource type="PackedScene" uid="uid://b2ymnpcly16x" path="res://systems/ForestManager.tscn" id="12_c6i3y"]
 [ext_resource type="PackedScene" uid="uid://dmu5gj4pq8apf" path="res://creatures/elemental/base/Elemental.tscn" id="15_oye8v"]
+[ext_resource type="PackedScene" uid="uid://dt0kia3woe3qf" path="res://creatures/spider/base/Spider.tscn" id="16_fpfj3"]
 [ext_resource type="PackedScene" uid="uid://di3mjx276jjit" path="res://creatures/golem/base/golem.tscn" id="18_kjvhd"]
 
 [node name="Main" type="Node2D"]
@@ -91,4 +92,7 @@ position = Vector2(-2718, 1444)
 position = Vector2(-1704, 1148)
 
 [node name="SilverIngot" parent="." instance=ExtResource("6_20pc6")]
-position = Vector2(-5010, -1147)
+position = Vector2(-3264, -1860)
+
+[node name="Spider" parent="." instance=ExtResource("16_fpfj3")]
+position = Vector2(-3067, -239)

@@ -12,7 +12,6 @@ scale = Vector2(1.2, 1.2)
 collision_layer = 2
 input_pickable = true
 script = ExtResource("1_vrl75")
-life_duration = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.5, 1, 0.6, 0.8)

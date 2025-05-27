@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://do6lvdq80h4ym"
-path="res://.godot/imported/SoulSilk.png-b0a6034589a54847b294998db416e0f3.ctex"
+path="res://.godot/imported/SoulSilk.png-26886de42649450253a342897302372b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/SoulSilk.png"
-dest_files=["res://.godot/imported/SoulSilk.png-b0a6034589a54847b294998db416e0f3.ctex"]
+source_file="res://items/drops/resources/SoulSilk.png"
+dest_files=["res://.godot/imported/SoulSilk.png-26886de42649450253a342897302372b.ctex"]
 
 [params]
 

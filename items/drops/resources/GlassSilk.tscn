@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://ceagislseowo7"]
+
+[ext_resource type="Script" uid="uid://swv8wiktb215" path="res://items/drops/resources/GlassSilk.gd" id="1_1sbiv"]
+[ext_resource type="Texture2D" uid="uid://u2mj05an6v3p" path="res://items/drops/resources/GlassSilk.png" id="2_cvk4t"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2r0g0"]
+radius = 37.054
+
+[node name="GlassSilk" type="Area2D"]
+script = ExtResource("1_1sbiv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, -4)
+scale = Vector2(0.25293, 0.25293)
+texture = ExtResource("2_cvk4t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, -8)
+shape = SubResource("CircleShape2D_2r0g0")

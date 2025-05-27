@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u2mj05an6v3p"
-path="res://.godot/imported/GlassSilk.png-4290c836dd5a87b94c19db06d296ac4d.ctex"
+uid="uid://ca8571ug2q7ou"
+path="res://.godot/imported/Spider.png-914459da5be59f5573c68cbf421a69c8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/GlassSilk.png"
-dest_files=["res://.godot/imported/GlassSilk.png-4290c836dd5a87b94c19db06d296ac4d.ctex"]
+source_file="res://creatures/spider/base/Spider.png"
+dest_files=["res://.godot/imported/Spider.png-914459da5be59f5573c68cbf421a69c8.ctex"]
 
 [params]
 

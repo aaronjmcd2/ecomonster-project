@@ -24,6 +24,9 @@ var fog_effects = {}  # Map of lake index to fog effect node
 func _ready():
 	# Initial lake detection
 	_detect_lakes()
+	
+	# Connect to the item_dropped signal
+	EventBus.connect("item_dropped", Callable(self, "_on_item_dropped"))
 
 func _process(delta: float):
 	# Update detection timer
@@ -135,3 +138,14 @@ func _spawn_specter(lake):
 	specter.birth_lake = lake
 	get_parent().add_child(specter)
 	print("👻 Spawned specter from foggy lake")
+
+# Handle signals from EventBus when items are dropped
+func _on_item_dropped(item_data, world_position):
+	# Check if this is a silver ingot
+	if item_data.get("name") == "SilverIngot":
+		print("Silver ingot detected at position: ", world_position)
+		var result = check_silver_ingot_drop(world_position)
+		if result:
+			print("🌫️ Lake became foggy from silver ingot!")
+		else:
+			print("❌ Silver ingot not in a lake")

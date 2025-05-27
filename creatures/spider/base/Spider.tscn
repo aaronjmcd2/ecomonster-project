@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dt0kia3woe3qf"]
+
+[ext_resource type="Script" uid="uid://cjo212t8bmd8y" path="res://creatures/spider/base/Spider.gd" id="1_fb40a"]
+[ext_resource type="Texture2D" uid="uid://ca8571ug2q7ou" path="res://creatures/spider/base/Spider.png" id="2_842c7"]
+[ext_resource type="Script" uid="uid://8ui1tawala6c" path="res://ui/SearchRadiusDisplay.gd" id="3_qx20q"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fxg5y"]
+radius = 150.013
+
+[node name="Spider" type="CharacterBody2D" groups=["monsters"]]
+collision_layer = 2
+input_pickable = true
+script = ExtResource("1_fb40a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, -4)
+scale = Vector2(0.500977, 0.500977)
+texture = ExtResource("2_842c7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(13, -16)
+shape = SubResource("CircleShape2D_fxg5y")
+
+[node name="SearchRadiusDisplay" type="Node2D" parent="."]
+script = ExtResource("3_qx20q")

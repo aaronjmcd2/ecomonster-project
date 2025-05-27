@@ -93,12 +93,23 @@ func _find_existing_lake(tiles: Array) -> Dictionary:
 func make_lake_foggy(tile_map_layer: TileMapLayer, pos: Vector2) -> bool:
 	var map_pos = tile_map_layer.local_to_map(pos)
 	
+	print("Checking position for lake: World:", pos, " Tile:", map_pos)
+	
 	# Check if position is in a lake
-	for lake in lakes:
-		if map_pos in lake.tiles:
-			lake.is_foggy = true
-			lake.fog_timer = 300.0  # 5 minutes
-			return true
+	var found_lake = false
+	for i in range(lakes.size()):
+		var lake = lakes[i]
+		for tile in lake.tiles:
+			if tile == map_pos:
+				found_lake = true
+				lake.is_foggy = true
+				lake.fog_timer = 300.0  # 5 minutes
+				print("Found lake at index", i, "with", lake.tiles.size(), "tiles")
+				EventBus.emit_signal("lake_became_foggy", lake)
+				return true
+	
+	if not found_lake:
+		print("No lake found at tile position", map_pos)
 	
 	return false
 
