@@ -7,6 +7,7 @@ var resource_type: String = "soul_silk"
 
 func _ready():
 	add_to_group("soul_silk_drops")
+	add_to_group("ore_drops")  # Add to general pickup group
 	print("👻🕸️ Soul Silk produced | count:", count)
 
 func get_item_data() -> Dictionary:
