@@ -1,0 +1,221 @@
+EcoMonster Project - High-Level Design & Vision Summary
+=======================================================
+
+🎯 PURPOSE & VISION
+-------------------
+EcoMonster is an ecological simulation and resource management game where players interact with 
+dynamic environments to trigger spawning loops and resource transformation chains. The core 
+concept revolves around creating and managing interconnected ecosystems where environmental 
+conditions directly influence creature spawning, behavior, and resource generation.
+
+This document serves as a shared vision and onboarding aid for collaborators to understand 
+the project's current prototype state, design principles, and planned development direction.
+
+
+🔄 CURRENT PROTOTYPE LOOPS
+--------------------------
+
+Forest Ecosystem Loop:
+• Forest Detection → Wisp Spawning → [Future: Mana Collection] → [Future: Crystal Formation]
+• ForestManager detects tree clusters (8+ trees within 500 units)
+• Spawns up to 3 Wisps per forest every 15 seconds
+• Wisps currently wander and interact with environment
+
+Lake Ecosystem Loop:
+• Lake Detection → Silver Ingot Trigger → Fog Generation → Specter Spawning → [Future: Crystal Drops]
+• LakeManager detects water tile clusters
+• Player drops Silver Ingots into lakes to trigger fog effects
+• Foggy lakes spawn up to 5 Specters every 15 seconds
+• Specters emerge from fog and interact with environment
+
+Resource Transformation Chain:
+• Ore → Coal (via Coal Worms) → Lava (via Fire Elementals) → Soil (via Dragons) → New Ore
+• Dragons consume lava and excrete ore after cooldown
+• Creates sustainable resource cycling system
+
+
+🏛️ KEY ENTITIES & SYSTEMS
+--------------------------
+
+Core Managers:
+• ForestManager.gd - Handles forest detection, wisp spawning, and forest lifecycle
+• LakeManager.gd - Manages lake detection, fog effects, and specter spawning
+• EventBus.gd - Central communication system for cross-system events
+
+Creatures:
+• Wisp - Forest-born creatures that emerge from tree clusters
+• Specter - Lake-born creatures that spawn from foggy water bodies
+• Dragon - Apex predator that consumes lava and produces ore
+• Fire Elemental - Converts coal tiles to lava, searches and wanders
+• Coal Worm - Converts ore drops to coal tiles, efficiency tracked
+
+Environmental Elements:
+• Trees - Form forests when clustered, trigger wisp spawning
+• Water Bodies - Become foggy when triggered, spawn specters
+• Fog Effects - Visual and mechanical indication of active lakes
+
+Resource Systems:
+• Inventory Management - Grid-based inventory with drag/drop mechanics
+• Item Drops - Physical items that can be placed in world
+• Ore/Coal/Lava Tiles - Environmental resources with transformation chains
+
+
+🎮 PLAYER VERBS (CURRENT & PLANNED)
+-----------------------------------
+Current:
+• Drop Items - Place silver ingots or other items in world to trigger effects
+• Inventory Management - Organize and move items between slots
+• Environment Observation - Watch creature spawning and behavior patterns
+
+Planned:
+• Crafting - Combine resources to create new items and tools
+• Mana Collection - Gather essence from wisps and other magical creatures
+• Crystal Cultivation - Influence crystal formation through environmental manipulation
+• Ecosystem Balancing - Actively manage spawning rates and resource flows
+
+
+🏗️ DESIGN PILLARS
+------------------
+
+1. Emergent Ecology
+   - Systems interact naturally without heavy scripting
+   - Environmental conditions drive creature behavior
+   - Player actions have cascading effects through ecosystem
+
+2. Visual Clarity
+   - Clear visual feedback for all system states
+   - Intuitive UI that doesn't overwhelm the ecological focus
+   - Environmental storytelling through creature behavior
+
+3. Sustainable Loops
+   - Self-regulating systems that maintain balance
+   - Resource scarcity and abundance create natural rhythms
+   - Player intervention enhances rather than replaces natural processes
+
+4. Modular Architecture
+   - Clean separation between systems for easy expansion
+   - Shared modules reduce code duplication
+   - Single responsibility principle maintained throughout
+
+
+🌟 DISTINCTIVE HOOKS
+--------------------
+
+• Environmental Triggers - Player actions directly modify ecosystem conditions
+• Creature Lineage - Spawned creatures remember their origin environments
+• Visual Ecology - Fog, forests, and creature movements tell environmental stories
+• Resource Metamorphosis - Materials transform through creature interactions
+• Balanced Automation - Systems run independently but benefit from player guidance
+
+
+🚧 CURRENT GAPS & TECHNICAL DEBT
+---------------------------------
+
+Missing Features:
+• Mana Drops - Wisps should drop collectible mana when interacting
+• Fog Decay Timer - Fog effects should naturally dissipate over time
+• Crafting Station - Central hub for combining resources into new items
+• Crystal Formation - End-goal resources for high-level crafting
+• Progression Breadcrumbs - Clear goals and advancement markers
+
+Technical Improvements Needed:
+• Spawn Balancing - Fine-tune creature population limits and spawn rates
+• Performance Optimization - Large-scale ecosystem management efficiency
+• Save/Load System - Persistent world state across sessions
+• Audio Integration - Ambient sounds for different ecosystem states
+• Animation Polish - Smoother creature movement and environmental transitions
+
+
+💻 TECHNICAL ARCHITECTURE NOTES
+-------------------------------
+
+Framework: Godot 4.4 with modular script architecture
+Key Patterns:
+• Manager classes handle ecosystem detection and spawning
+• Shared modules (SearchModule, ConversionModule) provide reusable logic
+• EventBus enables loose coupling between systems
+• Rolling statistics track efficiency and performance metrics
+
+File Organization:
+• /systems/ - Core managers and shared modules
+• /creatures/ - Individual creature behaviors and AI
+• /ui/ - Interface components and user interaction
+• /items/ - Resource definitions and behavior
+• /Guides/ - Documentation and development notes
+
+Autoloaded Systems:
+• SearchModule - Pathfinding and target detection
+• ConversionModule - Resource transformation logic
+• InventoryData - Item management and storage
+• EventBus - Cross-system communication
+
+
+🎨 TONE & AESTHETIC TARGETS
+---------------------------
+
+Visual Style:
+• Organic, flowing environments with natural color palettes
+• Subtle magical elements that enhance rather than dominate
+• Clear visual hierarchy between interactive and ambient elements
+
+Gameplay Feel:
+• Contemplative pacing with moments of strategic decision-making
+• Satisfying visual feedback for successful ecosystem management
+• Sense of discovery through environmental experimentation
+
+Audio Direction:
+• Ambient natural sounds (water, wind, forest ambiance)
+• Subtle magical audio cues for creature spawning and resource transformation
+• UI sounds that complement rather than compete with environmental audio
+
+
+🚀 FUTURE DIRECTION BRAINSTORM
+------------------------------
+
+Short-term Expansions (Next 2-3 Updates):
+• Implement mana collection mechanics from wisps
+• Add fog decay timers to create dynamic lake cycles
+• Create basic crafting station for resource combination
+• Add crystal formation as end-goal resource generation
+
+Medium-term Features (6-month Horizon):
+• Multiple biome types (desert, mountain, swamp) with unique creatures
+• Advanced creature AI with territory establishment and migration
+• Player buildings that enhance or modify local ecosystems
+• Seasonal cycles that affect spawning rates and resource availability
+
+Long-term Vision (1+ Year):
+• Multi-layered world with underground/surface/sky ecosystems
+• Player collaboration in shared world environments
+• Advanced genetics system where creature traits evolve over time
+• Dynamic quest generation based on ecosystem health and player actions
+
+
+📋 SUGGESTED FOLLOW-UP ISSUES
+-----------------------------
+
+High Priority:
+1. Implement Mana drops from Wisps with collection mechanics
+2. Add fog decay timer system for dynamic lake management
+3. Create basic crafting station UI and resource combination logic
+4. Design crystal formation mechanics for end-game resource goals
+5. Balance creature spawn rates and population limits across all ecosystems
+
+Medium Priority:
+6. Add progression breadcrumbs and tutorial guidance for new players
+7. Implement save/load system for persistent world state
+8. Create audio system for ambient ecosystem sounds
+9. Optimize performance for large-scale creature population management
+10. Add visual polish and animation improvements for creature behaviors
+
+Documentation & Polish:
+11. Create player onboarding guide and control documentation
+12. Add inline code documentation for all manager classes
+13. Establish automated testing framework for ecosystem balance
+14. Create art pipeline documentation for new creature and environment assets
+
+========================================
+Document Version: 1.0
+Last Updated: January 2025
+Contributors: Aaron (Lead Designer), Avelaine (Lead Programmer)
+Project Phase: Prototype Development
