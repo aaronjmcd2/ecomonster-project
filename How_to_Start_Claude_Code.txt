@@ -1,0 +1,51 @@
+HOW TO START CLAUDE CODE - Step by Step Guide
+
+=== GETTING TO THE COMMAND LINE ===
+
+1. Open Command Prompt or PowerShell:
+   - Press Windows Key + R
+   - Type "cmd" or "powershell" and press Enter
+   - OR search "Command Prompt" or "PowerShell" in Start menu
+
+2. Navigate to your project folder:
+   - Type: cd "C:\Users\pbobc\Desktop\ecomonster-project"
+   - Press Enter
+   - You should see your prompt change to show this folder path
+
+=== STARTING CLAUDE CODE ===
+
+3. Start Claude Code in your project:
+   - Type: claude
+   - Press Enter
+   - Claude Code will launch and load your project context
+
+4. Verify you're in the right place:
+   - Claude should recognize your ecomonster project
+   - You can ask "what files are in this project?" to confirm
+
+=== TIPS FOR SUCCESS ===
+
+- Always navigate to your project folder BEFORE starting Claude Code
+- Claude remembers project-specific information through CLAUDE.md files
+- Each new session starts fresh conversationally, but project knowledge persists
+- You can work for hours in a single session without memory issues
+- To exit Claude Code, type "exit" or use Ctrl+C
+
+=== TROUBLESHOOTING ===
+
+If "claude" command not found:
+- Make sure Claude Code is installed properly
+- Check if it's in your system PATH
+- Try restarting your command prompt
+
+If wrong folder:
+- Use "cd" command to navigate to correct project folder
+- Verify path: C:\Users\pbobc\Desktop\ecomonster-project
+
+=== QUICK REFERENCE ===
+
+Windows Key + R → "cmd" → Enter
+cd "C:\Users\pbobc\Desktop\ecomonster-project"
+claude
+
+That's it! You're ready to code with Claude.
