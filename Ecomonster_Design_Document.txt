@@ -1,0 +1,448 @@
+================================================================================
+                           ECOMONSTER DESIGN DOCUMENT
+================================================================================
+
+Version: 1.0
+Date: January 2025
+Platform: Godot 4.x
+Genre: Resource Management / Creature Simulation Game
+
+================================================================================
+                                TABLE OF CONTENTS
+================================================================================
+
+1. GAME OVERVIEW ........................................................ 
+   1.1 Concept
+   1.2 Core Gameplay Loop
+   1.3 Target Audience
+
+2. GAME MECHANICS .......................................................
+   2.1 Creature System
+   2.2 Resource System  
+   2.3 Inventory System
+   2.4 Player Mechanics
+
+3. TECHNICAL ARCHITECTURE ...............................................
+   3.1 Project Structure
+   3.2 Module System
+   3.3 Event System
+   3.4 Data Management
+
+4. USER INTERFACE DESIGN ................................................
+   4.1 HUD Elements
+   4.2 Interaction Design
+   4.3 Visual Feedback
+
+5. CONTENT DESIGN .......................................................
+   5.1 World Design
+   5.2 Creature Balance
+   5.3 Progression System
+
+6. IMPLEMENTATION STATUS ................................................
+   6.1 Completed Features
+   6.2 Current Development Focus
+   6.3 Future Enhancements
+
+7. TECHNICAL SPECIFICATIONS .............................................
+   7.1 Engine & Platform
+   7.2 Performance Targets
+   7.3 Dependencies
+
+8. DESIGN PHILOSOPHY ....................................................
+   8.1 Core Principles
+   8.2 Development Approach
+   8.3 Accessibility Considerations
+
+================================================================================
+1. GAME OVERVIEW
+================================================================================
+
+1.1 CONCEPT
+-----------
+Ecomonster is a 2D resource management and creature simulation game where players
+interact with various creatures in an ecosystem. Each creature has unique 
+behaviors, resource conversion abilities, and serves specific roles in the 
+game's ecological balance.
+
+1.2 CORE GAMEPLAY LOOP
+----------------------
+• Explore a tile-based world with different terrain types
+• Interact with various creature types (Dragons, Elementals, Worms, Spiders, etc.)
+• Manage inventory and resources through pickup/drop mechanics  
+• Observe creature behaviors and resource conversion cycles
+• Use creatures to transform the environment and generate resources
+
+1.3 TARGET AUDIENCE
+-------------------
+• Players who enjoy simulation and management games
+• Fans of creature collection and ecosystem games
+• Players interested in emergent gameplay systems
+
+================================================================================
+2. GAME MECHANICS
+================================================================================
+
+2.1 CREATURE SYSTEM
+-------------------
+The game features multiple creature types with distinct behaviors:
+
+DRAGONS
+• Search for and consume lava tiles
+• Convert lava to soil after digestion period
+• Excrete valuable ore drops
+• Cause damage to player on contact
+• Wander behavior when not actively consuming
+
+FIRE ELEMENTALS  
+• Search for coal tiles within detection radius
+• Convert coal tiles to lava tiles
+• Track efficiency and conversion rates
+• Wander when no coal is available
+
+COAL WORMS
+• Search for unclaimed ore drops in the environment
+• Convert nearby tiles to coal (via soil intermediate state)
+• Efficiency-based resource generation
+• Mobile ore-to-coal conversion system
+
+SPIDERS
+• Silk production system for crafting materials
+• Search and consumption mechanics
+• Resource conversion capabilities
+
+GOLEMS
+• Production-focused creatures
+• Consumption and generation systems
+• Movement and search behaviors
+
+SPECTERS & WISPS
+• Specialized movement patterns
+• Unique interaction mechanics
+
+CREATURE PROGRESSION SYSTEM
+Creatures can advance through three distinct progression paths that enhance their
+capabilities:
+
+• LEVELING - Combat-based advancement where creatures level up after accumulating
+  sufficient damage. Each level increases combat statistics (health, damage, 
+  defense) but does not affect resource production capabilities
+
+• MAJOR EVOLUTION - Transformative upgrades achieved through direct resource inputs
+  (typically specific foods or materials). Major evolution changes the creature's
+  visual appearance, may grant new abilities, and can enhance production efficiency
+  
+• MINOR EVOLUTION - Temporary environmental bonuses that activate when creatures
+  are within range of specific environmental features. These provide contextual
+  stat boosts that remain active while in proximity. Minor evolutions can be
+  permanently locked using an uncommon consumable resource
+
+Examples of Major Evolution:
+- Dragon consuming 200+ lava → Fire Dragon (25% more lava storage, 25% faster ore production, fire breath ability)
+- Spider consuming silk materials → Silk Weaver (enhanced silk production rate, web trap ability)
+- Golem absorbing stone blocks → Stone Guardian (increased durability, boulder throw ability)
+
+Examples of Minor Evolution (Environmental Bonuses):
+- Dragon near lava lake: +30% fire damage
+- Dragon near toxic geyser: +15% toxic resistance  
+- Spider near web structures: +20% movement speed
+- Golem near mineral deposits: +10% production efficiency
+
+MINOR EVOLUTION LOCKING SYSTEM:
+An uncommon consumable resource allows players to lock minor evolutionary bonuses 
+permanently onto creatures. This enables strategic optimization while requiring 
+resource investment:
+
+• LOCKING MECHANISM - Use the consumable resource to permanently apply current minor
+  evolution bonuses to a creature, allowing it to retain bonuses when moved away
+  from environmental sources
+
+• UNLOCKING COST - Removing locked minor evolutions to make the creature malleable
+  again requires consuming another unit of the same resource
+
+• STRATEGIC PLANNING - Players must decide which environmental bonuses are worth
+  locking permanently versus keeping creatures flexible for situational bonuses
+
+2.2 RESOURCE SYSTEM
+-------------------
+TILE TYPES:
+• Soil - Basic ground tile, intermediate conversion state
+• Coal - Fuel source for Fire Elementals  
+• Lava - Product of coal conversion, consumed by Dragons
+• Ice, Water - Environmental tiles with specific properties
+• Various ore tiles for mining and collection
+
+ITEMS & DROPS:
+• Ore Types: Iron Ore, Silver Ore, Gold Ore, Aetherdrift Ore
+• Ingots: Processed metal resources (Iron, Silver, Gold, Aetherdrift)
+• Resources: Stone, Crystal, Crystal Shard, Boulder
+• Organic: Tree, Melon, Egg (various creature products)
+• Crafted: Tempered Glass, Reinforced Concrete
+• Special: Mana, Soul, Glass Silk, Soul Silk
+• Equipment: Sword and other weapons
+
+2.3 INVENTORY SYSTEM
+--------------------
+• Grid-based inventory with drag-and-drop functionality
+• Hotbar system with 8 slots for quick access
+• Hotbar selector with keyboard navigation (scroll left/right)
+• Stack merging and splitting mechanics
+• Right-click drop functionality
+• Item pickup radius around player
+• Visual feedback with icons and count labels
+
+2.4 PLAYER MECHANICS
+--------------------
+• WASD movement with collision detection
+• Mouse wheel zoom in/out functionality
+• Click-to-pickup item system within radius
+• Health system with damage from creature contact
+• Equipment usage system through hotbar
+• Camera following with configurable zoom levels
+
+2.5 CREATURE DISCOVERY & TAMING SYSTEM
+---------------------------------------
+CODEX DISCOVERY:
+• PROXIMITY REGISTRATION - Entering a creature's detection radius automatically 
+  adds a blank entry to the codex with the creature's name
+• INITIAL ENTRY - Shows placeholder text ("Tame it to learn more") until tamed
+
+TAMING MECHANICS:
+• FOOD-BASED TAMING - Each creature type has a specific food item that, when fed,
+  instantly converts the creature from hostile to subservient state
+• CREATURE-SPECIFIC ITEMS - Every creature requires its unique taming food
+  (e.g., Dragons require Dragon Berries, Spiders need Nectar, etc.)
+• IMMEDIATE COMPLIANCE - Tamed creatures become non-hostile and will follow basic
+  commands, starting with zero relationship hearts
+
+HEART RELATIONSHIP SYSTEM:
+Separate from taming mechanics, hearts are earned through positive interactions:
+
+• HEART BUILDING - Feed preferred foods, pet, give gifts, spend time together
+• FEATURE UNLOCKS - Different heart levels unlock creature-specific abilities:
+  - Example: Dragons become mountable at high heart levels
+  - Production efficiency increases with relationship strength
+  - Access to special creature abilities or behaviors
+
+EVOLUTION SYSTEM:
+Upon taming, creatures unlock a branching evolution tree showing:
+
+• GREATER EVOLUTIONS - Species transformations (Dragon → Fire Dragon)
+• LESSER EVOLUTIONS - Capability upgrades (Flightless → Can Fly)
+• STAT IMPROVEMENTS - Numerical bonuses (25% more ore production)
+• EVOLUTION REQUIREMENTS - Specific inputs needed for each transformation
+  (resources, environmental conditions, relationship hearts, etc.)
+
+PROGRESSION FLOW:
+1. Discover (proximity detection → codex entry)
+2. Tame (feed specific food → compliance achieved)  
+3. Bond (heart system → relationship benefits)
+4. Evolve (evolution tree → enhanced capabilities)
+
+================================================================================
+3. TECHNICAL ARCHITECTURE
+================================================================================
+
+3.1 PROJECT STRUCTURE
+----------------------
+ecomonster-project/
+├── creatures/           # Creature implementations
+│   ├── dragon/         # Dragon variants and modules
+│   ├── elemental/      # Elemental creatures  
+│   ├── spider/         # Spider creatures with silk production
+│   ├── worm/          # Worm creatures for ore conversion
+│   ├── golem/         # Golem production creatures
+│   ├── player/        # Player character and controls
+│   └── [others]/      # Specter, Wisp, etc.
+├── systems/           # Core game systems
+│   ├── inventory/     # Inventory UI and data management
+│   ├── modules/       # Shared behavior modules
+│   └── [managers]/    # Lake, Forest, and other managers
+├── items/             # Item definitions and drops
+│   ├── drops/         # Ore drops and resources
+│   └── equipment/     # Weapons and tools
+├── ui/               # User interface components
+├── assets/           # Art, audio, and data files
+└── effects/          # Visual effects and shaders
+
+3.2 MODULE SYSTEM
+-----------------
+The game uses a modular architecture to share common behaviors:
+
+SHARED MODULES:
+• SearchModule.gd - Pathfinding and target location
+• ConversionModule.gd - Tile type conversion logic  
+• EfficiencyTracker.gd - Performance monitoring (0-100%)
+• RollingStatTracker.gd - Time-based statistics
+• MovementModule.gd - Creature movement patterns
+• StatsModule.gd - Health, status, and attribute tracking
+• UIModule.gd - Creature information display
+
+CREATURE-SPECIFIC MODULES:
+• ConsumptionModule.gd - Resource consumption logic
+• ProductionModule.gd - Resource generation mechanics  
+• ExcretionModule.gd - Waste/byproduct creation
+• AnimationModule.gd - Visual state management
+• InitModule.gd - Creature initialization
+
+3.3 EVENT SYSTEM
+-----------------
+• EventBus.gd for global event communication
+• Item drop detection and handling
+• Creature interaction events
+• UI state synchronization
+
+3.4 DATA MANAGEMENT
+-------------------
+• InventoryData.gd for centralized inventory state
+• Save/load system for game persistence
+• Configuration management for creature parameters
+• Statistics tracking for gameplay analysis
+
+================================================================================
+4. USER INTERFACE DESIGN
+================================================================================
+
+4.1 HUD ELEMENTS
+----------------
+• Health Bar - Player vitality display
+• Inventory UI - Grid-based item management
+• Hotbar - Quick access to 8 selected items
+• Monster Info Popup - Creature statistics and behavior info
+
+4.2 INTERACTION DESIGN
+----------------------
+• Point-and-click item pickup
+• Drag-and-drop inventory management
+• Right-click context actions
+• Keyboard hotkeys for common actions
+• Mouse wheel camera zoom
+• Toggle-based UI visibility
+
+4.3 VISUAL FEEDBACK
+-------------------
+• Search radius visualization for creatures
+• Efficiency indicators and statistics
+• Real-time stat updates in popups
+• Item count and stack indicators
+• Animation states for all creatures
+
+================================================================================
+5. CONTENT DESIGN
+================================================================================
+
+5.1 WORLD DESIGN
+-----------------
+• Tile-based world with varied terrain types
+• Resource distribution encouraging exploration
+• Strategic creature placement
+• Environmental hazards and safe zones
+
+5.2 CREATURE BALANCE
+--------------------
+• Each creature fills a specific ecological role
+• Resource conversion chains create dependencies  
+• Efficiency systems reward optimal placement
+• Variety in search radii and conversion rates
+
+5.3 PROGRESSION SYSTEM
+----------------------
+• Resource accumulation and management
+• Equipment crafting and upgrades
+• Creature interaction mastery
+• Environmental transformation goals
+
+================================================================================
+6. IMPLEMENTATION STATUS
+================================================================================
+
+6.1 COMPLETED FEATURES
+-----------------------
+✓ Core creature AI systems (Dragon, Elemental, Worm, Spider, Golem)
+✓ Modular architecture with shared systems
+✓ Inventory and hotbar functionality
+✓ Player movement and camera controls
+✓ Resource conversion mechanics
+✓ UI popups and information display
+✓ Item pickup and drop systems
+✓ Health and damage systems
+✓ Efficiency tracking and statistics
+
+6.2 CURRENT DEVELOPMENT FOCUS
+-----------------------------
+• Balancing creature behaviors and conversion rates
+• Expanding item and resource variety
+• Improving visual feedback and animations
+• Testing and debugging core systems
+
+6.3 FUTURE ENHANCEMENTS
+-----------------------
+• Save/load game functionality
+• Audio and sound effects
+• Additional creature types
+• Crafting and recipe systems  
+• Quest and objective systems
+• Multiplayer considerations
+• Performance optimization
+
+================================================================================
+7. TECHNICAL SPECIFICATIONS
+================================================================================
+
+7.1 ENGINE & PLATFORM
+----------------------
+• Engine: Godot 4.x
+• Language: GDScript
+• Platform: PC (Windows/Mac/Linux)
+• Target Resolution: Scalable 2D
+
+7.2 PERFORMANCE TARGETS
+-----------------------
+• 60 FPS target framerate
+• Efficient pathfinding for multiple creatures
+• Scalable entity count (dozens of creatures)
+• Responsive UI with large inventories
+
+7.3 DEPENDENCIES
+----------------
+• Godot 4.x engine
+• No external libraries or plugins required
+• Self-contained asset pipeline
+
+================================================================================
+8. DESIGN PHILOSOPHY
+================================================================================
+
+8.1 CORE PRINCIPLES
+-------------------
+• Emergent gameplay through creature interactions
+• Clear visual and mechanical feedback
+• Modular, maintainable code architecture
+• Intuitive user interface design
+• Balanced resource economy
+
+8.2 DEVELOPMENT APPROACH
+------------------------
+• Single responsibility principle for scripts
+• Shared logic in reusable modules
+• Consistent naming and documentation
+• Performance-conscious design decisions
+• Player-centric experience design
+
+8.3 ACCESSIBILITY CONSIDERATIONS
+--------------------------------
+• Clear visual indicators for all mechanics
+• Consistent UI patterns and controls
+• Scalable text and interface elements
+• Colorblind-friendly visual design
+
+================================================================================
+                            END OF DOCUMENT
+================================================================================
+
+This design document serves as a comprehensive reference for the Ecomonster 
+project. It should be updated as the game evolves and new features are added.
+
+For technical implementation details, refer to:
+• EcoMonster_Code_Summary_Refactor3.txt
+• Individual creature and module documentation
+• System-specific guide files in the Guides/ directory

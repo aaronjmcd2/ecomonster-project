@@ -13,12 +13,19 @@ extends CharacterBody2D
 
 # === Nodes & UI References ===
 @onready var inventory_ui := get_node("/root/Main/UILayer/InventoryUI")
+@onready var health_bar := get_node("/root/Main/UILayer/HealthBar")
 @onready var anim_sprite := $AnimatedSprite2D
 @onready var camera := $Camera2D
 
 # === Movement State ===
 var velocity_vector := Vector2.ZERO
 var facing_direction := Vector2.DOWN
+
+# === Health System ===
+var max_health: int = 100
+var current_health: int = 100
+var damage_cooldown: float = 0.0
+var damage_cooldown_time: float = 1.0
 
 # === Modules ===
 var zoom_module = preload("res://systems/modules/player/PlayerZoomModule.gd").new()
@@ -35,6 +42,9 @@ func _ready():
 
 # === Movement & Collision Handling ===
 func _physics_process(delta: float) -> void:
+	# Update damage cooldown
+	if damage_cooldown > 0.0:
+		damage_cooldown -= delta
 	velocity_vector = Vector2.ZERO
 
 	if Input.is_action_pressed("ui_up"):
@@ -56,11 +66,32 @@ func _physics_process(delta: float) -> void:
 		if collider and collider.is_in_group("monsters"):
 			velocity = Vector2.ZERO
 			position += collision.get_normal() * 2.0
+			
+			# Take damage from dragons if not on cooldown
+			if collider.name.contains("Dragon") and damage_cooldown <= 0.0:
+				take_damage(10)
+				damage_cooldown = damage_cooldown_time
 
 	if velocity_vector != Vector2.ZERO:
 		facing_direction = velocity_vector
 
 	update_animation()
+
+# === Health Functions ===
+func take_damage(damage: int) -> void:
+	current_health -= damage
+	if current_health < 0:
+		current_health = 0
+	
+	if health_bar:
+		health_bar.set_health(current_health)
+	
+	if current_health <= 0:
+		die()
+
+func die() -> void:
+	print("Player died!")
+	# Could add death animation, respawn logic, etc.
 
 # === Input Handling ===
 func _unhandled_input(event) -> void:

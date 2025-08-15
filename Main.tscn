@@ -1,5 +1,6 @@
-[gd_scene load_steps=17 format=4 uid="uid://bvvp1cd0hjp72"]
+[gd_scene load_steps=18 format=4 uid="uid://bvvp1cd0hjp72"]
 
+[ext_resource type="PackedScene" uid="uid://bfg3yxvhd8nrr" path="res://ui/HealthBar.tscn" id="1_0j5k1"]
 [ext_resource type="Script" uid="uid://cssu0grclxow7" path="res://Main.gd" id="1_sc1dx"]
 [ext_resource type="TileSet" uid="uid://bsx88c66ucj8x" path="res://assets/tiles/TileSet.tres" id="2_kjvhd"]
 [ext_resource type="PackedScene" uid="uid://b7he5tq8l7t7i" path="res://creatures/dragon/base/Dragon.tscn" id="5_03owx"]
@@ -35,6 +36,8 @@ position = Vector2(-5160, -1862)
 [node name="UILayer" type="CanvasLayer" parent="."]
 
 [node name="InventoryUI" parent="UILayer" instance=ExtResource("7_bg4s2")]
+
+[node name="HealthBar" parent="UILayer" instance=ExtResource("1_0j5k1")]
 
 [node name="Player" parent="." instance=ExtResource("9_mxvw5")]
 position = Vector2(-2496, -543)
