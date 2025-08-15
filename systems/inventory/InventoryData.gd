@@ -110,6 +110,8 @@ func drop_item_from_inventory(item: Dictionary, slot_ref: Node, drop_entire_stac
 				drop_scene = preload("res://items/drops/resources/TemperedGlass.tscn")  # Using TemperedGlass for both types
 			"Mana":
 				drop_scene = preload("res://items/drops/resources/Mana.tscn")
+			"Pickaxe":
+				drop_scene = preload("res://items/equipment/tools/PickaxeDrop.tscn")
 			_:
 				print("⚠️ No drop scene found for item:", item["name"])
 				return
