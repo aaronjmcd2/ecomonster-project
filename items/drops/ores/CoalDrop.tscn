@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqt8vrxd4fg8x"]
+
+[ext_resource type="Script" path="res://items/drops/ores/CoalDrop.gd" id="1_coal"]
+[ext_resource type="Texture2D" path="res://sprites/coal_drop.png" id="2_coal"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_coal"]
+radius = 81.0555
+
+[node name="CoalDrop" type="Area2D" groups=["ore_drops"]]
+script = ExtResource("1_coal")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_coal")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, -1)
+shape = SubResource("CircleShape2D_coal")
